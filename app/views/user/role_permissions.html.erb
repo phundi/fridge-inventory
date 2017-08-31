@@ -1,0 +1,56 @@
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a class='active' href="/user/role_permissions">Role Permissions</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading ">
+    <span class="glyphicon glyphicon-user" style="padding: 7px;"></span>
+    <b>Assign Role Permissions</b>
+  </div>
+
+  <div class="panel-body">
+  <form accept-charset="UTF-8" action="/user/role_permissions" method="POST"><input type="hidden" method="POST">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+
+    <table class="table table-striped table-hover table-bordered">
+  <thead>
+  <tr>
+    <th>Permissions</th>
+    <th colspan="<%= (@role_ids.length)%>">Roles</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td></td>
+    <% @role_names.each do |role|%>
+    <td><%= role%></td>
+    <% end %>
+  </tr>
+
+  <% @perm_names.each do |perm|%>
+  <tr>
+    <td><%= perm%></td>
+    <% @role_ids.each do |role_id|
+        perm_id = @perm_ids[@perm_names.index(perm)]
+    %>
+        <td>
+          <input type="checkbox" value="1" name="permission_roles[<%= perm_id%>][<%= role_id%>]"
+                <%= @permissions[perm_id][role_id] == true ? "checked = 'checked' " : "" %>>
+
+        </td>
+    <% end %>
+  </tr>
+  <% end %>
+
+  </tbody>
+  </table>
+  <div class="form-group actions-row">
+    <button type="button" onclick="submit()" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+  </div>
+  </form>
+  </div>
+
+</div>

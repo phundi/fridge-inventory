@@ -1,27 +1,19 @@
-<style>
-  .status{
-      color: #008000;
-  }
-  .disabled .status {
-      background-color: #d59392;
-      color: #000;
-  }
-</style>
+
 
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
-    <li><a class='active' href="/user/index">Users</a></li>
+    <li><a class='active' href="/user/roles">Roles</a></li>
   </ol>
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading ">
       <span class="glyphicon glyphicon-user"></span>
-      <b>List Users</b>
+      <b>List Roles</b>
       <div class="panel-btn">
-        <a class="btn btn-sm btn-info" href="/user/new">
+        <a class="btn btn-sm btn-info" href="/user/new_role">
           <span class="glyphicon glyphicon-plus-sign"></span>
-          New User
+          New Role
         </a>
       </div>
     </div>
@@ -30,56 +22,36 @@
         <table style="width: 100%;" class="data-table table table-condensed table-striped">
             <thead>
             <tr role="row">
-              <th>Username</th>
               <th>Name</th>
-              <th>E-mail</th>
-              <th>Sex</th>
-              <th>Designation</th>
-              <th>Status</th>
+              <th>Description</th>
               <th>&nbsp;</th>
             </tr>
             </thead>
         <tbody>
-        <% @users.each do |u|%>
-            <% if u.deleted_at.present? %>
-                <tr class="odd disabled" role="row" >
-            <% else %>
-                <tr class="odd" role="row" >
-            <% end %>
+        <% @roles.each do |r|%>
+            <tr class="odd" role="row">
 
-              <td class="sorting_1"><%= u.username%></td>
-              <td><%= u.name%></td>
-              <td><%= u.email%></td>
-              <td><%= u.sex%></td>
-              <td><%= u.designation%></td>
-              <td class="status"><%= u.deleted_at.present? ? 'Blocked' : 'Active'%></td>
+              <td class="sorting_1"><%= r.name %></td>
+              <td><%= r.description%></td>
               <td>
 
                 <!-- show the user (uses the show method found at GET /user/{id} -->
-                <a class="btn btn-sm btn-success" href="/user/view?user_id=<%=u.id%>">
+                <a class="btn btn-sm btn-success" href="/user/view_role?role_id=<%=r.id%>">
                   <span class="glyphicon glyphicon-eye-open"></span>
                   View
                 </a>
 
                 <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
-                <a class="btn btn-sm btn-info" href="/user/edit?user_id=<%=u.id%>">
+                <a class="btn btn-sm btn-info" href="/user/edit_role?role_id=<%=r.id%>">
                   <span class="glyphicon glyphicon-edit"></span>
                   Edit
                 </a>
                 <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
-                <% if u.deleted_at.blank? %>
-                    <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal" data-target=".confirm-delete-modal"
-                            onclick="deletes('/user/delete?user_id=<%= u.id%>')">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      Block
-                    </button>
-                <%else %>
-                    <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal" data-target=".confirm-delete-modal"
-                            onclick="deletes('/user/delete?user_id=<%= u.id%>')">
-                      <span class="glyphicon glyphicon-trash"></span>
-                      Unblock
-                    </button>
-                <% end %>
+                <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal"
+                        onclick="deletes('/user/delete_role?role_id=<%= r.id%>')">
+                  <span class="glyphicon glyphicon-trash"></span>
+                  Delete
+                </button>
 
               </td>
             </tr>
@@ -95,7 +67,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="printerModalLabel" style="text-align: left;">
-            Are you sure you want to proceed?
+          Are you sure you want to proceed?
         </h4>
       </div>
       <div class="modal-body">
@@ -112,19 +84,19 @@
 </div>
 
 <script>
+
+    function deletes(link){
+        __$('modal').setAttribute('link', link)
+        $('#modal').modal('show');
+    }
+
+    function doDelete(){
+        window.location = __$('modal').getAttribute('link');
+    }
+
     $(document).ready(function() {
         $('.data-table').DataTable({
             responsive: true
         });
     });
-
-   function deletes(link){
-       __$('modal').setAttribute('link', link)
-       $('#modal').modal('show');
-   }
-
-   function doDelete(){
-       window.location = __$('modal').getAttribute('link');
-   }
-
 </script>

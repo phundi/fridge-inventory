@@ -1,76 +1,23 @@
 
-
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
-    <li><a class='active' href="/use/index">Users</a></li>
+    <li><a href="/user/index">Users</a></li>
+    <li><a class='active' href="/user/edit?user_id=<%=@user.id%>">Edit User</a></li>
+
   </ol>
 </div>
 <div class="panel panel-primary">
-    <div class="panel-heading ">
-      <span class="glyphicon glyphicon-user"></span>
-      List Users
-      <div class="panel-btn">
-        <a class="btn btn-sm btn-info" href="/user/new">
-          <span class="glyphicon glyphicon-plus-sign"></span>
-          New User
-        </a>
-      </div>
+  <div class="panel-heading ">
+    <span class="glyphicon glyphicon-user" style="padding: 7px;"></span>
+    <b>Edit User</b>
+
+  </div>
+  <div class="panel-body">
+
+    <div style="margin-top: 5px; margin-left: 10px; padding: 10px;">
+      <%= render 'form' %>
     </div>
-    <div class="panel-body">
 
-        <table style="width: 100%;" class="data-table table table-condensed table-striped">
-            <thead>
-            <tr role="row">
-              <th>Username</th>
-              <th>Name</th>
-              <th>E-mail</th>
-              <th>Sex</th>
-              <th>Designation</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-        <tbody>
-        <% 200.times do |t|%>
-            <tr class="odd" role="row">
-
-              <td class="sorting_1">phundi</td>
-              <td>Administrator</td>
-              <td>admin@codebuildsystems.com</td>
-              <td>Male</td>
-              <td>Programmer</td>
-
-              <td>
-
-                <!-- show the user (uses the show method found at GET /user/{id} -->
-                <a class="btn btn-sm btn-success" href="http://localhost:8001/user/1">
-                  <span class="glyphicon glyphicon-eye-open"></span>
-                  View
-                </a>
-
-                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
-                <a class="btn btn-sm btn-info" href="http://localhost:8001/user/1/edit">
-                  <span class="glyphicon glyphicon-edit"></span>
-                  Edit
-                </a>
-                <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
-                <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal" data-target=".confirm-delete-modal" data-id="http://localhost:8001/user/1/delete">
-                  <span class="glyphicon glyphicon-trash"></span>
-                  Delete
-                </button>
-
-              </td>
-            </tr>
-            <% end %>
-        </tbody>
-        </table>
-    </div>
+  </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('.data-table').DataTable({
-            responsive: true
-        });
-    });
-</script>

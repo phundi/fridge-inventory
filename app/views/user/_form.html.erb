@@ -1,15 +1,17 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
-  <!-- if there are creation errors, they will show here -->
 
+<script src="/js/jquery.form-validator.min.js"></script>
 
   <form enctype="multipart/form-data" id="form-create-user" accept-charset="UTF-8"
-        action="/user/new" method="POST"><input type="hidden">
+        action="<%= @action%>" method="POST"><input type="hidden">
 
     <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
 
+    <%= hidden_field_tag :user_id, @user.id -%>
+
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" class="form-control"  data-validation="required length"  data-validation-length="min6">
+      <input type="text" id="username" name="username" class="form-control" value="<%= @user.username%>"
+             <%= !@user.username.blank? ? 'disabled' : '' %> data-validation="required length"  data-validation-length="min6">
     </div>
     <p>
         <div class="form-group">
@@ -26,24 +28,24 @@
 
     <div class="form-group">
       <label for="last_name">Last Name</label>
-      <input type="text" id="last_name" name="last_name" class="form-control" data-validation="required">
+      <input type="text" id="last_name" name="last_name" class="form-control" data-validation="required" value="<%= @user.last_name%>">
     </div>
     <div class="form-group">
       <label for="first_name">First Name</label>
-      <input type="text" id="first_name" name="last_name" class="form-control" data-validation="required">
+      <input type="text" id="first_name" name="first_name" class="form-control" data-validation="required" value="<%= @user.first_name%>">
     </div>
     <div class="form-group">
       <label for="other_name">Other Name(s)</label>
-      <input type="text" id="other_name" name="other_name" class="form-control">
+      <input type="text" id="other_name" name="other_name" class="form-control" value="<%= @user.middle_name%>">
     </div>
 
     <div class="form-group">
       <label for="email">E-mail Address</label>
-      <input type="email" id="email" name="email" class="form-control" placeholder="moses@codebuildsystems.com" data-validation="email">
+      <input type="email" id="email" name="email" class="form-control" placeholder="moses@codebuildsystems.com" data-validation="email" value="<%= @user.email%>">
     </div>
     <div class="form-group">
       <label for="designation">Designation</label>
-      <input type="text" id="designation" name="designation" class="form-control" placeholder="e.g Nurse" data-validation="required">
+      <input type="text" id="designation" name="designation" class="form-control" placeholder="e.g Nurse" data-validation="required" value="<%= @user.designation%>">
     </div>
     <div class="form-group">
       <label for="gender">Sex</label>
@@ -58,13 +60,17 @@
       <input type="file" id="image" name="image">
     </div>
     <div class="form-group actions-row">
-      <button type="button" onclick="submit()" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+      <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
     </div>
 
   </form>
 
 <script>
     $.validate({
-        decimalSeparator : ','
+        modules : 'security',
+        onError : function(){
+            alert('ddd')
+        }
     });
+
 </script>

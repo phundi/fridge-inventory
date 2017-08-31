@@ -45,6 +45,14 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "permission_role", ["permission_id"], name: "permission_role_permission_id_foreign", using: :btree
   add_index "permission_role", ["role_id"], name: "permission_role_role_id_foreign", using: :btree
 
+  create_table "user_role", force: :cascade do |t|
+    t.integer "user_id", limit: 4, null: false
+    t.integer "role_id",       limit: 4, null: false
+  end
+
+  add_index "user_role", ["user_id"], name: "user_role_user_id_foreign", using: :btree
+  add_index "user_role", ["role_id"], name: "user_role_role_id_foreign", using: :btree
+
   create_table "permission", primary_key: "permission_id", force: :cascade do |t|
     t.string   "name",         limit: 255, null: false
     t.string   "display_name", limit: 255, null: false
@@ -83,4 +91,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_foreign_key "permission_role", "role", primary_key: "role_id", name: "fk_permission_role_2"
   add_foreign_key "permission_role", "permission", primary_key: "permission_id", name: "fk_permission_role_1"
+
+  add_foreign_key "user_role", "role", primary_key: "role_id", name: "fk_user_role_2"
+  add_foreign_key "user_role", "user", primary_key: "user_id", name: "fk_user_role_1"
 end
