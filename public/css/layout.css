@@ -1,0 +1,587 @@
+/* General Page layout */
+html,
+body {
+  height: 100%;
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -50px;
+  /* Pad bottom by footer height */
+  padding: 0 0 50px;
+ }
+
+ /*  General and Miscellaneous Tag Styles */
+label, input {
+    float: left;
+}
+
+.smaller-text {
+    font-size: 0.9em;
+}
+
+.alone {
+    clear: both;
+}
+
+.float-l {
+    float: left;
+}
+.float-r {
+    float: right;
+}
+
+.display-details strong {
+    display: inline-block;
+    width: 200px;
+}
+
+.inline-display-details span,
+.inline-display-details strong {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.panel-btn {
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.user-image {
+    max-width: 300px;
+    max-height: 300px;
+    min-width: 150px;
+    min-height: 150px;
+}
+
+.carousel-inner .img-responsive {
+    width: 100%;
+}
+
+/* Zebra grid on some div displays */
+.form-pane .row {
+    border-bottom: 1px solid #DDDDDD;
+}
+.form-pane .row:hover {
+    background-color: #F5F5F5;
+}
+.form-pane .row-striped {
+    background-color: #F9F9F9;
+}
+
+.view, .view-striped {
+    border-top: 1px solid #DDDDDD;
+    min-height: 30px;
+    padding: 4px;
+}
+.view-striped:hover,.view:hover {
+    background-color: #F5F5F5;
+}
+.view-striped {
+    background-color: #F9F9F9;
+}
+
+
+/*
+*   FORMS
+*
+*/
+
+.form-group{
+    overflow: hidden;
+    position: relative;
+    clear: both;
+}
+.form-group.actions-row {
+    padding-left: 200px;
+}
+    .form-group > label {
+        width: 200px;
+    }
+    .form-group .form-control {
+        width: 270px;
+    }
+    .form-group .form-pane {
+        clear:both;
+        overflow: hidden;
+    }
+        .form-group .form-pane label {
+            font-weight: 100;
+        }
+         .form-group span.input-tag{
+            display: inline-block;
+            padding-left: 15px;
+            min-width: 60px;
+         }
+         .form-group span.input-tag:hover{
+            cursor: pointer;
+         }
+
+         .form-group span.units{
+            line-height: 3em;
+            margin-left: 5px;
+         }
+
+.form-inline label {
+    line-height: 34px;
+}
+
+/*
+*
+* LOGIN PAGE 
+*
+*/
+
+.login-page {
+    background: #444444;
+    color: #F1F1F1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0; 
+    bottom: 0;
+    top:0;
+    position: absolute;
+    background-image: linear-gradient(to bottom, #444444 0px, #000000 100%);
+}
+    .login-page .login-form {
+        background: #FFFFFF;
+        color: #333333;
+        width: 351px;
+        margin: auto;
+        margin-top:30px;
+        border: 1px solid #666666;
+        text-align: center;
+        position:relative;
+    }
+
+        .login-page .login-form .form-head,
+        .login-page .login-form form {
+            width: 300px;
+            margin: auto;
+        }
+        .login-page .login-form .form-head {
+            height: auto;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+            .login-page .login-form .form-head h3{
+                font-weight: 100;
+            }
+            .login-page .login-form .form-head .alert{
+                padding: 5px;
+            }
+        .login-page .login-form .info {
+            color:#999;
+            border-top: 1px solid #CCCCCC;
+            border-bottom: 1px solid #CCCCCC;
+            margin-bottom: 10px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+            .login-page .login-form .form-group .form-control {
+                padding-left: 25px;
+                width: 100%;
+            }
+    .login-page .help {
+        text-align:right;
+        padding-right: 27px;
+    }
+    .login-page .foot {
+        color:#999999;
+        bottom: 0;
+        border-top: 1px solid #CCCCCC;
+        margin-bottom: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 15px;
+        /*position: absolute;*/
+    }
+
+/*
+*
+* GLOBAL LAYOUTS VIEW
+*
+*/
+    .user-settings {
+        display: none;
+        background-color: #313131;
+        border: 1px solid #CCCCCC;
+        width: 200px;
+        top: 52px;
+        position: absolute;
+        right: 0%;
+        z-index: 2;
+    }
+
+    .loc-settings {
+        display: none;
+        background-color: #313131;
+        border: 1px solid #CCCCCC;
+        width: 200px;
+        top: 52px;
+        position: absolute;
+        right: 6%;
+        z-index: 2;
+    }
+
+    .lab-section-banner{
+        background: rgb(0,0,0);
+    }
+
+    .lab-section-change{
+        padding-left: 10px;
+    }
+
+    .user-settings div, .loc-settings div{
+        background-color: #FFFFFF;
+        border-bottom: 1px solid #CCCCCC;
+        position: relative;
+        height: 40px;
+    }
+    .user-settings > div:hover, .loc-settings > div:hover{
+        background-color: #F1F1F1;
+        cursor: pointer;
+    }
+        .user-settings div a, .loc-settings div a{
+            line-height: 35px;
+            padding-left: 35px;
+            color: #333333;
+            display: inline-block;
+            width: 100%;
+        }
+        .user-settings div a:hover, .loc-settings div a:hover{
+            text-decoration: none;
+        }
+        .user-settings div span, .loc-settings div span{
+            position: absolute;
+            left: 5px;
+            top: 11px;
+        }
+/*
+ *
+ *
+ * BODY
+ *
+ */                
+/*
+ *      Side Menubar Left
+ */
+    .sidebar{
+         background-color: #3D3D3D;
+         color: #D1D1D1;
+         top: 51px;
+         position: fixed;
+         padding: 0;
+         min-height: 100%;
+         background-image: linear-gradient(to bottom, #3D3D3D 0px, #000000 100%);
+    }
+        .sidebar ul {
+            list-style-type: none;
+        }
+        .sidebar > ul {
+            padding-left: 0;
+            margin-top: 40px;
+        }
+            .sidebar > ul > li {
+                border-bottom: 1px solid #636363;
+            }
+                .sidebar .main-menu {
+                    height: 40px;
+                    line-height: 40px;
+                    position: relative;
+                }
+                .sidebar .main-menu:hover {
+                    background-color: #313131;
+                    cursor: pointer;
+                }
+                .sidebar .main-menu.active {
+                    background-color: #C12E2A;
+                    background-image: url("/i/white-triangle.png");
+                    background-repeat: no-repeat;
+                    background-position: right center;
+                }
+                .sidebar .main-menu > a {
+                    margin-left: 20px;
+                }
+        .sidebar .sub-menu {
+            display: none;
+        }
+        .sidebar .sub-menu.active {
+            display: block;
+        }
+        .sidebar .sub-menu-title {
+            height: 30px;
+            line-height: 30px;
+            padding-left: 20px;
+        }
+        .sidebar .sub-menu-title:hover {
+            background-color: #313131;
+        }
+        .sidebar .sub-menu-items {
+            padding-left: 25px            
+        }
+                .sidebar .sub-menu-items >li >div{
+                    position: relative;
+                    padding-left: 15px;
+                    height: 30px;
+                    line-height: 30px;
+                }
+        .sidebar a{
+            color: #D1D1D1;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            outline-style: none;
+        }
+        .sidebar a:hover{
+            text-decoration: none;
+        }
+
+/*  Main area*/
+
+    .row .main {
+        margin-top: 71px;
+        overflow-y: auto;
+    }
+    
+/*
+*
+* FOOTER
+*/
+.footer{
+    line-height : 50px;
+    height      : 50px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+/*
+*
+* MODALS
+*/
+.modal-primary{
+    border-color: #428BCA;
+}
+    .modal-primary .modal-header{
+        color: #FFF;
+        background-color: #428BCA;
+        border-radius: 4px 4px 0 0;
+    }
+    .modal-primary .modal-header .close{
+        color: #FFF;
+        opacity: 0.8;
+    }
+    .modal-primary .modal-header .close:hover{
+        color: #FFF;
+        opacity: 1;
+    }
+
+/*
+*
+*   ERRORS PAGE (404)
+*
+*/
+.error-page {
+    text-align: center;
+    padding-top: 40px;
+}
+
+/**
+ *MEASURE VIEW
+ */
+.measurevalue .measure-input div
+{
+    border-bottom: 1px solid #D1D1D1;
+    padding:5px 0px;
+}
+.measure .col-md-3 .form-group .form-control
+{
+    width:100%;
+}
+
+/*
+* REJECT Specimen shading - Used on test-index view
+*/
+.table tbody tr.rejected td.rejected {
+    background: #FFCCCC;
+}
+
+/*
+*
+* Specimen and Test status separation - Used on test-index view
+*/
+.test-status div.row {
+    margin-bottom: 2px;
+}
+
+.row.less-gutter .col-md-11 {
+    padding-left:0;
+}
+.row.less-gutter .col-md-1 {
+    padding-right:0;
+}
+    .row.less-gutter .col-md-11 > span{
+        line-height: 30px;
+    }
+
+/*
+* REPORTS PAGES
+* 
+*/
+
+.report-filter .btn{
+    min-width: 125px;
+}
+.spacer {  margin-top: 20px; }
+
+/*Bordered-table - evade bootstrap's break on use or col & row spans*/
+table.table.report-table-border,
+table.table.report-table-border > thead > tr > th,
+table.table.report-table-border > tbody > tr > td{
+    border: 1px solid #DDDDDD;
+}
+
+.ui-datepicker-header {
+    background: darkslategrey;
+    color: black;
+    font-weight: bold;
+    -webkit-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, 2);
+    -moz-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    text-shadow: 1px -1px 0px #000;
+    filter: dropshadow(color=#000, offx=1, offy=-1);
+    line-height: 30px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: #111;
+}
+.ui-datepicker {
+    background: #fff; /* Old browsers */
+    background: #fff -moz-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* FF3.6+ */
+    background: #fff -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfcfc)), color-stop(100%,#fff)); /* Chrome,Safari4+ */
+    background: #fff -webkit-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Chrome10+,Safari5.1+ */
+    background: #fff -o-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* Opera11.10+ */
+    background: #fff -ms-linear-gradient(top, #fcfcfc 0%, #fff 100%); /* IE10+ */
+    background: #fff linear-gradient(top, #fcfcfc 0%, #fff 100%); /* W3C */
+}
+.panel-header{
+    padding: 5px !important;
+ }
+.panel-row{
+    display: none;
+}
+
+.panel-header{
+    border-bottom: 1px solid gray;
+}
+.btn-expand{
+    cursor: pointer;
+}
+
+.bordered-top{
+    border-top: 1px solid lightgray;
+}
+.bordered-bottom{
+    border-bottom: 1px dotted lightgray;
+}
+
+.bordered-left{
+    border-left: 1px dotted lightgray;
+}
+
+.bordered-right{
+    border-right: 1px dotted lightgray;
+}
+
+#organismsModel .modal-data{
+    height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#organismsModel .modal-dialog{
+    width: 75%;
+}
+
+.modal-header {
+    border-bottom: 1px solid #eee;
+    padding: 9px 15px;
+    font-weight: bold !important;
+}
+.modal-footer {
+    background-color: #f5f5f5;
+    border-radius: 0 0 6px 6px;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 1px 0 #fff inset;
+    margin-bottom: 0;
+    padding: 14px 15px 15px;
+    text-align: right;
+}
+
+#printers tr:hover{
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+.label{
+    color: black;
+    font-size: 0.9em;
+}
+#patientReport td, #patientReport th{
+    padding: 6px;
+}
+
+.rspecimen td, .rtest td, .rsusc td{
+    font-weight: normal;
+}
+.opt-view{
+    display: none;
+    padding: 3px !important;
+    margin: 2px !important;
+}
+.main-view{
+    padding: 3px !important;
+    margin: 2px !important;
+}
+
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.btn-expand{
+    padding: 3px !important;
+    width: 35px !important;
+}
+.accept-specimen{
+    padding: 3px !important;
+}
+.toggler{
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+}
+
+#test-actions{
+    padding: 0px !important;
+}
+
+.data-table th{
+
+}
+.panel-heading{
+    padding: 6px;
+}
+.breadcrumb a{
+    text-decoration: underline;
+    cursor: pointer;
+}
