@@ -217,12 +217,12 @@ class UserController < ApplicationController
     @role_names = Role.all.map(&:name)
 
     @perm_ids = Permission.all.map(&:permission_id)
-    @perm_names = Permission.all.map(&:name)
+    @perm_names = Permission.all.map(&:display_name)
 
     if request.post?
       perm_roles = params[:permission_roles]
       PermissionRole.destroy_all
-      perm_roles.each do |perm_id, data|
+      (perm_roles || {}).each do |perm_id, data|
         data.each do |role_id, selected|
           if selected == '1'
             PermissionRole.create(permission_id: perm_id, role_id: role_id)
@@ -252,12 +252,12 @@ class UserController < ApplicationController
     @role_names = Role.all.map(&:name)
 
     @user_ids = User.all.map(&:user_id)
-    @user_names = User.all.map(&:name)
+    @user_names = User.all.map(&:username)
 
     if request.post?
       user_roles = params[:user_roles]
       UserRole.destroy_all
-      user_roles.each do |user_id, data|
+      (user_roles || {}).each do |user_id, data|
         data.each do |role_id, selected|
           if selected == '1'
             UserRole.create(user_id: user_id, role_id: role_id)
@@ -270,7 +270,7 @@ class UserController < ApplicationController
       @users = {}
       @user_ids.each do |user|
         @users[user] = {}
-        @role_ids.each do |role|
+        (@role_ids || {}).each do |role|
           q = UserRole.where(user_id: user, role_id: role)
           if q.length > 0
             @users[user][role] = true
@@ -279,8 +279,6 @@ class UserController < ApplicationController
           end
         end
       end
-
-      raise @users.inspect
     end
   end
 end
