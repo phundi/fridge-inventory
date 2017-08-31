@@ -1,0 +1,70 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+  <!-- if there are creation errors, they will show here -->
+
+
+  <form enctype="multipart/form-data" id="form-create-user" accept-charset="UTF-8"
+        action="/user/new" method="POST"><input type="hidden">
+
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" class="form-control"  data-validation="required length"  data-validation-length="min6">
+    </div>
+    <p>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" value="" class="form-control"
+           name="pass_confirmation" data-validation="length required" data-validation-length="min6">
+        </div>
+        <div class="form-group">
+          <label for="password_confirmation">Confirm Password</label>
+          <input type="password" id="password_confirmation" value="" class="form-control" data-validation-length="min6"
+           name="pass" data-validation="confirmation required length">
+        </div>
+    </p>
+
+    <div class="form-group">
+      <label for="last_name">Last Name</label>
+      <input type="text" id="last_name" name="last_name" class="form-control" data-validation="required">
+    </div>
+    <div class="form-group">
+      <label for="first_name">First Name</label>
+      <input type="text" id="first_name" name="last_name" class="form-control" data-validation="required">
+    </div>
+    <div class="form-group">
+      <label for="other_name">Other Name(s)</label>
+      <input type="text" id="other_name" name="other_name" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="email">E-mail Address</label>
+      <input type="email" id="email" name="email" class="form-control" placeholder="moses@codebuildsystems.com" data-validation="email">
+    </div>
+    <div class="form-group">
+      <label for="designation">Designation</label>
+      <input type="text" id="designation" name="designation" class="form-control" placeholder="e.g Nurse" data-validation="required">
+    </div>
+    <div class="form-group">
+      <label for="gender">Sex</label>
+      <div><input type="radio" id="gender" value="1" name="gender" checked="checked">
+        <span class="input-tag">Male</span></div>
+      <div><input type="radio" id="gender" value="0" name="gender">
+        <span class="input-tag">Female</span></div>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Photo</label>
+      <input type="file" id="image" name="image">
+    </div>
+    <div class="form-group actions-row">
+      <button type="button" onclick="submit()" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+    </div>
+
+  </form>
+
+<script>
+    $.validate({
+        decimalSeparator : ','
+    });
+</script>
