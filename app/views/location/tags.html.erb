@@ -1,0 +1,117 @@
+
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a class='active' href="/location/tags">Location Types</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-user"></span>
+      <b>List Location Types</b>
+      <div class="panel-btn">
+        <a class="btn btn-sm btn-info" href="/location/new_tag">
+          <span class="glyphicon glyphicon-plus-sign"></span>
+          New Location Type
+        </a>
+      </div>
+    </div>
+    <div class="panel-body">
+
+        <table style="width: 100%;" class="data-table table table-condensed table-striped">
+            <thead>
+            <tr role="row">
+              <th>Name</th>
+              <th>Description</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+        <tbody>
+        <% @location_tags.each do |r|%>
+            <tr class="odd" role="row">
+
+              <td class="sorting_1"><%= r.name %></td>
+              <td><%= r.description%></td>
+              <td>
+
+                <!-- show the user (uses the show method found at GET /user/{id} -->
+                <a class="btn btn-sm btn-success" href="/location/view_tag?tag_id=<%=r.id%>">
+                  <span class="glyphicon glyphicon-eye-open"></span>
+                  View
+                </a>
+
+
+                <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
+                <% if r.locked == 0%>
+                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
+                <a class="btn btn-sm btn-info" href="/location/edit_tag?tag_id=<%=r.id%>">
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Edit
+                </a>
+
+                <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal"
+                        onclick="deletes('/location/delete_tag?tag_id=<%= r.id%>')">
+                  <span class="glyphicon glyphicon-trash"></span>
+                  Delete
+                </button>
+
+                <% else %>
+                    <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
+                <a class="btn btn-sm btn-info disabled">
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Edit
+                </a>
+                <button class="btn btn-sm btn-danger delete-item-link disabled" data-toggle="modal">
+                  <span class="glyphicon glyphicon-trash"></span>
+                  Delete
+                </button>
+                <% end %>
+
+              </td>
+            </tr>
+            <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="printerModalLabel" style="text-align: left;">
+          Are you sure you want to proceed?
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">
+
+        </span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+          <button type="button" class="btn btn-primary" onclick="doDelete()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+    function deletes(link){
+        __$('modal').setAttribute('link', link)
+        $('#modal').modal('show');
+    }
+
+    function doDelete(){
+        window.location = __$('modal').getAttribute('link');
+    }
+
+    $(document).ready(function() {
+        $('.data-table').DataTable({
+            responsive: true
+        });
+    });
+</script>

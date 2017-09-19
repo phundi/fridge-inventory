@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>HMIS</title>
+  <title>Software</title>
 
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/css/sb-admin.css" rel="stylesheet">
@@ -27,7 +27,7 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
 
-          <a class="navbar-brand" href="/">HMIS</a>
+          <a class="navbar-brand" href="/">System</a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
@@ -58,7 +58,7 @@
               <a href="/"><i class="fa fa-fw fa-home"></i> Home</a>
             </li>
             <li>
-              <a href="#"><i class="fa fa-fw fa-list"></i> Patients</a>
+              <a href="#"><i class="fa fa-fw fa-list"></i> Clients</a>
             </li>
             <li>
               <a href="/"><i class="fa fa-fw fa-list"></i> Workflow</a>
@@ -67,7 +67,20 @@
               <a href="/"><i class="fa fa-fw fa-list"></i> Modules</a>
             </li>
             <li>
-              <a href="/"><i class="fa fa-fw fa-list"></i> Configurations</a>
+              <a href="javascript:" data-toggle="collapse" data-target="#configs"><i class="fa fa-cog">
+              </i> Configurations <i class="fa fa-fw fa-caret-down"></i>
+              </a>
+              <ul id="configs" class="collapse">
+                <li>
+                  <a href="/location/index">Locations</a>
+                </li>
+                <li>
+                  <a href="/location/tags">Location Types</a>
+                </li>
+                <li>
+                  <a href="/configuration/units">Units of Measure</a>
+                </li>
+              </ul>
             </li>
             <li>
               <a href="javascript:" data-toggle="collapse" data-target="#acc-c"><i class="fa fa-cog">

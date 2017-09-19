@@ -66,7 +66,7 @@ body {
 .top-nav>.open>a:hover,
 .top-nav>.open>a:focus {
     color: white;
-    background-color: #578bb3;
+    background-color: #578bb3;		
 }
 
 .top-nav>.open>.dropdown-menu {
@@ -146,7 +146,10 @@ ul.alert-dropdown {
     .side-nav li a:focus {
         outline: none;
         color: white !important;
-        background-color: #578bb3 !important;
+        background-color: #c12e2a !important;
+    		background-image: url("/image/white-triangle.png");
+				background-position: right center;
+				background-repeat: no-repeat
     }
 
     .side-nav li a:active,

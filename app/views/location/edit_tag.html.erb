@@ -2,21 +2,21 @@
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
-    <li><a href="/user/roles">Roles</a></li>
-    <li><a class='active' href="/user/edit_role?role_id=<%= @role.id%>">Edit Role</a></li>
+    <li><a href="/location/tags">Location Types</a></li>
+    <li><a class='active' href="/location/edit_tag?tag_id=<%= @location_tag.id%>">Edit Location Type</a></li>
 
   </ol>
 </div>
 <div class="panel panel-primary">
   <div class="panel-heading ">
     <span class="glyphicon glyphicon-user" style="padding: 7px;"></span>
-    <b>Edit Role</b>
+    <b>Edit Location Type</b>
 
   </div>
   <div class="panel-body">
 
   <div style="margin-top: 5px; margin-left: 10px; padding: 10px;">
-    <%= render 'role_form' %>
+    <%= render 'tag_form' %>
   </div>
 
 </div>

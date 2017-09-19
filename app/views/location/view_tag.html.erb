@@ -1,0 +1,36 @@
+
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a href="/location/tags">Location types</a></li>
+    <li><a class='active' href="/location/view_tag?tag_id=<%=@location_tag.id%>">View Location Type</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-user"></span>
+      <b>View Location Type</b>
+      <div class="panel-btn">
+        <% if @location_tag.locked == 0%>
+            <a class="btn btn-sm btn-info" href="/location/edit_tag?location_tag_id=<%=@location_tag.id%>">
+              <span class="glyphicon glyphicon-pencil"></span>
+              Edit
+            </a>
+        <% end %>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="display-details">
+              <h3><strong>Name</strong><%= @location_tag.name%></h3>
+              <p><strong>Description</strong><%=@location_tag.description%></p>
+              <p><strong>Date Created</strong><%=@location_tag.created_at.strftime("%d/%b/%Y")%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

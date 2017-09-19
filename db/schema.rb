@@ -37,6 +37,55 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "patient", ["creator"], name: "patient_creator_index", using: :btree
   add_index "patient", ["npid"], name: "patient_npid_index", using: :btree
 
+  create_table "location", primary_key: "location_id", force: :cascade do |t|
+    t.string   "code",            limit: 45
+    t.string   "name",            limit: 255, default: "",    null: false
+    t.string   "description",     limit: 255
+    t.string   "postal_code",     limit: 50
+    t.string   "country",         limit: 50
+    t.string   "latitude",        limit: 50
+    t.string   "longitude",       limit: 50
+    t.integer  "creator",         limit: 4,   default: 0,     null: false
+    t.datetime "created_at",                                  null: false
+    t.string   "county_district", limit: 255
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by",       limit: 4
+    t.datetime "date_voided"
+    t.string   "void_reason",     limit: 255
+    t.integer  "parent_location", limit: 4
+    t.integer  "changed_by",      limit: 4
+    t.datetime "changed_at"
+  end
+
+  add_index "location", ["changed_by"], name: "location_changed_by", using: :btree
+  add_index "location", ["creator"], name: "user_who_created_location", using: :btree
+  add_index "location", ["name"], name: "name_of_location", using: :btree
+  add_index "location", ["parent_location"], name: "parent_location", using: :btree
+  add_index "location", ["voided"], name: "retired_status", using: :btree
+  add_index "location", ["voided_by"], name: "user_who_retired_location", using: :btree
+
+  create_table "location_tag", primary_key: "location_tag_id", force: :cascade do |t|
+    t.string   "name",        limit: 45,              null: false
+    t.string   "description", limit: 100
+    t.integer  "locked",      limit: 1,   default: 0, null: false
+    t.integer  "voided",      limit: 1,   default: 0, null: false
+    t.integer  "voided_by",   limit: 4
+    t.string   "void_reason", limit: 45
+    t.datetime "date_voided"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "location_tag", ["location_tag_id"], name: "location_tag_map_id_UNIQUE", unique: true, using: :btree
+
+  create_table "location_tag_map", id: false, force: :cascade do |t|
+    t.integer "location_id",     limit: 4, null: false
+    t.integer "location_tag_id", limit: 4, null: false
+  end
+
+  add_index "location_tag_map", ["location_id"], name: "fk_location_tag_map_1", using: :btree
+  add_index "location_tag_map", ["location_tag_id"], name: "fk_location_tag_map_2_idx", using: :btree
+
   create_table "permission_role", force: :cascade do |t|
     t.integer "permission_id", limit: 4, null: false
     t.integer "role_id",       limit: 4, null: false
@@ -88,6 +137,10 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "user", ["username"], name: "user_username_unique", unique: true, using: :btree
+
+
+  add_foreign_key "location_tag_map", "location", primary_key: "location_id", name: "fk_location_tag_map_1"
+  add_foreign_key "location_tag_map", "location_tag", primary_key: "location_tag_id", name: "fk_location_tag_map_2"
 
   add_foreign_key "permission_role", "role", primary_key: "role_id", name: "fk_permission_role_2"
   add_foreign_key "permission_role", "permission", primary_key: "permission_id", name: "fk_permission_role_1"

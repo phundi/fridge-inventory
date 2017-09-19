@@ -24,3 +24,14 @@ UserRole.create(
     user_id: u.id, role_id: r.id
 )
 
+begin
+  ActiveRecord::Base.transaction do
+    require Rails.root.join('db','load_location_tags.rb')
+    require Rails.root.join('db','load_countries.rb')
+    require Rails.root.join('db','load_districts.rb')
+    require Rails.root.join('db','load_tas_and_villages.rb')
+    require Rails.root.join('db','load_health_facilities.rb')
+  end
+rescue => e
+  puts "Error ::::  #{e.message}  ::  #{e.backtrace.inspect}"
+end

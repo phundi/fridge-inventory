@@ -1,0 +1,59 @@
+
+<script src="/js/jquery.form-validator.min.js"></script>
+
+  <form enctype="multipart/form-data" id="form-create-user" accept-charset="UTF-8"
+        action="<%= @action%>" method="POST"><input type="hidden">
+
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+
+    <%= hidden_field_tag :location_id, @location.id -%>
+
+    <div class="form-group">
+      <label for="name">Location Name</label>
+      <input type="text" id="name" name="name" class="form-control" data-validation="required" value="<%= @location.name%>">
+    </div>
+    <div class="form-group">
+      <label for="code">Code</label>
+      <input type="text" id="code" name="code" class="form-control" value="<%= @location.code%>">
+    </div>
+    <div class="form-group">
+      <label for="desc">Description</label>
+      <input type="text" id="desc" name="description" class="form-control" value="<%= @location.description%>">
+    </div>
+
+    <div class="form-group">
+    <label for="test_types">Select Location Types</label>
+      <div class="form-pane panel panel-default">
+          <div class="container-fluid">
+
+          <% @tags.each do |row_chunck|%>
+              <div class="row <%= cycle('row', 'row-striped')%>" style="padding: 5px;padding-left: 15px;">
+                <% row_chunck.each do |tag|%>
+                <div class="col-md-3">
+                  <label class="checkbox">
+                    <input name="tags[]" value="<%=tag.id%>" type="checkbox">
+                    <%=tag.name%>
+                  </label>
+                </div>
+                <% end %>
+              </div>
+          <% end %>
+          </div>
+      </div>
+    </div>
+
+    <div class="form-group actions-row">
+      <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+    </div>
+
+  </form>
+
+<script>
+    $.validate({
+        modules : 'security',
+        onError : function(){
+
+        }
+    });
+
+</script>
