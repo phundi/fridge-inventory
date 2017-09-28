@@ -181,7 +181,7 @@ ul.alert-dropdown {
 .navbar{
     background:  #256;
     border-bottom: 1px solid #ffffff;
-
+    box-shadow: 4px 4px 3px #888888;
 }
 /* Flot Chart Containers #033c73*/
 

@@ -55,17 +55,6 @@
               <td class="status"><%= u.deleted_at.present? ? 'Blocked' : 'Active'%></td>
               <td>
 
-                <!-- show the user (uses the show method found at GET /user/{id} -->
-                <a class="btn btn-sm btn-success" href="/user/view?user_id=<%=u.id%>">
-                  <span class="glyphicon glyphicon-eye-open"></span>
-                  View
-                </a>
-
-                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
-                <a class="btn btn-sm btn-info" href="/user/edit?user_id=<%=u.id%>">
-                  <span class="glyphicon glyphicon-edit"></span>
-                  Edit
-                </a>
                 <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
                 <% if u.deleted_at.blank? %>
                     <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal" data-target=".confirm-delete-modal"
@@ -80,6 +69,18 @@
                       Unblock
                     </button>
                 <% end %>
+
+                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
+                <a class="btn btn-sm btn-info" href="/user/edit?user_id=<%=u.id%>">
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Edit
+                </a>
+
+                <!-- show the user (uses the show method found at GET /user/{id} -->
+                <a class="btn btn-sm btn-success" href="/user/view?user_id=<%=u.id%>">
+                  <span class="glyphicon glyphicon-eye-open"></span>
+                  View
+                </a>
 
               </td>
             </tr>

@@ -18,6 +18,47 @@
     <link href="/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
 
   <%= csrf_meta_tags %>
+  <style>
+      .dataTables_wrapper{
+        margin-top: 5px;
+      }
+      .dataTables_filter input{
+          float: right;
+      }
+
+      .dataTables_wrapper th{
+          background: lightsteelblue;
+          color: black;
+          padding: 10px !important;
+      }
+      .panel{
+          margin-top: 12px;
+          box-shadow: 7px 7px 3px #888888;
+      }
+
+      .panel-heading{
+          box-shadow: 4px 4px 3px #888888;
+      }
+      .btn{
+          margin: 5px;
+          float: right;
+          margin-top: 0px;
+          margin-bottom: 0px;
+      }
+
+      img {
+          user-drag: none;
+          user-select: none;
+          -moz-user-select: none;
+          -webkit-user-drag: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          pointer-events: none;
+      }
+      input, select{
+          box-shadow: 2px 2px 2px #ccc;
+      }
+  </style>
 </head>
 <body>
     <div id="wrapper">
@@ -31,9 +72,12 @@
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <%= @cur_user.username%> <b class="caret"></b></a>
+          <%
+              img_url =   File.exists?("#{Rails.root}/public/#{@cur_user.image}") ? "#{@cur_user.image}?cache=none": "/uploads/#{@cur_user.gender}.png?cache=none"
+          %>
+          <a href="/" style="float: left;margin: 4px;"> <img src="<%= img_url %>" alt="<i class='fa fa-user'></i>" class='img-circle' width='40' height='40'></a>
+          <li class="dropdown" style="float: right">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">  <%= @cur_user.username%> <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li>
                 <a href="/user/view?user_id=<%= @cur_user.id%>"><i class="fa fa-fw fa-user"></i> My Account</a>
@@ -54,53 +98,51 @@
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
-            <li>
-              <a href="/"><i class="fa fa-fw fa-home"></i> Home</a>
+            <li id="home">
+              <a href="/?active_tab=home"><i class="fa fa-fw fa-home"></i> Home</a>
             </li>
-            <li>
-              <a href="#"><i class="fa fa-fw fa-list"></i> Clients</a>
+            <li id="clients">
+              <a href="/?active_tab=clients"><i class="fa fa-fw fa-list"></i> Clients</a>
             </li>
-            <li>
-              <a href="/"><i class="fa fa-fw fa-list"></i> Workflow</a>
+            <li id="workflow">
+              <a href="/?active_tab=workflow"><i class="fa fa-fw fa-list"></i> Workflow</a>
             </li>
-            <li>
-              <a href="/"><i class="fa fa-fw fa-list"></i> Modules</a>
+            <li id="modules">
+              <a href="/?active_tab=modules"><i class="fa fa-fw fa-list"></i> Modules</a>
             </li>
-            <li>
+            <li id="config">
               <a href="javascript:" data-toggle="collapse" data-target="#configs"><i class="fa fa-cog">
               </i> Configurations <i class="fa fa-fw fa-caret-down"></i>
               </a>
               <ul id="configs" class="collapse">
                 <li>
-                  <a href="/location/index">Locations</a>
+                  <a href="/location/index?active_tab=config">Locations</a>
                 </li>
                 <li>
-                  <a href="/location/tags">Location Types</a>
+                  <a href="/location/tags?active_tab=config">Location Types</a>
                 </li>
-                <li>
-                  <a href="/configuration/units">Units of Measure</a>
-                </li>
+
               </ul>
             </li>
-            <li>
+            <li id="access">
               <a href="javascript:" data-toggle="collapse" data-target="#acc-c"><i class="fa fa-cog">
               </i> Access Controls <i class="fa fa-fw fa-caret-down"></i>
               </a>
               <ul id="acc-c" class="collapse">
                 <li>
-                  <a href="/user/index">Users</a>
+                  <a href="/user/index?active_tab=access">Users</a>
                 </li>
                 <li>
-                  <a href="/user/roles">Roles</a>
+                  <a href="/user/roles?active_tab=access">Roles</a>
                 </li>
                 <li>
-                  <a href="/user/permissions">Permissions</a>
+                  <a href="/user/permissions?active_tab=access">Permissions</a>
                 </li>
                 <li>
-                  <a href="/user/role_permissions">Assign Role Permissions</a>
+                  <a href="/user/role_permissions?active_tab=access">Assign Role Permissions</a>
                 </li>
                 <li>
-                  <a href="/user/user_roles">Assign User Roles</a>
+                  <a href="/user/user_roles?active_tab=access">Assign User Roles</a>
                 </li>
               </ul>
             </li>
@@ -125,8 +167,15 @@
 </body>
 
 <script>
+
     function __$(id){
         return document.getElementById(id)
     }
 </script>
+
+<style>
+  .breadcrumb{
+      margin-top: 10px !important;
+  }
+</style>
 </html>

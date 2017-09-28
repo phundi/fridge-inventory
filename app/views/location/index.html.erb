@@ -6,6 +6,23 @@
       background-color: #d59392;
       color: #000;
   }
+
+  #tag, #example_filter{
+      float: right;
+      font-size: 14px;
+      background:white;
+  }
+
+  #example_filter input{
+      margin-bottom: 10px;
+      float: right;
+      margin-left: 20px;
+  }
+
+  #example_filter label{
+      float: right;
+  }
+
 </style>
 
 <div>
@@ -27,25 +44,25 @@
     </div>
     <div class="panel-body">
 
-        <table style="width: 100%;" class="data-table table table-condensed table-striped">
+        <table id="example" style="width: 100%;" class="data-table table table-condensed table-striped">
             <thead>
             <tr role="row">
-              <th>Name</th>
+              <th  style="min-width: 20%;">Name</th>
               <th>Code</th>
-              <th>Type(s)</th>
-              <th>Description</th>
+              <th style="min-width: 20%;">Type(s)</th>
+              <th>Parent Location</th>
               <th>&nbsp;</th>
             </tr>
             </thead>
         <tbody>
-        <% @locations.each do |l|%>
+        <% (@locations || []).each do |l|%>
 
             <tr class="odd" role="row" >
 
               <td class="sorting_1"><%= l.name%></td>
               <td><%= l.code%></td>
+              <td><%= ''%></td>
               <td><%= l.tags.map(&:name).join(', ')%></td>
-              <td><%= l.description%></td>
               <td>
 
                 <!-- show the user (uses the show method found at GET /user/{id} -->
@@ -97,12 +114,60 @@
   </div>
 </div>
 
+
+<select id="tag" label="Location Type" onchange="reloadDataTable()" style="width: 200px !important;
+        padding: 5px; margin-right: 20px; ;">
+  <option value="">Select Location Type</option>
+  <% LocationTag.order('name').each do |tag|%>
+    <option value="<%=tag.id%>"><%= tag.name%></option>
+  <% end %>
+</select>
+
 <script>
+    table = null;
+
     $(document).ready(function() {
-        $('.data-table').DataTable({
-            responsive: true
+
+        table = $('.data-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            'pageLength': 10,
+            "ordering": false,
+            "ajax": {
+                "url": '/location/ajax_locations',
+                data: function(d){
+                    d.tag_id =__$('tag').value
+                },
+                dataFilter: function (data) {
+                    var json = jQuery.parseJSON(data);
+                    for (var i = 0; i < json['data'].length; i++) {
+                        var last_index = json['data'][i].length - 1;
+                        var id = json['data'][i][last_index];
+                        json['data'][i][last_index] =  '<button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal" data-target=".confirm-delete-modal"' +
+                                'onclick="deletes(\'/location/delete?location_id=' + id + '\')"><span class="glyphicon glyphicon-trash"></span>Delete</button>'
+
+                        json['data'][i][last_index] += '<a class="btn btn-sm btn-info" href="/location/edit?location_id=' + id + '">' +
+                                '<span class="glyphicon glyphicon-edit"></span> Edit</a>'
+
+                        json['data'][i][last_index] += '<a class="btn btn-sm btn-success" href="/location/view?location_id=' + id + '">' +
+                                '<span class="glyphicon glyphicon-eye-open"></span> View</a>'
+                    }
+                    return JSON.stringify(json);
+                }
+            }
         });
-    });
+
+        var holder = __$('example_filter');
+        holder.appendChild(__$('tag'));
+    })
+
+    function __$(id){
+        return document.getElementById(id);
+    }
+
+    function reloadDataTable(){
+        table.ajax.reload();
+    }
 
    function deletes(link){
        __$('modal').setAttribute('link', link)

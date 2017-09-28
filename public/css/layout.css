@@ -289,16 +289,16 @@ label, input {
             .sidebar > ul > li {
                 border-bottom: 1px solid #636363;
             }
-                .sidebar .main-menu {
+                .sidebar .main-menu, .active_tab {
                     height: 40px;
                     line-height: 40px;
                     position: relative;
                 }
-                .sidebar .main-menu:hover {
+                .sidebar .main-menu:hover, .active_tab {
                     background-color: #313131;
                     cursor: pointer;
                 }
-                .sidebar .main-menu.active {
+                .sidebar .main-menu.active, .active_tab{
                     background-color: #C12E2A;
                     background-image: url("/i/white-triangle.png");
                     background-repeat: no-repeat;

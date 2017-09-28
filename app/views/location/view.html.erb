@@ -1,0 +1,39 @@
+
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a href="/location/index">Locations</a></li>
+    <li><a class='active' href="/location/view?location_id=<%=@location.id%>">View Location</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-eye-open"></span>
+      <b>View Location</b>
+      <div class="panel-btn">
+        <a class="btn btn-sm btn-info" href="/location/edit?location_id=<%=@location.id%>">
+          <span class="glyphicon glyphicon-pencil"></span>
+          Edit
+        </a>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="display-details">
+              <h3><strong>Name</strong><%= @location.name%></h3>
+              <% if @location.parent_location.present?%>
+                  <p><strong>Parent Location</strong><%=Location.find(@location.parent_location).name%></p>
+              <% end %>
+              <p><strong>Location Type(s)</strong><%=@tags.join(', ')%></p>
+              <p><strong>Location Code</strong><%=@location.code%></p>
+              <p><strong>Description</strong><%=@location.description%></p>
+              <p><strong>Date Created</strong><%=@location.created_at.strftime("%d/%b/%Y")%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

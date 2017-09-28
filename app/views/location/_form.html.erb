@@ -31,7 +31,7 @@
                 <% row_chunck.each do |tag|%>
                 <div class="col-md-3">
                   <label class="checkbox">
-                    <input name="tags[]" value="<%=tag.id%>" type="checkbox">
+                    <input name="tags[]" value="<%=tag.id%>" type="checkbox" <%= ((@seleted_tags || []).include?(tag.id) ? 'checked=true' : "")%> >
                     <%=tag.name%>
                   </label>
                 </div>
@@ -50,7 +50,6 @@
 
 <script>
     $.validate({
-        modules : 'security',
         onError : function(){
 
         }

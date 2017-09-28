@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   before_filter :check_user, :except => ['logout', 'login']
 
   def check_user
+    if params[:active_tab].present?
+      session[:active_tab] = params[:active_tab]
+    end
+
     if session[:user_id].present?
       @cur_user = User.find(session[:user_id]) rescue (redirect_to '/logout' and return)
     else

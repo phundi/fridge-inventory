@@ -1,0 +1,23 @@
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a href="/location/index">Locations</a></li>
+    <li><a class='active' href="/location/edit?location_id=<%= @location.id%>">Edit Location</a></li>
+
+  </ol>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-heading ">
+    <span class="glyphicon glyphicon-pencil" style="padding: 7px;"></span>
+    <b>Edit Location</b>
+
+  </div>
+  <div class="panel-body">
+
+  <div style="margin-top: 5px; margin-left: 10px; padding: 10px;">
+    <%= render 'form' %>
+  </div>
+
+</div>
+</div>

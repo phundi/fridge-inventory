@@ -35,17 +35,7 @@
               <td><%= r.display_name%></td>
               <td>
 
-                <!-- show the user (uses the show method found at GET /user/{id} -->
-                <a class="btn btn-sm btn-success" href="/user/view_permission?permission_id=<%=r.id%>">
-                  <span class="glyphicon glyphicon-eye-open"></span>
-                  View
-                </a>
 
-                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
-                <a class="btn btn-sm btn-info" href="/user/edit_permission?permission_id=<%=r.id%>">
-                  <span class="glyphicon glyphicon-edit"></span>
-                  Edit
-                </a>
                 <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
                 <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal"
                         onclick="deletes('/user/delete_permission?permission_id=<%= r.id%>')">
@@ -53,6 +43,17 @@
                   Delete
                 </button>
 
+                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
+                <a class="btn btn-sm btn-info" href="/user/edit_permission?permission_id=<%=r.id%>">
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Edit
+                </a>
+
+                <!-- show the user (uses the show method found at GET /user/{id} -->
+                <a class="btn btn-sm btn-success" href="/user/view_permission?permission_id=<%=r.id%>">
+                  <span class="glyphicon glyphicon-eye-open"></span>
+                  View
+                </a>
               </td>
             </tr>
             <% end %>
