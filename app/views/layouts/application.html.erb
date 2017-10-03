@@ -73,7 +73,7 @@
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
           <%
-              img_url =   File.exists?("#{Rails.root}/public/#{@cur_user.image}") ? "#{@cur_user.image}?cache=none": "/uploads/#{@cur_user.gender}.png?cache=none"
+              img_url =   (@cur_user.image.present? && File.exists?("#{Rails.root}/public/#{@cur_user.image}")) ? "#{@cur_user.image}?cache=none" : "/uploads/#{@cur_user.gender}.png?cache=none"
           %>
           <a href="/" style="float: left;margin: 4px;"> <img src="<%= img_url %>" alt="<i class='fa fa-user'></i>" class='img-circle' width='40' height='40'></a>
           <li class="dropdown" style="float: right">
@@ -102,7 +102,7 @@
               <a href="/?active_tab=home"><i class="fa fa-fw fa-home"></i> Home</a>
             </li>
             <li id="clients">
-              <a href="/?active_tab=clients"><i class="fa fa-fw fa-list"></i> Clients</a>
+              <a href="/client/index?active_tab=clients"><i class="fa fa-fw fa-list"></i> Clients</a>
             </li>
             <li id="workflow">
               <a href="/?active_tab=workflow"><i class="fa fa-fw fa-list"></i> Workflow</a>
@@ -120,6 +120,9 @@
                 </li>
                 <li>
                   <a href="/location/tags?active_tab=config">Location Types</a>
+                </li>
+                <li>
+                  <a href="/client/client_types?active_tab=config">Client Types</a>
                 </li>
 
               </ul>

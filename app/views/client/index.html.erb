@@ -1,0 +1,181 @@
+<style>
+  .status{
+      color: #008000;
+  }
+  .disabled .status {
+      background-color: #d59392;
+      color: #000;
+  }
+
+  #tag, #example_filter{
+      float: right;
+      font-size: 14px;
+      background:white;
+  }
+
+  #example_filter input{
+      margin-bottom: 10px;
+      float: right;
+      margin-left: 20px;
+  }
+
+  #example_filter label{
+      float: right;
+  }
+
+</style>
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a class='active' href="/client/index">Clients</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-user"></span>
+      <b>List Clients</b>
+      <div class="panel-btn">
+        <a class="btn btn-sm btn-info" href="/client/new">
+          <span class="glyphicon glyphicon-plus-sign"></span>
+          Add / Search Client
+        </a>
+      </div>
+    </div>
+    <div class="panel-body">
+
+        <table id="example" style="width: 100%;" class="data-table table table-condensed table-striped">
+            <thead>
+            <tr role="row">
+              <th  style="min-width: 20%;">Name</th>
+              <th  style="min-width: 6%;">Identifier</th>
+              <th>Birthdate</th>
+              <th style="min-width: 10%;">Type</th>
+              <th>Phone Number</th>
+              <th>Current Address</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+        <tbody>
+        <% (@clients|| []).each do |l|%>
+
+            <tr class="odd" role="row" >
+
+              <td class="sorting_1"><%= l.name%></td>
+              <td><%= l.code%></td>
+              <td><%= ''%></td>
+              <td><%= l.tags.map(&:name).join(', ')%></td>
+              <td>
+
+                <!-- show the user (uses the show method found at GET /user/{id} -->
+                <a class="btn btn-sm btn-success" href="/location/view?location_id=<%=l.id%>">
+                  <span class="glyphicon glyphicon-eye-open"></span>
+                  View
+                </a>
+
+                <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
+                <a class="btn btn-sm btn-info" href="/location/edit?location_id=<%=l.id%>">
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Edit
+                </a>
+                <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
+
+                <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal" data-target=".confirm-delete-modal"
+                        onclick="deletes('/location/delete?location_id=<%= l.id%>')">
+                  <span class="glyphicon glyphicon-trash"></span>
+                  Delete
+                </button>
+
+              </td>
+            </tr>
+            <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="printerModalLabel" style="text-align: left;">
+            Are you sure you want to proceed?
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">
+
+        </span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+          <button type="button" class="btn btn-primary" onclick="doDelete()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<select id="tag" label="Location Type" onchange="reloadDataTable()" style="width: 200px !important;
+        padding: 5px; margin-right: 20px; ;">
+  <option value="">Select Client Type</option>
+  <% @types.each do |t|%>
+    <option value="<%=t.id%>"><%= t.name%></option>
+  <% end %>
+</select>
+
+<script>
+    table = null;
+
+    $(document).ready(function() {
+
+        table = $('.data-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            'pageLength': 10,
+            "ordering": false,
+            "ajax": {
+                "url": '/client/ajax_clients',
+                data: function(d){
+                    d.type_id =__$('tag').value
+                },
+                dataFilter: function (data) {
+                    var json = jQuery.parseJSON(data);
+                    for (var i = 0; i < json['data'].length; i++) {
+                        var last_index = json['data'][i].length - 1;
+                        var id = json['data'][i][last_index];
+
+                        json['data'][i][last_index] = '<a class="btn btn-sm btn-info" href="/client/edit?client_id=' + id + '">' +
+                                '<span class="glyphicon glyphicon-edit"></span> Edit</a>'
+
+                        json['data'][i][last_index] += '<a class="btn btn-sm btn-success" href="/client/view?client_id=' + id + '">' +
+                                '<span class="glyphicon glyphicon-eye-open"></span> Select </a>'
+                    }
+                    return JSON.stringify(json);
+                }
+            }
+        });
+
+        var holder = __$('example_filter');
+        holder.appendChild(__$('tag'));
+    })
+
+    function __$(id){
+        return document.getElementById(id);
+    }
+
+    function reloadDataTable(){
+        table.ajax.reload();
+    }
+
+   function deletes(link){
+       __$('modal').setAttribute('link', link)
+       $('#modal').modal('show');
+   }
+
+   function doDelete(){
+       window.location = __$('modal').getAttribute('link');
+   }
+
+</script>

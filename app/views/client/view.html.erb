@@ -1,0 +1,41 @@
+
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a href="/client/index">Clients</a></li>
+    <li><a class='active' href="/client/view?client_id=<%=@client.id%>">View Client</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-eye-open"></span>
+      <b>View Client</b>
+      <div class="panel-btn">
+        <a class="btn btn-sm btn-info" href="/client/edit?client_id=<%=@client.id%>">
+          <span class="glyphicon glyphicon-pencil"></span>
+          Edit
+        </a>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="display-details">
+              <h3><strong>Name</strong><%= @client.first_name%> <%= @client.last_name%></h3>
+              <p><strong>Identifier(s)</strong><%=@client.identifier%></p>
+              <p><strong>Client Type</strong><%=@client_type%></p>
+              <p><strong>Gender</strong><%= {'1' => 'Male', '0' => 'Female'}[@client.gender.to_s]%></p>
+              <p><strong>Birthdate</strong><%=@client.birthdate.strftime('%d-%m-%Y')%></p>
+              <p><strong>Physical Address</strong><%=@client.address%></p>
+              <p><strong>Phone Number</strong><%=@client.phone_number%></p>
+              <p><strong>E-mail Address</strong><%=@client.email%></p>
+              <p><strong>Occupation</strong><%=@client.occupation%></p>
+              <p><strong>Date Created</strong><%=@client.created_at.strftime("%d-%b-%Y")%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

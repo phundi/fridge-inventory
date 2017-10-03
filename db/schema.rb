@@ -118,6 +118,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "client_type", primary_key: "client_type_id", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.string   "description", limit: 200
+    t.boolean  "voided",                      default: false, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   add_index "role", ["name"], name: "role_name_unique", unique: true, using: :btree
 
   create_table "user", primary_key: "user_id", force: :cascade do |t|
@@ -138,6 +146,27 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "user", ["username"], name: "user_username_unique", unique: true, using: :btree
 
+  create_table "client", primary_key: "client_id", force: :cascade do |t|
+    t.string   "identifier"
+    t.string   "first_name",                    limit: 255
+    t.string   "middle_name",                    limit: 255
+    t.string   "last_name",                    limit: 255
+    t.string   "first_name_code",         limit: 255
+    t.string   "last_name_code",          limit: 255
+    t.integer  "client_type_id",  null: false
+    t.integer  "gender",         limit: 1,   default: 0, null: false
+    t.date     "birthdate"
+    t.string   "occupation"
+    t.string   "address"
+    t.string   "phone_number"
+    t.string   "email",          limit: 100,             null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "client", ["identifier"], name: "client_identifier_unique", unique: true, using: :btree
+
+  add_foreign_key "client", "client_type", primary_key: "client_type_id", name: "fk_client_1"
 
   add_foreign_key "location_tag_map", "location", primary_key: "location_id", name: "fk_location_tag_map_1"
   add_foreign_key "location_tag_map", "location_tag", primary_key: "location_tag_id", name: "fk_location_tag_map_2"

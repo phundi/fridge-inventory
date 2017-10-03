@@ -3,17 +3,17 @@
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
-    <li><a class='active' href="/location/tags">Location Types</a></li>
+    <li><a class='active' href="/client/client_types">Client Types</a></li>
   </ol>
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading ">
       <span class="glyphicon glyphicon-user"></span>
-      <b>List Location Types</b>
+      <b>List Client Types</b>
       <div class="panel-btn">
-        <a class="btn btn-sm btn-info" href="/location/new_tag">
+        <a class="btn btn-sm btn-info" href="/client/new_type">
           <span class="glyphicon glyphicon-plus-sign"></span>
-          New Location Type
+          New Client Type
         </a>
       </div>
     </div>
@@ -28,43 +28,27 @@
             </tr>
             </thead>
         <tbody>
-        <% @location_tags.each do |r|%>
+        <% @client_types.each do |r|%>
             <tr class="odd" role="row">
 
               <td class="sorting_1"><%= r.name %></td>
               <td><%= r.description%></td>
               <td>
 
-                <!-- delete this user (uses the delete method found at GET /user/{id}/delete -->
-                <% if r.locked == 0%>
 
                 <button class="btn btn-sm btn-danger delete-item-link " data-toggle="modal"
-                        onclick="deletes('/location/delete_tag?tag_id=<%= r.id%>')">
+                        onclick="deletes('/client/delete_type?type_id=<%= r.id%>')">
                   <span class="glyphicon glyphicon-trash"></span>
                   Delete
                 </button>
                 <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
-                <a class="btn btn-sm btn-info" href="/location/edit_tag?tag_id=<%=r.id%>">
+                <a class="btn btn-sm btn-info" href="/client/edit_type?type_id=<%=r.id%>">
                   <span class="glyphicon glyphicon-edit"></span>
                   Edit
                 </a>
-
-                <% else %>
-
-                <button class="btn btn-sm btn-danger delete-item-link disabled" data-toggle="modal">
-                  <span class="glyphicon glyphicon-trash"></span>
-                  Delete
-                </button>
-                    <!-- edit this user (uses the edit method found at GET /user/{id}/edit -->
-                <a class="btn btn-sm btn-info disabled">
-                  <span class="glyphicon glyphicon-edit"></span>
-                  Edit
-                </a>
-
-                <% end %>
 
                 <!-- show the user (uses the show method found at GET /user/{id} -->
-                <a class="btn btn-sm btn-success" href="/location/view_tag?tag_id=<%=r.id%>">
+                <a class="btn btn-sm btn-success" href="/client/view_type?type_id=<%=r.id%>">
                   <span class="glyphicon glyphicon-eye-open"></span>
                   View
                 </a>
