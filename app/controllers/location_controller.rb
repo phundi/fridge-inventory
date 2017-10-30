@@ -106,7 +106,7 @@ class LocationController < ApplicationController
   def ajax_locations
 
     search_val = params[:search][:value] rescue nil
-    search_val = ' ' if search_val.blank?
+    search_val = '_' if search_val.blank?
     tag_filter = ''
 
     if params[:tag_id].present?
@@ -115,7 +115,7 @@ class LocationController < ApplicationController
     end
 
     data = Location.order(' location.name ')
-    data = data.where(" ( location.name REGEXP '#{search_val}' #{tag_filter} OR  location.code REGEXP '#{search_val}' #{tag_filter} ) ")
+    data = data.where(" ( location.name LIKE '%#{search_val}%' #{tag_filter} OR  location.code LIKE '%#{search_val}%' #{tag_filter} ) ")
     total = data.select(" count(*) c ")[0]['c'] rescue 0
     page = (params[:start].to_i / params[:length].to_i) + 1
 

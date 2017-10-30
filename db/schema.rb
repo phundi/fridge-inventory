@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string   "designation",    limit: 100
     t.string   "image",          limit: 100
     t.string   "remember_token", limit: 100
+    t.datetime   "last_password_date"
     t.datetime "deleted_at"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
@@ -163,8 +164,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
-
-  add_index "client", ["identifier"], name: "client_identifier_unique", unique: true, using: :btree
 
   add_foreign_key "client", "client_type", primary_key: "client_type_id", name: "fk_client_1"
 

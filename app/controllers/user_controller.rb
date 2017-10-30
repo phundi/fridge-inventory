@@ -102,7 +102,7 @@ class UserController < ApplicationController
 
       @user.save
 
-      redirect_to "/"
+      redirect_to "/" and return
     end
 
     @action = '/user/change_password'

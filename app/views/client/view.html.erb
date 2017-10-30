@@ -1,5 +1,3 @@
-
-
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
@@ -27,7 +25,7 @@
               <p><strong>Identifier(s)</strong><%=@client.identifier%></p>
               <p><strong>Client Type</strong><%=@client_type%></p>
               <p><strong>Gender</strong><%= {'1' => 'Male', '0' => 'Female'}[@client.gender.to_s]%></p>
-              <p><strong>Birthdate</strong><%=@client.birthdate.strftime('%d-%m-%Y')%></p>
+              <p><strong>Birthdate</strong><%=@client.birthdate.strftime('%d-%b-%Y')%></p>
               <p><strong>Physical Address</strong><%=@client.address%></p>
               <p><strong>Phone Number</strong><%=@client.phone_number%></p>
               <p><strong>E-mail Address</strong><%=@client.email%></p>
