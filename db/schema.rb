@@ -13,30 +13,6 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
-  create_table "patient", primary_key: "patient_id", force: :cascade do |t|
-    t.string   "patient_number",          limit: 255,             null: false
-    t.string   "first_name",                    limit: 255
-    t.string   "middle_name",                    limit: 255
-    t.string   "last_name",                    limit: 255
-    t.date     "dob",                                             null: false
-    t.integer  "dob_estimated",           limit: 1,   default: 0, null: false
-    t.integer  "gender",                  limit: 1,               null: false
-    t.string   "email",                   limit: 100
-    t.string   "home_district",           limit: 150
-    t.string   "address",                 limit: 150
-    t.string   "phone_number",            limit: 255
-    t.string   "npid",                    limit: 20
-    t.integer  "creator",              limit: 4,   default: 0, null: false
-    t.datetime "deleted_at"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.string   "first_name_code",         limit: 255
-    t.string   "last_name_code",          limit: 255
-  end
-
-  add_index "patient", ["creator"], name: "patient_creator_index", using: :btree
-  add_index "patient", ["npid"], name: "patient_npid_index", using: :btree
-
   create_table "location", primary_key: "location_id", force: :cascade do |t|
     t.string   "code",            limit: 45
     t.string   "name",            limit: 255, default: "",    null: false
@@ -165,9 +141,29 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
+  create_table "client_identifier_type", primary_key: "client_identifier_type_id", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.string   "description", limit: 200
+    t.boolean  "voided",                      default: false, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "client_identifier", primary_key: "client_identifier_id", force: :cascade do |t|
+    t.string   "value",                       limit: 255,    null: false
+    t.integer  "client_id",                   null: false
+    t.integer  "client_identifier_type_id",   null: false
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.integer  "creator",                 null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "concept", primary_key: "concept_id", force: :cascade do |t|
     t.string   "name"
-    t.string  "description"
+    t.string   "description"
     t.integer  "creator"
     t.boolean  "voided",                      default: false, null: false
     t.integer  "voided_by"
@@ -176,9 +172,9 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
-  create_table "concept_set", primary_key: "concept_id", force: :cascade do |t|
+  create_table "concept_set", primary_key: "concept_set_id", force: :cascade do |t|
     t.integer  "concept_id"
-    t.integer  "concept_set_id"
+    t.integer  "concept_set"
     t.integer  "creator"
     t.boolean  "voided",                      default: false, null: false
     t.integer  "voided_by"
@@ -188,7 +184,6 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "encounter_type", primary_key: "encounter_type_id", force: :cascade do |t|
-    t.integer  "encounter_type_id"
     t.string   "name"
     t.integer  "creator"
     t.boolean  "voided",                      default: false, null: false
@@ -210,9 +205,10 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "encounter", primary_key: "encounter_id", force: :cascade do |t|
-    t.integer   "encounter_type_id"
-    t.integer   "workflow_id"
-    t.datetime "encounter_datetime",                    limit: 255
+    t.integer  "encounter_type_id"
+    t.integer  "workflow_id"
+    t.datetime "encounter_datetime",                    null: false
+    t.integer  "client_id",                   null: false
     t.integer  "creator"
     t.boolean  "voided",                      default: false, null: false
     t.integer  "voided_by"
@@ -221,9 +217,27 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
-  create_table "workflow_encounter_type", primary_key: "encounter_id", force: :cascade do |t|
-    t.integer   "workflow_id"
-    t.integer  "encounter_type_id",                    limit: 255
+  create_table "obs", primary_key: "obs_id", force: :cascade do |t|
+    t.integer  "concept_id",                  null: false
+    t.integer  "workflow_id",                 null: false
+    t.integer  "encounter_id",                null: false
+    t.integer  "value_numeric"
+    t.integer  "value_coded"
+    t.integer  "client_id",                   null: false
+    t.datetime "value_datetime"
+    t.string   "value_text"
+    t.datetime "obs_datetime",                null: false
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  create_table "workflow_encounter_type", primary_key: "workflow_encounter_type_id", force: :cascade do |t|
+    t.integer  "workflow_id"
+    t.integer  "encounter_type_id"
     t.integer  "sort_order"
     t.integer  "creator"
     t.boolean  "voided",                      default: false, null: false
@@ -233,29 +247,44 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
-  add_foreign_key "concept", "user", primary_key: "voided_by", name: "fk_concept_1"
-  add_foreign_key "concept", "user", primary_key: "creator", name: "fk_concept_2"
+  add_foreign_key "concept", "user", column: "voided_by", primary_key: "user_id", name: "fk_concept_1"
+  add_foreign_key "concept", "user", column: "creator", primary_key: "user_id", name: "fk_concept_2"
 
-  add_foreign_key "concept_set", "user", primary_key: "voided_by", name: "fk_concept_set_1"
-  add_foreign_key "concept_set", "user", primary_key: "creator", name: "fk_concept_set_2"
-  add_foreign_key "concept_set", "user", primary_key: "concept_set_id", name: "fk_concept_set_2"
+  add_foreign_key "client_identifier", "client", column: "client_id", primary_key: "client_id", name: "fk_client_identifier_1"
+  add_foreign_key "client_identifier", "client_identifier_type", column: "client_identifier_type_id", primary_key: "client_identifier_type_id", name: "fk_client_identifier_2"
+  add_foreign_key "client_identifier", "user", column: "voided_by", primary_key: "user_id", name: "fk_client_identifier_3"
+  add_foreign_key "client_identifier", "user", column: "creator", primary_key: "user_id", name: "fk_client_identifier_4"
 
-  add_foreign_key "encounter", "encounter_type", primary_key: "encounter_type_id", name: "fk_encounter_1"
-  add_foreign_key "encounter", "user", primary_key: "user_id", name: "fk_encounter_2"
-  add_foreign_key "encounter", "user", primary_key: "voided_by", name: "fk_encounter_3"
+  add_foreign_key "concept_set", "user", column: "voided_by", primary_key: "user_id", name: "fk_concept_set_1"
+  add_foreign_key "concept_set", "user", column: "creator", primary_key: "user_id", name: "fk_concept_set_2"
+  add_foreign_key "concept_set", "concept", column: "concept_set", primary_key: 'concept_id', name: "fk_concept_set_3"
+  add_foreign_key "concept_set", "concept", column: "concept_id", primary_key: 'concept_id', name: "fk_concept_set_4"
 
-  add_foreign_key "workflow", "user", primary_key: "voided_by", name: "fk_workflow_1"
-  add_foreign_key "workflow", "user", primary_key: "creator", name: "fk_workflow_2"
+  add_foreign_key "obs", "workflow", column: "workflow_id", primary_key: "workflow_id", name: "fk_obs_1"
+  add_foreign_key "obs", "user", column: "creator", primary_key: "user_id", name: "fk_obs_2"
+  add_foreign_key "obs", "user", column: "voided_by", primary_key: 'user_id', name: "fk_obs_3"
+  add_foreign_key "obs", "concept", column: "concept_id", primary_key: 'concept_id', name: "fk_obs_4"
+  add_foreign_key "obs", "encounter", column: "encounter_id", primary_key: 'encounter_id', name: "fk_obs_5"
+  add_foreign_key "obs", "concept", column: "value_coded", primary_key: 'concept_id', name: "fk_obs_6"
+  add_foreign_key "obs", "client", column: "client_id", primary_key: 'client_id', name: "fk_obs_7"
 
-  add_foreign_key "encounter_type", "user", primary_key: "voided_by", name: "fk_encounter_type_1"
-  add_foreign_key "encounter_type", "user", primary_key: "creator", name: "fk_encounter_type_2"
+  add_foreign_key "encounter", "encounter_type", primary_key: "encounter_type_id", column: "encounter_type_id", name: "fk_encounter_1"
+  add_foreign_key "encounter", "user", primary_key: "user_id", column: "creator", name: "fk_encounter_2"
+  add_foreign_key "encounter", "user", primary_key: "user_id", column: "voided_by", name: "fk_encounter_3"
+  add_foreign_key "encounter", "client", column: "client_id", primary_key: 'client_id', name: "fk_oencounter_4"
+
+  add_foreign_key "workflow", "user", column: "voided_by", primary_key: "user_id", name: "fk_workflow_1"
+  add_foreign_key "workflow", "user", column: "creator", primary_key: "user_id", name: "fk_workflow_2"
+
+  add_foreign_key "encounter_type", "user", column: "voided_by", primary_key: "user_id", name: "fk_encounter_type_1"
+  add_foreign_key "encounter_type", "user", column: "creator", primary_key: "user_id", name: "fk_encounter_type_2"
 
   add_foreign_key "client", "client_type", primary_key: "client_type_id", name: "fk_client_1"
 
-  add_foreign_key "workflow_encounter_type", "user", primary_key: "voided_by", name: "fk_workflow_encounter_type_1"
-  add_foreign_key "workflow_encounter_type", "user", primary_key: "creator", name: "fk_workflow_encounter_type_2"
-  add_foreign_key "workflow_encounter_type", "workflow", primary_key: "workflow_id", name: "fk_workflow_encounter_type_3"
-  add_foreign_key "workflow_encounter_type", "encounter_type", primary_key: "encounter_type_id", name: "fk_workflow_encounter_type_4"
+  add_foreign_key "workflow_encounter_type", "user", column: "voided_by", primary_key: "user_id", name: "fk_workflow_encounter_type_1"
+  add_foreign_key "workflow_encounter_type", "user", column: "creator", primary_key: "user_id", name: "fk_workflow_encounter_type_2"
+  add_foreign_key "workflow_encounter_type", "workflow", column: 'workflow_id', primary_key: "workflow_id", name: "fk_workflow_encounter_type_3"
+  add_foreign_key "workflow_encounter_type", "encounter_type", column: "encounter_type_id", primary_key: "encounter_type_id", name: "fk_workflow_encounter_type_4"
 
   add_foreign_key "location_tag_map", "location", primary_key: "location_id", name: "fk_location_tag_map_1"
   add_foreign_key "location_tag_map", "location_tag", primary_key: "location_tag_id", name: "fk_location_tag_map_2"

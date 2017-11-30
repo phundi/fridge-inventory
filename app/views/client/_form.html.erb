@@ -22,6 +22,9 @@
       border-left: 1px solid ghostwhite;
       border-bottom: 1px solid #d3d3d3;
   }
+.datepicker{
+    width: 20%;
+}
 </style>
 <script src="/js/jquery.form-validator.min.js"></script>
 <table style="width: 100%;">
@@ -75,7 +78,7 @@
           <div class="form-group">
             <label for="birthdate">Date of Birth</label>
             <input onchange="suggest('name_and_gender_and_birthdate');" type="text" id="birthdate" name="birthdate"
-                   class="form-control" data-validation="required" value="<%= (@client.birthdate.strftime('%d-%b-%Y') rescue nil)%>"><span class="glyphicon glyphicon-search"></span>
+                   class="datepicker form-control" data-validation="required" value="<%= (@client.birthdate.strftime('%d-%b-%Y') rescue nil)%>"><span class="glyphicon glyphicon-search"></span>
           </div>
 
 
@@ -206,6 +209,11 @@
         onError : function(){
 
         }
+    });
+
+    datepicker = jQuery('.datepicker').datepicker({
+        format: 'mm/dd/yyyy',
+        startDate: '-3d'
     });
 
     jQuery(document).ready(function(){

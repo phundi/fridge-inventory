@@ -121,12 +121,10 @@ label, input {
          }
 
          .form-group span.units{
-            line-height: 3em;
             margin-left: 5px;
          }
 
 .form-inline label {
-    line-height: 34px;
 }
 
 /*
@@ -247,7 +245,6 @@ label, input {
         cursor: pointer;
     }
         .user-settings div a, .loc-settings div a{
-            line-height: 35px;
             padding-left: 35px;
             color: #333333;
             display: inline-block;
@@ -260,6 +257,23 @@ label, input {
             position: absolute;
             left: 5px;
             top: 11px;
+        }
+
+        .encounter-btn:hover{
+            background:  #006699 !important;;
+        }
+
+        .encounter-btn{
+            background: #0099CC !important;
+            font-size: 1.1em;
+            padding: 11px;
+            color: white !important;
+            box-shadow: 4px 4px 3px lightgrey;
+            border-radius: 0px !important;
+        }
+
+        .module-btn:hover{
+            background-color: white !important;
         }
 /*
  *
@@ -291,7 +305,6 @@ label, input {
             }
                 .sidebar .main-menu, .active_tab {
                     height: 40px;
-                    line-height: 40px;
                     position: relative;
                 }
                 .sidebar .main-menu:hover, .active_tab {
@@ -315,7 +328,6 @@ label, input {
         }
         .sidebar .sub-menu-title {
             height: 30px;
-            line-height: 30px;
             padding-left: 20px;
         }
         .sidebar .sub-menu-title:hover {
@@ -328,7 +340,6 @@ label, input {
                     position: relative;
                     padding-left: 15px;
                     height: 30px;
-                    line-height: 30px;
                 }
         .sidebar a{
             color: #D1D1D1;
@@ -354,7 +365,6 @@ label, input {
 * FOOTER
 */
 .footer{
-    line-height : 50px;
     height      : 50px;
     font-size: 0.9em;
     text-align: center;

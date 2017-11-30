@@ -25,12 +25,9 @@
 <div class="panel panel-primary">
     <div class="panel-heading ">
       <span class="glyphicon glyphicon-eye-open"></span>
-      <b>View Client</b>
-      <div class="panel-btn">
-        <a class="btn btn-sm btn-info" href="/client/edit?client_id=<%=@client.id%>">
-          <span class="glyphicon glyphicon-pencil"></span>
-          Edit
-        </a>
+      <b><%=params[:module]%></b>
+      <div class="panel-btn" style="padding: 8px;">
+            &nbsp;
       </div>
     </div>
     <div class="panel-body">
@@ -50,21 +47,16 @@
           </div>
 
           <div class="col-md-8" style="padding: 0px;">
-            <div class="col-md-8">
-              <% (@modules || []).each do |mod, val|%>
-                <button type="button" onclick="window.location = '/client/view_module?client_id=<%= params[:client_id]%>&module=<%= mod%>'"
-                     class="btn btn-default pull-left module-btn" style="width: 27%;margin: 10px; padding: 10px; font-size: 1.2em;background: #f8f8ff;"><%=mod%> <br />
-                    <span class="badge" style="background: #2e6da4;"><%= val%></span>
+            <div class="col-md-12">
+              <% (@common_encounters || []).each do |name, count, route|%>
+                <button type="button" onclick="window.location = '/<%= route%>' "
+                     class="btn btn-sm btn-default encounter-btn pull-left" style="width: 31%;margin: 5px; margin-bottom: 10px;"
+                ><%=name%>
+                    <span class="badge" style="background: #2e6da4;"><%= count%></span>
                 </button>
               <% end %>
               </div>
-              <div class="col-md-4">
-                <ul class="list-group">
-                  <% (@common_encounters || []).each do |name, link|%>
-                  <li class="list-group-item encounter-btn btn-sm" style=" cursor: pointer;"><%= name%></li>
-                  <% end %>
-                </ul>
-              </div>
+
             </div>
         </div>
 
@@ -73,7 +65,7 @@
 
           <nav class="card-header navbar-light" style="padding-top:1px;margin-top: 4px;box-shadow: 4px 4px 3px lightgrey;
                   background: #f8f8ff; border-bottom: 1px solid darkred !important;text-align: center; ">
-              <h4>Patient History </h4>
+              <h4>Patient <%= params[:module]%> History </h4>
           </nav>
           <table class="table table-condensed table-bordered" style="color: darkslategray">
             <thead>
@@ -114,7 +106,7 @@
   <div class="modal fade" id="enc-popup" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header" style="background: lightblue; text-align: center;font-weight: bold !important;">
+        <div class="modal-header" style="background: #f8f8ff; text-align: center;font-weight: bold !important;">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title" id="enc-popup-title">&nbsp;</h4>
         </div>
@@ -122,7 +114,7 @@
             <table id="enc-popup-data" class="table table-condensed table-striped">
             </table>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="background: white;">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary">Print Label</button>
         </div>

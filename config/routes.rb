@@ -84,6 +84,7 @@ Rails.application.routes.draw do
   post "client/edit"
 
   get "client/view"
+  get "client/view_module"
 
   get "client/client_suggestions"
 end

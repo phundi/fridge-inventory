@@ -9,6 +9,7 @@
     <link href="/css/layout.css" rel="stylesheet">
     <link href="/css/layout.css" rel="stylesheet">
     <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/datepicker.css" rel="stylesheet">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +20,22 @@
 
   <%= csrf_meta_tags %>
   <style>
+      .panel{
+          border-radius: 0px !important;
+      }
+
+      .display-details strong{
+        width: 37%;
+      }
+
+      .panel-primary .panel-heading{
+          background: ghostwhite !important;
+          color: darkslategray;
+          vertical-align: middle;
+          padding: 7px;
+          padding-left: 25px;
+          font-size: 1.2em;
+      }
       .dataTables_wrapper{
         margin-top: 5px;
       }
@@ -26,6 +43,15 @@
           float: right;
       }
 
+      .btn-sm{
+          border-radius: 0px;
+          border-left: 2px solid darkslategray;
+      }
+      .cost{
+          color: red;
+          font-weight: bold;
+          font-size: 15px;
+      }
       .dataTables_wrapper th{
           background: lightsteelblue;
           color: black;
@@ -160,6 +186,8 @@
         <!-- /.navbar-collapse -->
         <script src="/js/jquery.js"></script>
         <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/datepicker.js"></script>
+
         <%=javascript_include_tag "datatables/jquery.dataTables.min" %>
 
       </nav>

@@ -56,9 +56,113 @@ class ClientController < ApplicationController
   end
 
   def view
-      @client = Client.find(params[:client_id])
+    @client = Client.find(params[:client_id])
     @client_type = ClientType.find(@client.client_type_id).name
+
+    @modules = []
+    @modules <<  ['OPD', '4 Visits']
+    @modules <<  ['LAB', '13 Orders']
+    @modules <<  ['ANC', '5 Visits'] if @client.gender == 0
+    @modules <<  ['Maternity', '2 Visits'] if @client.gender == 0
+    @modules <<  ['ART', '2 Visits']
+    @modules <<  ['HTS', '2 Visits']
+    @modules <<  ['Surgery', '2 Visits']
+    @modules <<  ['Pharmacy', '2 Visits']
+
+    @common_encounters = []
+    @common_encounters << ['Presenting Complaints']
+    @common_encounters << ['Vitals']
+    @common_encounters << ['Diagnosis']
+    @common_encounters << ['New Lab Order']
+    @common_encounters << ['Prescribe Drugs']
+    @common_encounters << ['Dispense Drugs']
+
+    @data = [{
+                "title"   => "Vitals",
+                "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K90</span>",
+                "data"    => [["Temperature Reading", "Value1"], ["Drug2", "Value 2 pills"], ["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+                "user"    => "Test User"
+             },
+             {
+                 "title"   => "Dispensation",
+                 "content" => "29 tabs Paracetamol, 2 Inject Genta 29 tabs Paracetamol, 2 Inject Jermycin - <span class='cost'>K3500</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 7.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             },
+             {
+                 "title"   => "Vitals",
+                 "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K900</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             },
+             {
+                 "title"   => "Dispensation",
+                 "content" => "29 tabs Paracetamol, 2 Inject DCN - <span class='cost'>K1200</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 7.days.ago.strftime("%Y-%b-%d &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             },{
+            "title"   => "Vitals",
+            "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K90</span>",
+            "data"    => [["Temperature Reading", "Value1"], ["Drug2", "Value 2 pills"], ["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+            "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+            "user"    => "Test User"
+        },
+             {
+                 "title"   => "Dispensation",
+                 "content" => "29 tabs Paracetamol, 2 Inject Genta 29 tabs Paracetamol, 2 Inject Jermycin - <span class='cost'>K3500</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 11.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             },
+             {
+                 "title"   => "Vitals",
+                 "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K900</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             },
+             {
+                 "title"   => "Dispensation",
+                 "content" => "29 tabs Paracetamol, 2 Inject DCN - <span class='cost'>K1200</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 7.days.ago.strftime("%Y-%b-%d &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             }].sort_by{|h| h['date']}
   end
+
+  def view_module
+
+    @client = Client.find(params[:client_id])
+    @client_type = ClientType.find(@client.client_type_id).name
+
+    @common_encounters = []
+    @common_encounters << ['Presenting Complaints', "2", "complaints"]
+    @common_encounters << ['Vitals', "34", "vitals"]
+    @common_encounters << ['Diagnosis', '4', 'diagnosis']
+    @common_encounters << ['Prescribe Drugs', '4', 'prescribe']
+    @common_encounters << ['Dispense Drugs', '23', 'dispense']
+
+    @data = [{
+                 "title"   => "Vitals",
+                 "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K90</span>",
+                 "data"    => [["Temperature Reading", "Value1"], ["Drug2", "Value 2 pills"], ["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             },
+
+             {
+                 "title"   => "Dispensation",
+                 "content" => "29 tabs Paracetamol, 2 Inject DCN - <span class='cost'>K1200</span>",
+                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
+                 "date"    => 7.days.ago.strftime("%Y-%b-%d &nbsp; %H:%M"),
+                 "user"    => "Test User"
+             }].sort_by{|h| h['date']}
+  end
+
 
   def new_type
     @client_type = ClientType.new
@@ -98,6 +202,7 @@ class ClientController < ApplicationController
 
     tag_filter = ''
     code_filter = ''
+    c_types = ClientType.all.inject({}){|h, c| h[c.id] = c.name; h}
 
     if (params[:search][:value] rescue nil).present?
       search_code = search_val.soundex rescue '_'
@@ -120,7 +225,7 @@ class ClientController < ApplicationController
     @records = []
     data.each do |p|
       gender = p.gender.to_i == 1 ? "M" : 'F'
-      type = ClientType.find(p.client_type_id).name rescue nil
+      type = c_types[p.client_type_id]
       name = "#{p.first_name} #{p.middle_name} #{p.last_name}(#{gender})".gsub(/\s+/, ' ')
       dob = p.birthdate.to_date.strftime("%d-%b-%Y") rescue nil
       row = [name, p.identifier, dob, type, p.phone_number, p.address, p.id]
