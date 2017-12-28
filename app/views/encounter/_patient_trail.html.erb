@@ -1,0 +1,100 @@
+  <div class="card">
+
+          <nav class="card-header navbar-light" style="padding-top:1px;margin-top: 4px;box-shadow: 4px 4px 3px lightgrey;
+                  background: #f8f8ff; border-bottom: 1px solid darkred !important;text-align: center; ">
+              <h4> <%= @trail_label %> </h4>
+          </nav>
+          <table class="table table-condensed table-bordered" style="color: darkslategray">
+            <thead>
+            <tr class="table-row trail-row">
+              <th class="table-cell trail-header" style="min-width: 13% ;">Date</th>
+              <th class="table-cell col-md-2 trail-header">Encounter</th>
+              <th class="table-cell col-md-4 trail-header">Details</th>
+              <th class="table-cell col-md-2 trail-header">Performed By</th>
+              <th class="table-cell trail-header">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% (@data || []).each do |data| %>
+                <tr class="table-row trail-row">
+                  <td class="table-cell trail-data"><%= data['date'].html_safe%></td>
+                  <td class="table-cell trail-data"><%= data['title']%></td>
+                  <td class="table-cell trail-data"><%= data['content'].html_safe%></td>
+                  <td class="table-cell trail-data"><%= data['user']%></td>
+                  <td class="table-cell trail-data" style="min-width: 25%;">
+                    <a class="btn btn-danger btn-sm" disabled="disabled"><span class="glyphicon glyphicon-remove"></span>Void</a>
+                    <a class="btn btn-warning btn-sm" disabled="disabled" ><span class="glyphicon glyphicon-edit"></span>Edit</a>
+                    <a onclick="loadEnc('<%= data['title']%>', '<%= data['data'].to_json%>')" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-eye-open"></span>View</a>
+
+                  </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+
+        </div>
+
+  <div class="col-lg-12">
+    <div class="modal fade" id="enc-popup" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #f8f8ff; text-align: center;font-weight: bold !important;">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="enc-popup-title">&nbsp;</h4>
+          </div>
+          <div class="modal-body">
+            <table id="enc-popup-data" class="table table-condensed table-striped">
+            </table>
+          </div>
+          <div class="modal-footer" style="background: white;">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Print Label</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+      $(document).ready(function() {
+
+          tabl = $('.table').DataTable({});
+      })
+
+      function loadEnc(title, json){
+          $("#enc-popup-title").html("");
+          $("#enc-popup-data").empty();
+
+          var table = document.getElementById("enc-popup-data")
+          var data = JSON.parse(json);
+
+          $("#enc-popup-title").html(title);
+
+          for(var i = 0; i < data.length; i ++){
+              var tr = document.createElement("tr")
+              tr.className = "table-row enc-row";
+
+              var col1 = document.createElement("td")
+              col1.className = "table-cell header"
+              col1.innerHTML = data[i][0];
+              tr.appendChild(col1);
+
+              var col2 = document.createElement("td")
+              col2.className = "table-cell data"
+              col2.innerHTML = data[i][1];
+              tr.appendChild(col2);
+
+              table.appendChild(tr);
+          }
+
+          $("#enc-popup").modal("show");
+      }
+
+      function __$(id){
+          return document.getElementById(id)
+      }
+
+  </script>

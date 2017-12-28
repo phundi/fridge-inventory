@@ -1,0 +1,10 @@
+<div class="display-details">
+  <h3><strong>Name</strong><%= @client.first_name%> <%= @client.last_name%> (<%= {'1' => 'M', '0' => 'F'}[@client.gender.to_s]%>)</h3>
+  <p><strong>Identifier(s)</strong><%=@client.identifier%></p>
+  <p><strong>Client Type</strong><%=@client_type%></p>
+  <p><strong>Birthdate</strong><%=@client.birthdate.strftime('%d-%b-%Y')%></p>
+  <p><strong>Physical Address</strong><%=@client.address%></p>
+  <p><strong>Phone Number</strong><%=@client.phone_number%></p>
+  <p><strong>E-mail Address</strong><%=@client.email%></p>
+  <p><strong>Occupation</strong><%=@client.occupation%></p>
+</div>

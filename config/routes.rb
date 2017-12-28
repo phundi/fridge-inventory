@@ -84,7 +84,15 @@ Rails.application.routes.draw do
   post "client/edit"
 
   get "client/view"
-  get "client/view_module"
+  get "module/view_module"
 
   get "client/client_suggestions"
+
+  get "/complaints/:client_id" => "encounter#complaints"
+  get "/diagnosis/:client_id" => "encounter#diagnosis"
+  get "/vitals/:client_id" => "encounter#vitals"
+  get "/prescribe/:client_id" => "drug#prescribe"
+  get "/dispense/:client_id" => "drug#dispense"
+  get "/outcomes/:client_id"  => "encounter#outcomes"
+
 end
