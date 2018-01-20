@@ -1,7 +1,7 @@
-puts "Loading Location Tags"
-CSV.foreach("#{Rails.root}/app/assets/data/location_tags.csv", :headers => false) do |row|
+puts "Loading Encounter Types"
+CSV.foreach("#{Rails.root}/app/assets/data/encounter_types.csv", :headers => false) do |row|
  next if row[0].blank?
- location_tag = LocationTag.create!(name: row[0].squish, locked: 1)
- puts "Loaded #{location_tag.name}"
+ type = EncounterType.create!(name: row[0].squish)
+ puts "Loaded #{type.name}"
 end
-puts "Loaded Location Tags !!!"
+puts "Loaded Encounter Types !!!"

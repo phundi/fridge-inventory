@@ -78,61 +78,18 @@ class ClientController < ApplicationController
     @common_encounters << ['Prescribe Drugs']
     @common_encounters << ['Dispense Drugs']
 
-    @data = [{
-                "title"   => "Vitals",
-                "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K90</span>",
-                "data"    => [["Temperature Reading", "Value1"], ["Drug2", "Value 2 pills"], ["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
-                "user"    => "Test User"
-             },
-             {
-                 "title"   => "Dispensation",
-                 "content" => "29 tabs Paracetamol, 2 Inject Genta 29 tabs Paracetamol, 2 Inject Jermycin - <span class='cost'>K3500</span>",
-                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                 "date"    => 7.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
-                 "user"    => "Test User"
-             },
-             {
-                 "title"   => "Vitals",
-                 "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K900</span>",
-                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                 "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
-                 "user"    => "Test User"
-             },
-             {
-                 "title"   => "Dispensation",
-                 "content" => "29 tabs Paracetamol, 2 Inject DCN - <span class='cost'>K1200</span>",
-                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                 "date"    => 7.days.ago.strftime("%Y-%b-%d &nbsp; %H:%M"),
-                 "user"    => "Test User"
-             },{
-            "title"   => "Vitals",
-            "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K90</span>",
-            "data"    => [["Temperature Reading", "Value1"], ["Drug2", "Value 2 pills"], ["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-            "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
-            "user"    => "Test User"
-        },
-             {
-                 "title"   => "Dispensation",
-                 "content" => "29 tabs Paracetamol, 2 Inject Genta 29 tabs Paracetamol, 2 Inject Jermycin - <span class='cost'>K3500</span>",
-                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                 "date"    => 11.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
-                 "user"    => "Test User"
-             },
-             {
-                 "title"   => "Vitals",
-                 "content" => "Temperature: 39 oC, Height: 165cm, BP: 66/98 - <span class='cost'>K900</span>",
-                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                 "date"    => 9.days.ago.strftime("%Y-%b-%d  &nbsp; %H:%M"),
-                 "user"    => "Test User"
-             },
-             {
-                 "title"   => "Dispensation",
-                 "content" => "29 tabs Paracetamol, 2 Inject DCN - <span class='cost'>K1200</span>",
-                 "data"    => [["Concept1", "Value1"], ["Drug2", "Value 2 pills"]],
-                 "date"    => 7.days.ago.strftime("%Y-%b-%d &nbsp; %H:%M"),
-                 "user"    => "Test User"
-             }].sort_by{|h| h['date']}
+    encounters = Encounter.where(client_id: params[:client_id]).order(" encounter_datetime DESC")
+
+    @data = []
+    encounters.each do |encounter|
+      @data << ({
+          "title"   => encounter.name,
+          "content" => encounter.answer_string,
+          "data"    => encounter.to_arr,
+          "date"    => encounter.encounter_datetime.strftime("%Y-%b-%d  &nbsp; %H:%M"),
+          "user"    => encounter.user
+      } rescue next)
+    end
   end
 
   def new_type

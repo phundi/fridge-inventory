@@ -1,0 +1,92 @@
+
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-eye-open"></span>
+      <b>Enter Presenting Complaints</b>
+      <div class="panel-btn" style="padding: 8px;">
+            &nbsp;
+      </div>
+
+      <div class="pull-right" style="padding: 7px;font-style: italic; border: 1px solid #d3d3d3; border-left: 2px solid #2e6da4; ">
+        &nbsp;<%= "#{@client.name} (#{@client.sex}, #{@client.age})" %>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row data-entry">
+
+            <div class="col-md-10 " style="padding: 0px;margin-left: 6%; min-height: 250px;">
+                <div class="col-md-12" style="border: 1px dotted lightsteelblue; margin: 10px;padding: 10px;">
+
+                  <form action="/create/<%= @client.id%>" method="POST">
+
+                    <%= hidden_field_tag "module", "OPD"%>
+                    <%= hidden_field_tag "encounter_type", "Vitals"%>
+
+                      <div class="form-group col-md-12">
+                          <label class="control-label col-md-4"> Temperature (<b><sup>o</sup>C</b>) </label>
+
+                          <div class="col-md-8">
+                            <input id="complaints" data-placeholder="Enter Vitals"
+                                    class="form-control" name="obs[temperature (C)][value_numeric]" />
+
+                          </div>
+                      </div>
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4"> Blood Pressure (Sys/Dys) </label>
+
+                      <div class="col-md-8">
+                        <table style="width: 70%;">
+                          <tr>
+                            <td style="width: 45%">
+                            <input id="sys"
+                                   style="min-width: 10% !important; width: 100% !important;text-align: right"
+                                   class="form-control" name="obs[systolic blood pressure][value_numeric]"/>
+                            </td>
+                            <td style="font-size: 2.5em; text-align: center; vertical-align: middle">
+                                <b>/</b>
+                             </td>
+                            <td style="width: 45%;">
+                              <input id="dys" style="min-width: 10% !important; width: 100% !important;"
+                                              class="form-control" name="obs[diastolic blood pressure][value_numeric]" />
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4"> Height (CM) </label>
+
+                      <div class="col-md-8">
+                        <input id="complaints" data-placeholder="Sys"
+                               class="form-control" name="obs[height (cm)][value_numeric]">
+                        </input>
+                      </div>
+                    </div>
+
+                    <div class="actions-row col-md-12" style="padding-right: 10%;">
+                      <button type="button"
+                              onclick="window.location='<%= request.referrer%>'"
+                              class="btn btn-danger pull-left"><span class="glyphicon glyphicon-cancel"></span> Cancel </button>
+                      <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save </button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                $('select').select2({
+                    theme: "classic"
+                });
+            });
+        </script>
+        <%= render :partial => "encounter/patient_trail"%>
+
+      </div>
+    </div>
+</div>
+

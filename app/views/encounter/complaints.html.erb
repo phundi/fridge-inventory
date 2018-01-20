@@ -21,65 +21,25 @@
                   <form action="/create/<%= @client.id%>" method="POST">
 
                     <%= hidden_field_tag "module", "OPD"%>
-                    <%= hidden_field_tag "encounter", "complaints"%>
+                    <%= hidden_field_tag "encounter_type", "Presenting Complaints"%>
 
                     <div class="form-group col-md-12">
                         <label class="control-label col-md-4">Presenting Complaints </label>
 
                         <div class="col-md-8">
                           <select id="complaints" data-placeholder="Select Complaints"
-                                  multiple="multiple" class="form-control" name="obs[presenting complaint][value_text][]">
+                                  multiple="multiple" class="form-control" name="obs[presenting complaint][value_coded][]">
                             <% (@complaints || []).each do |c| %>
-                                <option><%= c %></option>
+                                <option value="<%= c[1]%>"><%= c[0] %></option>
                             <% end %>
                           </select>
                         </div>
                       </div>
 
-                      <div class="form-group col-md-12">
-                          <label class="control-label col-md-4"> Temperature (<b><sup>o</sup>C</b>) </label>
-
-                          <div class="col-md-8">
-                            <input id="complaints" data-placeholder="Enter Vitals"
-                                    class="form-control" name="obs[temperature][value_numeric][]" />
-
-                          </div>
-                      </div>
-
-                    <div class="form-group col-md-12">
-                      <label class="control-label col-md-4"> Blood Pressure (Sys/Dys) </label>
-
-                      <div class="col-md-8">
-                        <table style="width: 70%;">
-                          <tr>
-                            <td style="width: 45%">
-                            <input id="sys"
-                                   style="min-width: 10% !important; width: 100% !important;text-align: right"
-                                   class="form-control" name="obs[systolic pressure][value_numeric][]"/>
-                            </td>
-                            <td style="font-size: 2.5em; text-align: center; vertical-align: middle">
-                                <b>/</b>
-                             </td>
-                            <td style="width: 45%;">
-                              <input id="dys" style="min-width: 10% !important; width: 100% !important;"
-                                              class="form-control" name="obs[dystolic pressure][value_numeric][]" />
-                            </td>
-                          </tr>
-                        </table>
-                      </div>
-                    </div>
-
-                    <div class="form-group col-md-12">
-                      <label class="control-label col-md-4"> Height (CM) </label>
-
-                      <div class="col-md-8">
-                        <input id="complaints" data-placeholder="Sys"
-                               class="form-control" name="obs[height][value_numeric][]">
-                        </input>
-                      </div>
-                    </div>
-
                     <div class="actions-row col-md-12" style="padding-right: 10%;">
+                      <button type="button"
+                              onclick="window.location='<%= request.referrer%>'"
+                              class="btn btn-danger pull-left"><span class="glyphicon glyphicon-cancel"></span> Cancel </button>
                       <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save </button>
                     </div>
                   </form>

@@ -33,6 +33,7 @@ begin
     require Rails.root.join('db','load_health_facilities.rb')
     require Rails.root.join('db','load_modules.rb')
     require Rails.root.join('db','load_encounter_types.rb')
+    require Rails.root.join('db','load_concepts.rb')
   end
 rescue => e
   puts "Error ::::  #{e.message}  ::  #{e.backtrace.inspect}"
