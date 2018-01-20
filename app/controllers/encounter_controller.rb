@@ -1,9 +1,11 @@
 class EncounterController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   def complaints
     @client = Client.find(params[:client_id])
     @client_type = ClientType.find(@client.client_type_id).name
     @trail_label = "Previous Complaints History"
+    @complaints = ["", "Headache", "Leg Pains", "Stomach Pains", "Eye Tearing"]
 
     @data = [{
                  "title"   => "",
@@ -22,5 +24,10 @@ class EncounterController < ApplicationController
              }].sort_by{|h| h['date']}
 
     render :layout => "form"
+  end
+
+  def create
+
+    raise params.inspect
   end
 end

@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Software</title>
-
-  <link href="/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/sb-admin.css" rel="stylesheet">
-	<link href="/css/plugins/morris.css" rel="stylesheet">
-    <link href="/css/layout.css" rel="stylesheet">
-    <link href="/css/layout.css" rel="stylesheet">
-    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="/css/datepicker.css" rel="stylesheet">
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="Kenneth Kapundi" content="Homepage for HMIS">
+
+    <title>Software</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/sb-admin.css" rel="stylesheet">
+    <link href="/css/plugins/morris.css" rel="stylesheet">
+    <link href="/css/layout.css" rel="stylesheet">
+    <link href="/css/layout.css" rel="stylesheet">
+    <link href="/css/select2.min.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/datepicker.css" rel="stylesheet">
     <link href="/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+
+
 
   <%= csrf_meta_tags %>
   <style>
       .panel{
           border-radius: 0px !important;
+      }
+
+      .form-control{
+          min-width: 70% !important;
+          font-size: 1.1em;
+          min-height: 35px;
+          margin-bottom: 5px;
+      }
+
+      .form-group{
+          margin: 5px !important;
       }
 
       .display-details strong{
@@ -87,6 +101,60 @@
       input, select{
           box-shadow: 2px 2px 2px #ccc;
       }
+
+      .data-entry select{
+          margin: auto;
+      }
+      .select2-results, {
+          position: relative;
+          width: 100% !important;
+      }
+
+      .select2-container{
+          position: relative;
+          width: 70% !important;
+      }
+
+      .select2-dropdown{
+          position: relative;
+          width: 43% !important;
+      }
+
+      .select2-results__options{
+          position: relative;
+          width: 100% !important;
+      }
+
+      .select2-selection__rendered{
+          font-size: 1em !important;
+          height:100%;
+          padding: 2px;
+          width: 100% !important;
+      }
+
+      .select2-selection{
+          height: 38px !important;
+          margin: auto;
+          width: 100%;
+      }
+
+      .select2-selection--multiple{
+          min-height: 70px !important;
+          max-height: 250px !important;
+          padding: 3px;
+          width: 100%;
+      }
+      .select2-search{
+          min-width: 100% !important;
+      }
+
+      label{
+          font-size: 1.1em !important;
+          color: darkolivegreen;
+          min-width: 27%;
+      }
+       .select2-selection__choice{
+       }
   </style>
 </head>
 <body>
@@ -183,27 +251,33 @@
             </li>
           </ul>
         </div>
-        <!-- /.navbar-collapse -->
-        <script src="/js/jquery.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/datepicker.js"></script>
 
-        <%=javascript_include_tag "datatables/jquery.dataTables.min" %>
 
       </nav>
 
+      <!-- /.navbar-collapse -->
+      <script src="/js/jquery.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <script src="/js/select2.min.js"></script>
+      <script src="/js/datepicker.js"></script>
+
+      <%=javascript_include_tag "datatables/jquery.dataTables.min" %>
+
       <div id="page-wrapper">
+
+        <div>
+          <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+            <li><a href="/">Home</a></li>
+            <li><a href="/client/index">Clients</a></li>
+            <li><a class='active' href="/client/view?client_id=<%=@client.id%>">View Client</a></li>
+          </ol>
+        </div>
 
         <%= yield%>
       </div>
     </div>
 
 </body>
-
-
-<script>
-
-</script>
 
 <style>
     .trail-header{

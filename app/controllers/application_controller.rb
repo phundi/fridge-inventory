@@ -15,4 +15,14 @@ class ApplicationController < ActionController::Base
       redirect_to "/logout"
     end
   end
+
+  def enabled?(groups=[])
+
+    yes = true
+    (groups || []).each do |cat|
+
+    end
+
+    yes
+  end
 end

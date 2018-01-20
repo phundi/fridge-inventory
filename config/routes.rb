@@ -89,6 +89,8 @@ Rails.application.routes.draw do
   get "client/client_suggestions"
 
   get "/complaints/:client_id" => "encounter#complaints"
+  post "/create/:client_id" => "encounter#create"
+
   get "/diagnosis/:client_id" => "encounter#diagnosis"
   get "/vitals/:client_id" => "encounter#vitals"
   get "/prescribe/:client_id" => "drug#prescribe"
