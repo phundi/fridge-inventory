@@ -97,4 +97,7 @@ Rails.application.routes.draw do
   get "/dispense/:client_id" => "drug#dispense"
   get "/outcomes/:client_id"  => "encounter#outcomes"
 
+  get "/configs/:module" => "configuration#index"
+
+
 end

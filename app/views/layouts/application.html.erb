@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Software</title>
+  <title>Smart-HMIS</title>
 
   <link href="/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/css/sb-admin.css" rel="stylesheet">
@@ -97,7 +97,7 @@
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
 
-          <a class="navbar-brand" href="/">System</a>
+          <a class="navbar-brand" href="/">Smart-HMIS</a>
         </div>
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">
@@ -136,12 +136,39 @@
             <li id="workflow">
               <a href="/?active_tab=workflow"><i class="fa fa-fw fa-list"></i> Workflow</a>
             </li>
-            <li id="modules">
-              <a href="/?active_tab=modules"><i class="fa fa-fw fa-list"></i> Modules</a>
+
+            <li id="module">
+              <a href="javascript:" data-toggle="collapse" data-target="#modules"><i class="glyphicon glyphicon-th">
+                </i> Modules Configs<i class="fa fa-fw fa-caret-down"></i>
+              </a>
+              <ul id="modules" class="collapse">
+                <li>
+                  <a href="/configs/opd?active_tab=module">OPD</a>
+                </li>
+                <li>
+                  <a href="/configs/lab?active_tab=module">LAB</a>
+                </li>
+                <li>
+                  <a href="/configs/anc?active_tab=module">ANC</a>
+                </li>
+                <li>
+                  <a href="/configs/maternity?active_tab=module">Maternity</a>
+                </li>
+                <li>
+                  <a href="/configs/art?active_tab=module">ART</a>
+                </li>
+                <li>
+                  <a href="/configs/pharmacy?active_tab=module">Pharmacy</a>
+                </li>
+                <li>
+                  <a href="/configs/billing?active_tab=module">Billing</a>
+                </li>
+              </ul>
             </li>
+
             <li id="config">
               <a href="javascript:" data-toggle="collapse" data-target="#configs"><i class="fa fa-cog">
-              </i> Configurations <i class="fa fa-fw fa-caret-down"></i>
+              </i> General Configs <i class="fa fa-fw fa-caret-down"></i>
               </a>
               <ul id="configs" class="collapse">
                 <li>
