@@ -247,22 +247,164 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
-  add_foreign_key "concept", "user", column: "voided_by", primary_key: "user_id", name: "fk_concept_1"
-  add_foreign_key "concept", "user", column: "creator", primary_key: "user_id", name: "fk_concept_2"
+  ############################### LAB TABLES ###########################################################################
+  create_table "specimen_type", primary_key: "specimen_type_id", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "lifespan"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
-  add_foreign_key "client_identifier", "client", column: "client_id", primary_key: "client_id", name: "fk_client_identifier_1"
-  add_foreign_key "client_identifier", "client_identifier_type", column: "client_identifier_type_id", primary_key: "client_identifier_type_id", name: "fk_client_identifier_2"
-  add_foreign_key "client_identifier", "user", column: "voided_by", primary_key: "user_id", name: "fk_client_identifier_3"
-  add_foreign_key "client_identifier", "user", column: "creator", primary_key: "user_id", name: "fk_client_identifier_4"
+  create_table "test_type", primary_key: "test_type_id", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "department_id"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
-  add_foreign_key "concept_set", "user", column: "voided_by", primary_key: "user_id", name: "fk_concept_set_1"
-  add_foreign_key "concept_set", "user", column: "creator", primary_key: "user_id", name: "fk_concept_set_2"
-  add_foreign_key "concept_set", "concept", column: "concept_set", primary_key: 'concept_id', name: "fk_concept_set_3"
-  add_foreign_key "concept_set", "concept", column: "concept_id", primary_key: 'concept_id', name: "fk_concept_set_4"
+  create_table "status", primary_key: "status_id", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
 
-  add_foreign_key "obs", "workflow", column: "workflow_id", primary_key: "workflow_id", name: "fk_obs_1"
-  add_foreign_key "obs", "user", column: "creator", primary_key: "user_id", name: "fk_obs_2"
-  add_foreign_key "obs", "user", column: "voided_by", primary_key: 'user_id', name: "fk_obs_3"
+  create_table "panel_type", primary_key: "panel_type_id", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "panel", primary_key: "panel_id", force: :cascade do |t|
+    t.integer   "panel_type_id"
+    t.integer   "test_type_id"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "test_panel", primary_key: "panel_id", force: :cascade do |t|
+    t.integer   "panel_type_id"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "specimen_test_type", primary_key: "specimen_test_type_id", force: :cascade do |t|
+    t.integer  "specimen_type_id"
+    t.integer  "test_type_id"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "specimen", primary_key: "specimen_id", force: :cascade do |t|
+    t.integer  "client_id"
+    t.integer  "specimen_type_id"
+    t.string   "priority"
+    t.integer  "ordering_location"
+    t.integer  "drawn_by"
+    t.string   "drawn_by_name"
+    t.integer  "status_id"
+    t.integer  "accepted_by"
+    t.integer  "rejected_by"
+    t.integer  "rejection_reason_id"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "test", primary_key: "test_id", force: :cascade do |t|
+    t.integer  "specimen_id"
+    t.integer  "test_type_id"
+    t.integer  "tested_by"
+    t.integer  "verified_by"
+    t.integer  "requested_by"
+    t.string   "status_id"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "rejection_reason", primary_key: "rejection_reason_id", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "test_parameter", primary_key: "test_parameter_id", force: :cascade do |t|
+    t.integer  "test_type_id"
+    t.string   "name"
+    t.string   "description"
+    t.string   "type" #numeric, alphanumeric, list
+    t.text     "list"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  create_table "test_result", primary_key: "test_result_id", force: :cascade do |t|
+    t.integer  "test_id"
+    t.integer  "test_parameter_id"
+    t.text     "result"
+    t.text     "interpretation"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_foreign_key "specimen", "client", column: "client_id", primary_key: 'client_id', name: "fk_specimen_1"
+  add_foreign_key "specimen", "specimen_type", column: "specimen_type_id", primary_key: 'specimen_type_id', name: "fk_specimen_2"
+  add_foreign_key "specimen", "location", column: "ordering_location", primary_key: 'location_id', name: "fk_specimen_4"
+  add_foreign_key "specimen", "user", column: "drawn_by", primary_key: 'user_id', name: "fk_specimen_3"
+  add_foreign_key "specimen", "user", column: "accepted_by", primary_key: 'user_id', name: "fk_specimen_6"
+  add_foreign_key "specimen", "user", column: "rejected_by", primary_key: 'user_id', name: "fk_specimen_7"
+  add_foreign_key "specimen", "status", column: "status_id", primary_key: 'status_id', name: "fk_specimen_8"
+
+  ############################### END OF LAB TABLES ####################################################################
+
+
   add_foreign_key "obs", "concept", column: "concept_id", primary_key: 'concept_id', name: "fk_obs_4"
   add_foreign_key "obs", "encounter", column: "encounter_id", primary_key: 'encounter_id', name: "fk_obs_5"
   add_foreign_key "obs", "concept", column: "value_coded", primary_key: 'concept_id', name: "fk_obs_6"

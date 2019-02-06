@@ -78,7 +78,8 @@
           <div class="form-group">
             <label for="birthdate">Date of Birth</label>
             <input onchange="suggest('name_and_gender_and_birthdate');" type="text" id="birthdate" name="birthdate"
-                   class="datepicker form-control" data-validation="required" value="<%= (@client.birthdate.strftime('%d-%b-%Y') rescue nil)%>"><span class="glyphicon glyphicon-search"></span>
+                   class="datepicker form-control" data-validation="required" value="<%= (@client.birthdate.strftime('%d-%b-%Y') rescue nil)%>">
+            <span class="glyphicon glyphicon-search"></span>
           </div>
 
 
