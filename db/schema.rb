@@ -248,6 +248,18 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   ############################### LAB TABLES ###########################################################################
+
+  create_table "department", primary_key: "department_id", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "creator"
+    t.boolean  "voided",                      default: false, null: false
+    t.integer  "voided_by"
+    t.string   "void_reason"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    end
+
   create_table "specimen_type", primary_key: "specimen_type_id", force: :cascade do |t|
     t.string   "name"
     t.string   "description"

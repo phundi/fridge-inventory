@@ -99,5 +99,10 @@ Rails.application.routes.draw do
 
   get "/configs/:module" => "configuration#index"
 
+  get "/lab_departments" => "configuration#lab_departments"
+  get "/new_department" => "configuration#new_department"
+  get "/edit_department" => "configuration#edit_department"
 
+  post "/new_department" => "configuration#new_department"
+  post "/edit_department" => "configuration#edit_department"
 end
