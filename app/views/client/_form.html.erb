@@ -49,6 +49,17 @@
           </div>
 
           <div class="form-group">
+            <label for="national_id">National ID No.</label>
+            <input type="text" id="national_id" name="identifier" class="form-control" data-validation="required" value="<%= @client.identifier%>">
+          </div>
+
+
+         <div class="form-group">
+          <label for="business_certificate">Business Certificate No.</label>
+          <input type="text" id="business_certificate" name="business_certificate" class="form-control" data-validation="required" value="<%= @client.business_certificate%>">
+         </div>
+
+          <div class="form-group">
               <label for="first_name">First Name</label>
               <input type="text" id="first_name" name="first_name" class="form-control" data-validation="required" value="<%= @client.first_name%>">
            </div>

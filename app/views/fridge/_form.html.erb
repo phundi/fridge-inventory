@@ -1,0 +1,181 @@
+<style>
+  fieldset{
+      border: 1px solid ghostwhite;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px;
+  }
+
+  .form-error{
+      display: none;
+  }
+
+  input, select{
+      display: inline-block;
+      margin-right: 10px !important;
+  }
+  select{
+      margin-right: 5px !important;
+  }
+  #suggestions td, #suggestions th{
+      padding: 5px;
+      border-left: 1px solid ghostwhite;
+      border-bottom: 1px solid #d3d3d3;
+  }
+.datepicker{
+    width: 20%;
+}
+</style>
+<script src="/js/jquery.form-validator.min.js"></script>
+<table style="width: 100%;">
+  <tr>
+     <td style="width: 45%" valign="top">
+      <div id="form">
+      <form enctype="multipart/form-data" id="form-create-role" accept-charset="UTF-8"
+            action="<%= @action%>" method="POST"><input type="hidden">
+
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        <%= hidden_field_tag :fridge_id, @fridge.id -%>
+
+        <fieldset>
+
+
+          <div class="form-group">
+            <label for="serial_number">Serial Number</label>
+            <input type="text" id="serial_number" name="serial_number" onchange="suggest(serial_number)" class="form-control" data-validation="required" value="<%= @fridge.serial_number %>">
+            <span class="glyphicon glyphicon-search"></span>
+            </div>
+
+
+         <div class="form-group">
+          <label for="model">Model</label>
+          <input type="text" id="model" name="model" class="form-control" data-validation="required" value="<%= @fridge.model%>">
+         </div>
+
+          <div class="form-group">
+              <label for="description">Description</label>
+              <textarea type="text" id="description" name="description" class="form-control" value="<%= @fridge.description%>"></textarea>
+           </div>
+
+
+          <div class="form-group" style="width: 100%;">
+            <label for="condition">Condition</label>
+            <select style="display: inline-block" type="text" id="condition" name="condition" class="form-control" data-validation="required">
+              <option></option>
+              <% @conditions.each do |c| %>
+                <option value="<%=c.id%>"><%= c.name%></option>
+              <% end %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="district">Current District</label>
+            <select style="display: inline-block" type="text" id="district" name="district" class="form-control" data-validation="required">
+              <option></option>
+              <% @districts.each do |c| %>
+                <option value="<%=c.id%>"><%= c.name%></option>
+              <% end %>
+           </select>
+         </div>
+
+         <div class="form-group">
+         <label for="owner">Owner</label>
+         <select style="display: inline-block" type="text" id="owner" name="owner" class="form-control" data-validation="required">
+           <option></option>
+           <% @clients.each do |c| %>
+             <option value="<%=c.id%>"><%= c.name%></option>
+           <% end %>
+          </select>
+        </div>
+
+        </fieldset>
+
+        <div class="form-group actions-row" style="padding-right: 52%;">
+          <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+        </div>
+
+      </form>
+    </div>
+    </td>
+    <td style="width: 55%;" valign="top">
+        <div style="width: 100%;color: darkslategray; min-height: 50vh; margin-top: 0px;">
+            <table style="width: 100%;font-size: 12px;" id="suggestions">
+                <caption style="text-align: center;border-bottom: 1px solid darkred;">
+                    <span style="font-size: 14px;" id="suggest_key" >&nbsp;</span>
+                </caption>
+              <tr>
+                <th>Serial Number</th>
+                <th>Model</th>
+                <th>Location</th>
+                <th>Owner</th>
+                <th></th>
+              </tr>
+
+              <tr id="clone_me" style="display:none;">
+                <td class="serial_number"></td>
+                <td class="model"></td>
+                <td class="location" ></td>
+                <td class="owner" ></td>
+                <td><button class="btn btn-sm btn-success" style="padding: 4px;width: 50px;">Select</button></td>
+              </tr>
+            </table>
+        </div>
+    </td>
+</tr>
+</table>
+
+<script>
+    function suggest(key){
+
+        var data = {serial_number: __$('serial_number').value };
+        jQuery.ajax({
+            url: "/fridge/fridge_suggestions",
+            data: {
+                'search_params' : data
+            },
+            success: function(result){
+                result = JSON.parse(result);
+                $('.temp-row').remove();
+
+                //__$("suggest_key").innerHTML = 'Suggested by ' + key.replace(/\_/g, ' ') + ":   " + (result.length == 20 ? " atleast " : "") + result.length + " found."
+
+                for(var i = 0; i < result.length; i++){
+                    view(result[i]);
+                }
+            }
+        })
+    }
+
+    function view(record){
+        var clone = __$('clone_me').cloneNode(true);
+        clone.getElementsByClassName('serial_number')[0].innerHTML = record['serial_number'];
+        clone.getElementsByClassName('model')[0].innerHTML = record['model'];
+        clone.getElementsByClassName('location')[0].innerHTML = record['location'];
+        clone.getElementsByClassName('owner')[0].innerHTML = record['owner'];
+
+        clone.getElementsByClassName('btn')[0].onmousedown = function(){
+            window.location = "/fridge/view?fridge_id=" + record['fridge_id'];
+        };
+
+        clone.className = "temp-row";
+        clone.style.display = 'table-row';
+        __$("suggestions").appendChild(clone);
+    }
+
+    $.validate({
+        onError : function(){
+
+        }
+    });
+
+    datepicker = jQuery('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        startDate: '-3y'
+    });
+
+    jQuery(document).ready(function(){
+
+        <% if @action.match(/edit/)%>
+        <% end %>
+    })
+</script>

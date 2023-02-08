@@ -39,6 +39,8 @@ class ClientController < ApplicationController
 
     if request.post?
       @client.client_type_id = params[:type]
+      @client.identifier = params[:identifier]
+      @client.business_certificate = params[:business_certificate]
       @client.first_name = params[:first_name]
       @client.first_name_code = params[:first_name].soundex
       @client.last_name = params[:last_name]
@@ -63,15 +65,14 @@ class ClientController < ApplicationController
     @modules = []
     @modules <<  ['Fridges', '4 Assigned']
     @modules <<  ['Service Orders', 'None']
-    @modules <<  ['Previous Services', '3 Done'] 
-    @modules <<  ['Location/Facilities', '2'] 
+    @modules <<  ['Total Services', '3 Done'] 
 
 
     @common_encounters = []
-    @common_encounters << ['Add Helpdesk Token']
     @common_encounters << ['Assign Fridge']
+    @common_encounters << ['Remove Fridge']
     @common_encounters << ['Blacklist']
-    @common_encounters << ['Relocate Fridge']
+
 
     encounters = [] #Encounter.where(client_id: params[:client_id]).order(" encounter_datetime DESC")
 
@@ -150,8 +151,8 @@ class ClientController < ApplicationController
       gender = p.gender.to_i == 1 ? "M" : 'F'
       type = c_types[p.client_type_id]
       name = "#{p.first_name} #{p.middle_name} #{p.last_name}(#{gender})".gsub(/\s+/, ' ')
-      dob = p.birthdate.to_date.strftime("%d-%b-%Y") rescue nil
-      row = [name, p.identifier, dob, type, p.phone_number, p.address, p.id]
+      #dob = p.birthdate.to_date.strftime("%d-%b-%Y") rescue nil
+      row = [name, p.identifier, p.business_certificate, type, p.phone_number, p.address, p.id]
       @records << row
     end
 

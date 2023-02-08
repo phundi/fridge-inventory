@@ -1,0 +1,8 @@
+<div class="display-details">
+  <h4><strong>Serial Number    </strong><%=@fridge.serial_number%></h4>
+  <h5><strong>Model</strong><%= @fridge.model %></h5>
+  <p><strong>Description</strong><%=@fridge.description%></p>
+  <p><strong>Condition</strong><%=Condition.find(@fridge.condition_id).name%></p>
+  <p><strong>Current Location</strong><%=Location.find(@fridge.current_location).name %></p>
+  <p><strong>Current Owner</strong><%=@client.name %></p>
+</div>

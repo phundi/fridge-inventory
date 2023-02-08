@@ -77,6 +77,9 @@ Rails.application.routes.draw do
   get "client/index"
   get "client/ajax_clients"
 
+  get "fridge/index"
+  get "fridge/ajax_fridges"
+
   get "client/new"
   post "client/new"
 
@@ -84,9 +87,19 @@ Rails.application.routes.draw do
   post "client/edit"
 
   get "client/view"
+
+  get "fridge/new"
+  post "fridge/new"
+
+  get "fridge/edit"
+  post "fridge/edit"
+
+  get "fridge/view"
+
   get "module/view_module"
 
   get "client/client_suggestions"
+  get "fridge/fridge_suggestions"
 
   get "/complaints/:client_id" => "encounter#complaints"
   post "/create/:client_id" => "encounter#create"

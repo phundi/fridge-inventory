@@ -4,16 +4,16 @@
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
-    <li><a href="/client/index">Clients</a></li>
-    <li><a class='active' href="/client/view?client_id=<%=@client.id%>">View Client</a></li>
+    <li><a href="/fridge/index">Fridges</a></li>
+    <li><a class='active' href="/fridge/view?fridge_id=<%=@fridge.id%>">View Fridge</a></li>
   </ol>
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading ">
       <span class="glyphicon glyphicon-eye-open"></span>
-      <b>View Client</b>
+      <b>View Fridge</b>
       <div class="panel-btn">
-        <a class="btn btn-sm btn-info" href="/client/edit?client_id=<%=@client.id%>">
+        <a class="btn btn-sm btn-info" href="/fridge/edit?fridge_id=<%=@fridge.id%>">
           <span class="glyphicon glyphicon-pencil"></span>
           Edit
         </a>
@@ -23,13 +23,13 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-4" style="border-right: 1px solid lightblue;">
-            <%= render :partial => "client/client_card"%>
+            <%= render :partial => "fridge/fridge_card"%>
           </div>
 
           <div class="col-md-8" style="padding: 0px;">
             <div class="col-md-8">
               <% (@modules || []).each do |mod, val|%>
-                <button type="button" onclick="window.location = '/module/view_module?client_id=<%= params[:client_id]%>&module=<%= mod%>'"
+                <button type="button" onclick="window.location = '/module/view_module?fridge_id=<%= params[:fridge_id]%>&module=<%= mod%>'"
                      class="btn btn-default pull-left module-btn" style="width: 27%;margin: 10px; padding: 10px; font-size: 1.2em;background: #f8f8ff;"><%=mod%> <br />
                     <span class="badge" style="background: #2e6da4;"><%= val%></span>
                 </button>

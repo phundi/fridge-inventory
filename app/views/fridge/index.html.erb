@@ -27,17 +27,17 @@
 <div>
   <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
     <li><a href="/">Home</a></li>
-    <li><a class='active' href="/client/index">Clients</a></li>
+    <li><a class='active' href="/fridge/index">Fridges</a></li>
   </ol>
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading ">
       <span class="glyphicon glyphicon-user"></span>
-      <b>List Clients</b>
+      <b>List Fridges</b>
       <div class="panel-btn">
-        <a class="btn btn-sm btn-info" href="/client/new">
+        <a class="btn btn-sm btn-info" href="/fridge/new">
           <span class="glyphicon glyphicon-plus-sign"></span>
-          Add / Search Client
+          Add / Search Fridges
         </a>
       </div>
     </div>
@@ -46,17 +46,16 @@
         <table id="example" style="width: 100%;" class="data-table table table-condensed table-striped">
             <thead>
             <tr role="row">
-              <th  style="min-width: 20%;">Name</th>
-              <th  style="min-width: 10%;">National ID No.</th>
-              <th>Business Certificate No.</th>
-              <th style="min-width: 10%;">Type</th>
-              <th>Phone Number</th>
-              <th>Current Address</th>
+              <th  style="min-width: 15%;">Serial Number</th>
+              <th  style="min-width: 15%;">Model</th>
+              <th>Condition</th>
+              <th>Current Location</th>
+              <th>Owner</th>
               <th>&nbsp;</th>
             </tr>
             </thead>
         <tbody>
-        <% (@clients|| []).each do |l|%>
+        <% (@fridges || []).each do |l|%>
 
             <tr class="odd" role="row" >
 
@@ -116,14 +115,6 @@
 </div>
 
 
-<select id="tag" label="Location Type" onchange="reloadDataTable()" style="width: 200px !important;
-        padding: 5px; margin-right: 20px; ;">
-  <option value="">Select Client Type</option>
-  <% @types.each do |t|%>
-    <option value="<%=t.id%>"><%= t.name%></option>
-  <% end %>
-</select>
-
 <script>
     table = null;
 
@@ -135,9 +126,8 @@
             'pageLength': 10,
             "ordering": false,
             "ajax": {
-                "url": '/client/ajax_clients',
+                "url": '/fridge/ajax_fridges',
                 data: function(d){
-                    d.type_id =__$('tag').value
                 },
                 dataFilter: function (data) {
                     var json = jQuery.parseJSON(data);
@@ -145,19 +135,17 @@
                         var last_index = json['data'][i].length - 1;
                         var id = json['data'][i][last_index];
 
-                        json['data'][i][last_index] = '<a class="btn btn-sm btn-info" href="/client/edit?client_id=' + id + '">' +
+                        json['data'][i][last_index] = '<a class="btn btn-sm btn-info" href="/fridge/edit?fridge_id=' + id + '">' +
                                 '<span class="glyphicon glyphicon-edit"></span> Edit</a>'
 
-                        json['data'][i][last_index] += '<a class="btn btn-sm btn-success" href="/client/view?client_id=' + id + '">' +
+                        json['data'][i][last_index] += '<a class="btn btn-sm btn-success" href="/fridge/view?fridge_id=' + id + '">' +
                                 '<span class="glyphicon glyphicon-eye-open"></span> Select </a>'
                     }
                     return JSON.stringify(json);
                 }
             }
         });
-
-        var holder = __$('example_filter');
-        holder.appendChild(__$('tag'));
+       
     })
 
     function __$(id){

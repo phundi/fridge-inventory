@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "client", primary_key: "client_id", force: :cascade do |t|
     t.string   "identifier"
+    t.string   "business_certificate"
     t.string   "first_name",                    limit: 255
     t.string   "middle_name",                    limit: 255
     t.string   "last_name",                    limit: 255
@@ -141,7 +142,27 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
+
+  create_table "fridge", primary_key: "fridge_id", force: :cascade do |t|
+    t.string   "serial_number",  null: false
+    t.string   "model",  null: false
+    t.string   "description"        
+    t.integer  "condition_id",  null: false        
+    t.integer  "client_id",  null: false
+    t.integer  "current_location",  null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
   create_table "client_identifier_type", primary_key: "client_identifier_type_id", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.string   "description", limit: 200
+    t.boolean  "voided",                      default: false, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "condition", primary_key: "condition_id", force: :cascade do |t|
     t.string   "name",        limit: 255, null: false
     t.string   "description", limit: 200
     t.boolean  "voided",                      default: false, null: false
