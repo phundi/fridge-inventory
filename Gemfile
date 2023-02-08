@@ -1,10 +1,10 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 # Use sqlite3 as the database for Active Record
-gem 'mysql2'
+gem 'mysql2', '~> 0.4.10'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -45,5 +45,6 @@ group :development do
   gem 'spring'
 end
 gem 'will_paginate'
-gem 'bcrypt', '3.1.7'
+gem 'bcrypt', '~> 3.1.13'
+#gem 'bcrypt-ruby', '3.0.1'
 gem 'countries'

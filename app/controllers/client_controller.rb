@@ -58,27 +58,22 @@ class ClientController < ApplicationController
   def view
     @client = Client.find(params[:client_id])
     @client_type = ClientType.find(@client.client_type_id).name
-    @trail_label = "Patient History"
+    @trail_label = "Client History"
 
     @modules = []
-    @modules <<  ['OPD', '4 Visits']
-    @modules <<  ['LAB', '13 Orders']
-    @modules <<  ['ANC', '5 Visits'] if @client.gender == 0
-    @modules <<  ['Maternity', '2 Visits'] if @client.gender == 0
-    @modules <<  ['ART', '2 Visits']
-    @modules <<  ['HTS', '2 Visits']
-    @modules <<  ['Surgery', '2 Visits']
-    @modules <<  ['Pharmacy', '2 Visits']
+    @modules <<  ['Fridges', '4 Assigned']
+    @modules <<  ['Service Orders', 'None']
+    @modules <<  ['Previous Services', '3 Done'] 
+    @modules <<  ['Location/Facilities', '2'] 
+
 
     @common_encounters = []
-    @common_encounters << ['Presenting Complaints']
-    @common_encounters << ['Vitals']
-    @common_encounters << ['Diagnosis']
-    @common_encounters << ['New Lab Order']
-    @common_encounters << ['Prescribe Drugs']
-    @common_encounters << ['Dispense Drugs']
+    @common_encounters << ['Add Helpdesk Token']
+    @common_encounters << ['Assign Fridge']
+    @common_encounters << ['Blacklist']
+    @common_encounters << ['Relocate Fridge']
 
-    encounters = Encounter.where(client_id: params[:client_id]).order(" encounter_datetime DESC")
+    encounters = [] #Encounter.where(client_id: params[:client_id]).order(" encounter_datetime DESC")
 
     @data = []
     encounters.each do |encounter|
