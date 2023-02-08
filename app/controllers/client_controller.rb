@@ -16,6 +16,8 @@ class ClientController < ApplicationController
       @client = Client.new
       @client.client_type_id = params[:type]
       @client.first_name = params[:first_name]
+      @client.identifier = params[:identifier]
+      @client.business_certificate = params[:business_certificate]
       @client.first_name_code = params[:first_name].soundex
       @client.last_name = params[:last_name]
       @client.last_name_code = params[:last_name].soundex
