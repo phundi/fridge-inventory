@@ -1,5 +1,5 @@
 class FridgeController < ApplicationController
-  
+  skip_before_action :verify_authenticity_token  
 
   def index
     @conditions = Condition.where(voided: 0)
@@ -54,21 +54,48 @@ class FridgeController < ApplicationController
     end
   end
 
+  def helpdesk_token
+
+    @fridge = Fridge.find(params[:fridge_id])
+    @client= Client.find(@fridge.client_id)
+
+    @statuses = ["New", "In Progress", "Closed"]
+
+    if request.post?
+
+      token = HelpdeskToken.new
+      token.client_id = @fridge.client_id 
+      token.fridge_id = @fridge.id 
+      token.status = params[:token_status]
+      token.token_date = params[:date_reported]
+      token.description = params[:description]
+      token.token_type = "Service"
+      token.job_id = -1
+      token.save
+
+      redirect_to "/fridge/view?fridge_id=#{@fridge.id}" and return
+    end 
+
+    render :layout => "form"
+  end 
+    
   def view
     @fridge = Fridge.find(params[:fridge_id])
     @client = Client.find(@fridge.client_id)
     @trail_label = "Fridge History"
+    @tokens = HelpdeskToken.where(fridge_id: @fridge.id).pluck :helpdesk_token_id
+    @services = Service.where(fridge_id: @fridge.id).pluck :service_id 
 
     @modules = []
-    @modules <<  ['Helpdesk Tokens', '2']
-    @modules <<  ['Services', '0 Done' ]
-    @modules <<  ['Relocations', '3'] 
+    @modules <<  ['Helpdesk Tokens', @tokens.count]
+    @modules <<  ['Services', @services.count ]
+    @modules <<  ['Relocations', ''] 
 
 
     @common_encounters = []
-    @common_encounters << ['New Helpdesk Token']
-    @common_encounters << ['Add Service Details']
-    @common_encounters << ['Change Owner']
+    @common_encounters << ['New Helpdesk Token', '/fridge/helpdesk_token']
+    @common_encounters << ['Add Service Details', '/fridge/service']
+    @common_encounters << ['Change Owner', '/fridge/relocate']
 
     encounters = []
 

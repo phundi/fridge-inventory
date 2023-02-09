@@ -31,14 +31,15 @@
               <% (@modules || []).each do |mod, val|%>
                 <button type="button" onclick="window.location = '/module/view_module?fridge_id=<%= params[:fridge_id]%>&module=<%= mod%>'"
                      class="btn btn-default pull-left module-btn" style="width: 27%;margin: 10px; padding: 10px; font-size: 1.2em;background: #f8f8ff;"><%=mod%> <br />
-                    <span class="badge" style="background: #2e6da4;"><%= val%></span>
+                    <span class="badge" style="font-size: 1.2em; background: #2e6da4;"><%= val%></span>
                 </button>
               <% end %>
               </div>
               <div class="col-md-4">
                 <ul class="list-group">
                   <% (@common_encounters || []).each do |name, link|%>
-                  <li class="list-group-item encounter-btn btn-sm" style=" cursor: pointer;"><%= name%></li>
+                  <li class="list-group-item encounter-btn btn-sm" style=" cursor: pointer;" 
+                    onclick="window.location = '<%= link%>?fridge_id=<%= params[:fridge_id]%>' " ><%= name%> </li>
                   <% end %>
                 </ul>
               </div>

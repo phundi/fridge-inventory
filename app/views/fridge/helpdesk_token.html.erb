@@ -1,0 +1,99 @@
+
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-eye-open"></span>
+      <b>Create Helpdesk Token</b>
+      <div class="panel-btn" style="padding: 8px;">
+            &nbsp;
+      </div>
+
+      <div class="pull-right" style="padding: 7px;font-style: italic; border: 1px solid #d3d3d3; border-left: 2px solid #2e6da4; ">
+        &nbsp;<%= "#{@client.name} (#{@client.sex}, #{@client.age})" %>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row data-entry">
+
+            <div class="col-md-10 " style="padding: 0px;margin-left: 6%; min-height: 250px;">
+                <div class="col-md-12" style="border: 1px dotted lightsteelblue; margin: 10px;padding: 10px;">
+
+                  <form action="/fridge/helpdesk_token" method="POST">
+                  <%= hidden_field_tag "fridge_id", @fridge.id%>
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label col-md-4">Fridge Serial Number </label>
+
+                        <div class="col-md-8">
+                        <input id="serial_number" disabled="disabled"
+                          class="form-control" name="serial_number" value="<%=@fridge.serial_number%>"/>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4">Current Owner </label>
+
+                      <div class="col-md-8">
+                      <input id="owner" disabled="disabled"
+                        class="form-control" name="owner" value="<%=@client.name%>"/>
+                      </div>
+                      
+                    </div>
+
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4">Token Status </label>
+
+                      <div class="col-md-8">
+                      <select id="token_status" class="form-control" name="token_status" data-validation="required"/>
+                            <%@statuses.each do |s|%>
+                                <option><%=s%></option>
+                            <% end %>
+                      </select>
+                      </div>
+                    
+                    </div>
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4">Date Reported </label>
+
+                      <div class="col-md-8">
+                      <input id="date_reported" type='date' data-validation="required"
+                        class="form-control" name="date_reported" "/>
+                      </div>
+                      
+                    </div>
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4"> Details </label>
+
+                      <div class="col-md-8">
+                      <textarea id="desc" data-validation="required"
+                        class="form-control" name="description"> </textarea>
+                      </div>
+                      
+                   </div>
+
+                    <div class="actions-row col-md-12" style="padding-right: 10%;">
+                      <button type="button"
+                              onclick="window.location='<%= request.referrer%>'"
+                              class="btn btn-danger pull-left"><span class="glyphicon glyphicon-cancel"></span> Cancel </button>
+                      <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save </button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                $('select').select2({
+                    theme: "classic"
+                });
+            });
+        </script>
+      </div>
+    </div>
+</div>
+

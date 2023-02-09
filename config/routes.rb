@@ -94,6 +94,12 @@ Rails.application.routes.draw do
   get "fridge/edit"
   post "fridge/edit"
 
+  get "fridge/helpdesk_token"
+  post "fridge/helpdesk_token"
+
+  get "fridge/service"
+  post "fridge/service"
+
   get "fridge/view"
 
   get "module/view_module"
