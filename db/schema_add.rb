@@ -40,6 +40,3 @@ end
 
 
 require Rails.root.join('db','load_activities.rb')
-
-
-end
