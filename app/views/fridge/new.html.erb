@@ -19,5 +19,55 @@
     <%= render 'form' %>
   </div>
 
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title" style="text-align: left;">
+          &nbsp;
+      </h4>
+    </div>
+    <div class="modal-body">
+      <span style="text-align:center;">
+        <div class="form-group">
+          <label for="barcode"><b>Scan Fridge Barcode</b></label>
+          <input onchange="setBarcode(this)" type="text" id="barcode" name="model" class="form-control" >
+        </div>
+      </span>
+     
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" style="text-align: left;">
+        &nbsp;
+    </h4>
+  </div>
+  </div>
+</div>
+
 </div>
 </div>
+
+<script>
+
+  $(document).ready(function(){
+    $('#modal').modal('show');
+  });
+
+  setInterval(function(){
+        var node = $("#barcode").first()
+        node.focus();
+        
+        if(node.val().match(/\$$/)){
+          $("#serial_number").val(node.val().replace(/\$$/, ""));
+          node.val("");
+          $("#serial_number").attr("disabled", "disabled");
+          $('#modal').modal('hide');
+          suggest("serial_number");
+        }     
+   }, 500)
+
+</script>
