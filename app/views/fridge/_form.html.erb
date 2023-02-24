@@ -39,11 +39,15 @@
 
         <fieldset>
 
+        <div class="form-group">
+          <label for="barcode_number">Barcode Number</label>
+          <input type="text" id="barcode_number" name="barcode_number" onchange="suggest(barcode_number)" class="form-control" data-validation="required" value="<%= @fridge.barcode_number %>">
+         </div>
 
           <div class="form-group">
             <label for="serial_number">Serial Number</label>
             <input type="text" id="serial_number" name="serial_number" onchange="suggest(serial_number)" class="form-control" data-validation="required" value="<%= @fridge.serial_number %>">
-            </div>
+          </div>
 
 
          <div class="form-group">
@@ -103,6 +107,7 @@
                     <span style="font-size: 14px;" id="suggest_key" >&nbsp;</span>
                 </caption>
               <tr>
+                <th>Barcode Number</th>
                 <th>Serial Number</th>
                 <th>Model</th>
                 <th>Location</th>
@@ -111,6 +116,7 @@
               </tr>
 
               <tr id="clone_me" style="display:none;">
+                <td class="barcode_number"></td>
                 <td class="serial_number"></td>
                 <td class="model"></td>
                 <td class="location" ></td>
@@ -126,7 +132,11 @@
 <script>
     function suggest(key){
 
-        var data = {serial_number: __$('serial_number').value };
+        var data = {
+          serial_number: __$('serial_number').value,
+          barcode_number: __$('barcode_number').value
+          };
+
         jQuery.ajax({
             url: "/fridge/fridge_suggestions",
             data: {
@@ -147,6 +157,7 @@
 
     function view(record){
         var clone = __$('clone_me').cloneNode(true);
+        clone.getElementsByClassName('barcode_number')[0].innerHTML = record['barcode_number'];
         clone.getElementsByClassName('serial_number')[0].innerHTML = record['serial_number'];
         clone.getElementsByClassName('model')[0].innerHTML = record['model'];
         clone.getElementsByClassName('location')[0].innerHTML = record['location'];

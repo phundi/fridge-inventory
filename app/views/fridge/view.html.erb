@@ -30,7 +30,7 @@
             <div class="col-md-8">
               <% (@modules || []).each do |mod, val|%>
                 <button type="button" onclick="window.location = '/module/view_module?fridge_id=<%= params[:fridge_id]%>&module=<%= mod%>'"
-                     class="btn btn-default pull-left module-btn" style="width: 27%;margin: 10px; padding: 10px; font-size: 1.2em;background: #f8f8ff;"><%=mod%> <br />
+                     class="btn btn-default pull-left module-btn" style="width: 30%;margin: 1.5%; padding: 10px; font-size: 1.2em;background: #f8f8ff;"><%=mod%> <br />
                     <span class="badge" style="font-size: 1.2em; background: #2e6da4;"><%= val%></span>
                 </button>
               <% end %>

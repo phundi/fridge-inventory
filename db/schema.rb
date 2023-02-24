@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 0) do
 
 
   create_table "fridge", primary_key: "fridge_id", force: :cascade do |t|
+    t.string   "barcode_number",  null: false
     t.string   "serial_number",  null: false
     t.string   "model",  null: false
     t.string   "description"        

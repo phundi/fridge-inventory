@@ -140,7 +140,7 @@ class ClientController < ApplicationController
     end
 
     data = Client.order(' client.created_at DESC ')
-    data = data.where(" ((CONCAT_WS(first_name, middle_name, last_name, gender, birthdate, address, email, occupation, phone_number, '_') REGEXP '#{search_val}')
+    data = data.where(" ((CONCAT_WS(first_name, middle_name, last_name, identifier, gender, birthdate, address, email, occupation, phone_number, '_') REGEXP '#{search_val}')
          #{tag_filter}) #{code_filter}")
     total = data.select(" count(*) c ")[0]['c'] rescue 0
     page = (params[:start].to_i / params[:length].to_i) + 1

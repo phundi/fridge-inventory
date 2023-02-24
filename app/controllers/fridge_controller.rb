@@ -16,7 +16,9 @@ class FridgeController < ApplicationController
     @clients = Client.all
 
     if request.post?
+
       @fridge = Fridge.new
+      @fridge.barcode_number = params[:barcode_number]
       @fridge.serial_number = params[:serial_number]
       @fridge.model = params[:model]
       @fridge.condition_id = params[:condition]
@@ -42,6 +44,7 @@ class FridgeController < ApplicationController
     @clients = Client.all
 
     if request.post?
+      @fridge.barcode_number = params[:barcode_number]
       @fridge.serial_number = params[:serial_number]
       @fridge.model = params[:model]
       @fridge.condition_id = params[:condition]
@@ -89,7 +92,7 @@ class FridgeController < ApplicationController
     @modules = []
     @modules <<  ['Helpdesk Tokens', @tokens.count]
     @modules <<  ['Services', @services.count ]
-    @modules <<  ['Relocations', ''] 
+    @modules <<  ['Relocations', '0'] 
 
 
     @common_encounters = []
@@ -121,8 +124,10 @@ class FridgeController < ApplicationController
     conditions = Condition.all.inject({}){|h, c| h[c.id] = c.name; h}
 
 
-    data = Fridge.order(' fridge.created_at DESC ')
-    data = data.where(" (CONCAT_WS(serial_number, model, description, '_') REGEXP '#{search_val}') ")
+    data = Fridge.joins(" LEFT JOIN location l ON l.location_id = fridge.current_location ")
+            .joins(" LEFT JOIN client cl ON cl.client_id = fridge.client_id ")
+            .order(' fridge.created_at DESC ')
+    data = data.where(" (CONCAT_WS(l.name, cl.first_name, cl.last_name, serial_number, model, fridge.description, '_') REGEXP '#{search_val}') ")
     total = data.select(" count(*) c ")[0]['c'] rescue 0
     page = (params[:start].to_i / params[:length].to_i) + 1
 
@@ -134,7 +139,7 @@ class FridgeController < ApplicationController
       cond = conditions[f.condition_id]
       location = Location.find(f.current_location).name
       owner = Client.find(f.client_id).name 
-      row = [f.serial_number, f.model, cond,  location, owner, f.id]
+      row = [f.barcode_number, f.serial_number, f.model, cond,  location, owner, f.id]
       @records << row
     end
 
@@ -148,11 +153,16 @@ class FridgeController < ApplicationController
   def fridge_suggestions
 
     results = []
-    results = Fridge.where(" serial_number = #{params['search_params']['serial_number']} AND created_at IS NOT NULL").limit(20);
+    if params['search_params']['serial_number'].present?
+      results = Fridge.where(" serial_number = '#{params['search_params']['serial_number']}' AND created_at IS NOT NULL");
+    elsif params['search_params']['barcode_number'].present?
+      results = Fridge.where(" barcode_number = '#{params['search_params']['barcode_number']}' AND created_at IS NOT NULL");
+    end
 
     response = []
     (results || []).each do |result|
       response << {
+          'barcode_number' => result.barcode_number,
           'serial_number' => result.serial_number,
           'model' => result.model,
           'location' => Location.find(result.current_location).name,
