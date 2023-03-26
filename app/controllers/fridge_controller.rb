@@ -70,8 +70,10 @@ class FridgeController < ApplicationController
       token.client_id = @fridge.client_id 
       token.fridge_id = @fridge.id 
       token.status = params[:token_status]
+      token.reported_by = params[:reported_by]
       token.token_date = params[:date_reported]
-      token.description = params[:description]
+      token.creator = @cur_user.id
+      token.description = params[:description].strip
       token.token_type = "Service"
       token.job_id = -1
       token.save
@@ -81,6 +83,38 @@ class FridgeController < ApplicationController
 
     render :layout => "form"
   end 
+
+  def service
+
+    @fridge = Fridge.find(params[:fridge_id])
+    @client= Client.find(@fridge.client_id)
+    @activities = Activity.all
+
+    if request.post?
+
+      service = Service.new
+      service.client_id = @fridge.client_id 
+      service.fridge_id = @fridge.id 
+      service.service_date = params[:service_date]
+      service.performed_by = params[:performed_by]
+      service.creator = @cur_user.id
+      service.description = params[:description].strip
+      service.job_id = params[:job_id]
+      service.save!
+
+      (params[:service_activities] || []).each do |ac|
+        ServiceActivity.create(
+          service_id: service.id,
+          activity_id: ac
+        )
+      end 
+
+      redirect_to "/fridge/view?fridge_id=#{@fridge.id}" and return
+    end 
+
+    render :layout => "form"
+  end 
+
     
   def view
     @fridge = Fridge.find(params[:fridge_id])

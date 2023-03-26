@@ -2,7 +2,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading ">
       <span class="glyphicon glyphicon-eye-open"></span>
-      <b>Enter Presenting Complaints</b>
+      <b>Add Service Details</b>
       <div class="panel-btn" style="padding: 8px;">
             &nbsp;
       </div>
@@ -18,23 +18,84 @@
             <div class="col-md-10 " style="padding: 0px;margin-left: 6%; min-height: 250px;">
                 <div class="col-md-12" style="border: 1px dotted lightsteelblue; margin: 10px;padding: 10px;">
 
-                  <form action="/create/<%= @client.id%>" method="POST">
-
-                    <%= hidden_field_tag "module", "OPD"%>
-                    <%= hidden_field_tag "encounter_type", "Presenting Complaints"%>
+                  <form action="/fridge/service" method="POST">
+                  <%= hidden_field_tag "fridge_id", @fridge.id%>
 
                     <div class="form-group col-md-12">
-                        <label class="control-label col-md-4">Presenting Complaints </label>
+                        <label class="control-label col-md-4">Fridge Serial Number </label>
 
                         <div class="col-md-8">
-                          <select id="complaints" data-placeholder="Select Complaints"
-                                  multiple="multiple" class="form-control" name="obs[presenting complaint][value_coded][]">
-                            <% (@complaints || []).each do |c| %>
-                                <option value="<%= c[1]%>"><%= c[0] %></option>
-                            <% end %>
-                          </select>
+                        <input id="serial_number" disabled="disabled"
+                          class="form-control" name="serial_number" value="<%=@fridge.serial_number%>"/>
                         </div>
+                        
+                    </div>
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4">Current Owner </label>
+
+                      <div class="col-md-8">
+                      <input id="owner" disabled="disabled"
+                        class="form-control" name="owner" value="<%=@client.name%>"/>
                       </div>
+                      
+                    </div>
+
+
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4">Date of Service </label>
+
+                      <div class="col-md-8">
+                      <input id="date_reported" type='date' data-validation="required"
+                        class="form-control" name="service_date" "/>
+                      </div>
+                      
+                    </div>
+
+
+
+                    <div class="form-group col-md-12">
+                    <label class="control-label col-md-4">Activities Performed </label>
+
+                    <div class="col-md-8">
+                      <select id="service_activities" data-placeholder="Select Activities"
+                              multiple="multiple" class="form-control" name="service_activities[]">
+                        <% (@activities ).each do |c| %>
+                            <option value="<%= c.id%>"><%= c.name %></option>
+                        <% end %>
+                      </select>
+                    </div>
+                  </div>
+                  
+                    <div class="form-group col-md-12">
+                      <label class="control-label col-md-4"> Other Details (if any) </label>
+
+                      <div class="col-md-8">
+                      <textarea id="desc" data-validation="required"
+                        class="form-control" name="description"> </textarea>
+                      </div>
+                      
+                   </div>
+
+                <div class="form-group col-md-12">
+                   <label class="control-label col-md-4">Performed By </label>
+
+                   <div class="col-md-8">
+                     <input id="reported_by" data-validation="required"
+                       class="form-control" name="performed_by" "/>
+                   </div>
+                 
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="control-label col-md-4">Jobcut Number </label>
+
+                    <div class="col-md-8">
+                      <input id="reported_by" data-validation="required"
+                        class="form-control" name="job_id" "/>
+                    </div>
+              
+               </div>
 
                     <div class="actions-row col-md-12" style="padding-right: 10%;">
                       <button type="button"
@@ -54,8 +115,6 @@
                 });
             });
         </script>
-        <%= render :partial => "encounter/patient_trail"%>
-
       </div>
     </div>
 </div>

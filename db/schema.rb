@@ -174,6 +174,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer   "fridge_id",  null: false
     t.date  "service_date",  null: false        
     t.integer  "job_id",  null: false
+    t.integer  "creator",  null: false
+    t.string  "performed_by",  null: false
     t.string   "description"        
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
