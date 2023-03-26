@@ -1,79 +1,153 @@
+<style>
+  .top-table{
+    width: 100%;
+    height: 100%;
+    box-shadow: 8px 8px 8px 0px lightgray;
+
+  }
+
+  .top-table td {
+    width: 25%;
+    height: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    border: 1px solid lightgray;
+    cursor: pointer;
+  }
+  .middle-table{
+    box-shadow: 8px 8px 8px 0px lightgray;
+    width: 92%;
+    margin-left: 4%;
+    border-top: 2px solid darkred
+
+  }
+
+
+  .middle-table td {
+    height: 100%;
+    text-align: center;
+    font-size: 1.1em;
+    border: 1px solid lightgray;
+    cursor: pointer;
+  }
+
+  .middle-table thead th {
+    text-align: center;
+  }
+  .middle-table th{
+    height: 100%;
+    padding: 15px;
+    font-weight: bold;
+    border: 1px solid lightgray;
+    color: darkslategrey;
+  }
+  .middle-table caption{
+    width: 92%;
+    margin-left: 4%;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: black;
+  }
+</style>
+
 <div style="width: 100%; height: 90vh;margin-top: 1vh;">
-<table style="width: 98%;height: 100%; margin: auto;">
+<table  style="width: 98%;height: 100%; margin: auto;">
   <tr>
-    <td style="width: 100%;height: 22.5%;border-bottom: 1px solid cornflowerblue;">
-    <button type="button" class="btn btn-lg btn-danger" style="margin-left: 5%;margin-right: 5%;">
-      Pending Services <span class="badge badge-light" style="font-size: 1.2em;">2</span>
-    </button>
-    
-    <button type="button" class="btn btn-lg btn-warning"  style="margin-left: 5%;">
-      Active Tokens <span class="badge badge-light" style="font-size: 1.2em;">0</span>
-    </button>
+    <td style="width: 100%;height: 6.5%;">
+      <select class="pull-right" id="district" label="District Filter" onchange="reloadData()"
+       style="width: 25% !important; padding: 7px; margin-top: 13px; margin-bottom: 15px; background: white;;">
+            <option value="">All  Districts</option>
+            <% @districts.each do |t|%>
+              <option value="<%=t.id%>"><%= t.name%></option>
+            <% end %>
+      </select>
+    </td>
+  </tr>
 
-    
+  <tr>
+   <td>
+      <table class="top-table">
+        <tr>
+          <td class="btn-danger" >
+              Pending Services <br /> <span>3</span>
+          </td>
 
-    <button type="button" class="btn btn-lg btn-warning" style="margin-left: 5%;">
-      Relocations <span class="badge badge-light" style="font-size: 1.2em;">2</span>
-    </button>
+          <td class="btn-warning">
+            Active Tokens <br /> <span>7</span>
+          </td>
 
-    <button type="button" class="btn btn-lg btn-warning" style="margin-left: 3%;">
-      Recorded Fridges <span class="badge badge-light" style="font-size: 1.2em;">10</span>
-    </button>
+          <td class="btn-primary">
+            Services Done <br /> <span>23</span>
+          </td>
 
+          <td>
+            Recorded Fridges <br /> <span>100</span>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
 
   <tr>
     <td style="width: 100%;height: 60%;border-bottom: 1px solid cornflowerblue; font-size: 1.1em">
-    <table class="table table-md table-dark">
-    <thead>
-      <tr>
-        <th scope="col"></th>
-        <th scope="col">Service Done</th>
-        <th scope="col">Escalations</th>
-        <th scope="col">All Fridges Recorded</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr>
-    <th scope="row">Today</th>
-    <td>0</td>
-    <td>0</td>
-    <td>0</td>
-  </tr>
-      <tr>
-        <th scope="row">This Week</th>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <th scope="row">This Month</th>
-        <td>0</td>
-        <td>0</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <th scope="row">This Year</th>
-        <td>23</td>
-        <td>65</td>
-        <td>6</td>
-      </tr>
+        <table class="table  middle-table">
+          <caption> Statistics By Time </caption>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Pending Services</th>
+              <th scope="col">Active Tokens</th>
+              <th scope="col">Services Done</th>
+              <th scope="col">Recorded Fridges</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+          <th scope="row">Today</th>
+          <td>3</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+            <tr>
+              <th scope="row">This Week</th>
+              <td>3</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <th>This Month</th>
+              <td>3</td>
+              <td>7</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <th scope="row">This Year</th>
+              <td>3</td>
+              <td>7</td>
+              <td>23</td>
+              <td>100</td>
+            </tr>
 
-      <tr>
-      <th scope="row">Ever Since</th>
-      <td>23</td>
-      <td>65</td>
-      <td>6</td>
-    </tr>
+             <tr>
+              <th scope="row">Ever Since</th>
+              <td>3</td>
+              <td>7</td>
+              <td>23</td>
+              <td>100</td>
+            </tr>          
 
-    </tbody>
-  </table>
+          </tbody>
+      </table>
     </td>
   </tr>
 
   <tr>
-    <td style="width: 100%;height: 22.5%;">
+    <td style="width: 100%;height: 14.5%;">
 
     </td>
   </tr>

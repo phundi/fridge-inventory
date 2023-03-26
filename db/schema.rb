@@ -159,6 +159,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer   "client_id",  null: false
     t.integer   "fridge_id",  null: false
     t.date  "token_date",  null: false        
+    t.integer  "creator"
+    t.string  "reported_by  "
     t.integer  "job_id"
     t.string  "status",  null: false
     t.string  "token_type"
