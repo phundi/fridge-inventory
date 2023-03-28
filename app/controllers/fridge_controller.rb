@@ -63,6 +63,7 @@ class FridgeController < ApplicationController
     @client= Client.find(@fridge.client_id)
 
     @statuses = ["New", "In Progress", "Closed"]
+    @token_types = ["Service Request", "Other"]
 
     if request.post?
 
@@ -74,7 +75,7 @@ class FridgeController < ApplicationController
       token.token_date = params[:date_reported]
       token.creator = @cur_user.id
       token.description = params[:description].strip
-      token.token_type = "Service"
+      token.token_type = params[:token_type] 
       token.job_id = -1
       token.save
 
@@ -207,4 +208,73 @@ class FridgeController < ApplicationController
 
     render text: response.to_json
   end
+
+  def selected_services_done
+    start_date, end_date = date_ranges
+    @title = "Listing of Services Done"
+    @data = []
+    @data << ["Client Name", "Location", "Fridge Barcode", "Model", "Service Date", 
+    "Technician", "Service Activities", "Details", ""]
+
+    Service.find_by_sql("
+      SELECT 
+        c.first_name, c.last_name, f.model, f.fridge_id, f.current_location, 
+        s.performed_by, s.service_date, s.service_id, s.description, f.barcode_number 
+      FROM service s 
+        INNER JOIN fridge f ON f.fridge_id = s.fridge_id 
+        INNER JOIN client c ON c.client_id = s.client_id
+      WHERE s.service_date BETWEEN '#{start_date}' AND '#{end_date}' #{district_filter}
+    ").each do |d|
+      name = d.first_name + " " + d.last_name
+      location = Location.find(d.current_location).name 
+      @data << [name, location, d.barcode_number, d.model, d.service_date, d.performed_by, d.activities.join(","), d.description, d.service_id]
+    end 
+
+    render template: "fridge/generic_table"
+  end 
+
+  def selected_active_tokens
+    start_date, end_date = date_ranges
+    @title = "Listing of Active Helpdesk Tokens"
+    @data = []
+    @data << ["Client Name", "Location", "Fridge Barcode", "Model", "Date Reported", 
+    "Reported By", "Status", "Type", ""]
+
+    HelpdeskToken.find_by_sql("
+      SELECT 
+        c.first_name, c.last_name, f.model, f.fridge_id, f.current_location, t.status, t.token_type,
+        t.reported_by, t.token_date, t.helpdesk_token_id, t.description, f.barcode_number 
+      FROM helpdesk_token t 
+        INNER JOIN fridge f ON f.fridge_id = t.fridge_id 
+        INNER JOIN client c ON c.client_id = t.client_id
+      WHERE t.status IN ('New', 'In Progress') AND t.token_date BETWEEN '#{start_date}' AND '#{end_date}' #{district_filter}
+    ").each do |d|
+      name = d.first_name + " " + d.last_name
+      location = Location.find(d.current_location).name 
+      @data << [name, location, d.barcode_number, d.model, d.token_date, d.reported_by,
+      d.status, d.token_type, d.description, d.helpdesk_token_id]
+    end 
+
+    render template: "fridge/generic_table"
+  end
+
+  def selected_recorded_fridges
+    start_date, end_date = date_ranges
+  end 
+
+  private 
+  def date_ranges 
+    start_date, end_date = ["1900-01-01".to_date.to_s, Date.today.to_s]
+    start_date = params[:start_date].to_date.to_s if params[:start_date].present?
+    end_date = params[:end_date].to_date.to_s if params[:end_date].present?
+
+    [start_date, end_date]
+  end 
+
+  def district_filter 
+    district_filter = " "
+    district_filter = " AND f.current_location = '#{params[:district_id]}' " if params[:district_id].present?
+    district_filter
+  end 
+
 end

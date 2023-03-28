@@ -1,0 +1,112 @@
+<style>
+  .status{
+      color: #008000;
+  }
+  .disabled .status {
+      background-color: #d59392;
+      color: #000;
+  }
+
+  #tag, #example_filter{
+      float: right;
+      font-size: 15px;
+      background:white;
+  }
+
+  #example_filter input{
+      margin-bottom: 10px;
+      float: right;
+      margin-left: 20px;
+  }
+
+  #example_filter label{
+      float: right;
+  }
+</style>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-list"></span>
+      <b> <%=@title%> </b>
+      
+      </div>
+    </div>
+    <div class="panel-body">
+        <%
+        headers = @data.shift
+        %>
+        <table id="example" style="width: 100%;" class="data-table table table-condensed table-striped">
+            <thead>
+            <tr role="row">
+             <% headers.each do |header |%>
+              
+              <th><%=header%></th>
+             <% end %>
+            </tr>
+            </thead>
+        <tbody>
+        <tr role="row">
+             <% @data.each do |data_row |%>
+              
+              <tr>
+                <% data_row.each_with_index do |dt, i|
+                  next if i == data_row.length - 1
+                  %>
+                  <td>
+                    <%=dt%>
+                  </td>
+                <% end %>
+              </tr>
+             <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="printerModalLabel" style="text-align: left;">
+            Are you sure you want to proceed?
+        </h4>
+      </div>
+      <div class="modal-body">
+        <span style="text-align:center;">
+
+        </span>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+          <button type="button" class="btn btn-primary" onclick="doDelete()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    table = null;
+
+    $(document).ready(function() {
+
+        table = $('.data-table').DataTable(
+                  {
+          columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+          }]
+        })
+       
+        //$("#example_filter input").first().focus()
+
+    })
+
+    function __$(id){
+        return document.getElementById(id);
+    }
+
+
+</script>

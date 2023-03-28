@@ -23,7 +23,6 @@
 
   }
 
-
   .middle-table td {
     height: 100%;
     text-align: center;
@@ -50,13 +49,24 @@
     font-weight: bold;
     color: black;
   }
+
+  .recorded_fridges{
+  }
+  .services_done{
+  }
+
+  .active_tokens{
+  }
+
+  .pending_services{
+  }
 </style>
 
 <div style="width: 100%; height: 90vh;margin-top: 1vh;">
 <table  style="width: 98%;height: 100%; margin: auto;">
   <tr>
     <td style="width: 100%;height: 6.5%;">
-      <select class="pull-right" id="district" label="District Filter" onchange="reloadData()"
+      <select class="pull-right" id="district_id" label="District Filter" onchange="loadDashboardData()"
        style="width: 25% !important; padding: 7px; margin-top: 13px; margin-bottom: 15px; background: white;;">
             <option value="">All  Districts</option>
             <% @districts.each do |t|%>
@@ -71,19 +81,19 @@
       <table class="top-table">
         <tr>
           <td class="btn-danger" >
-              Pending Services <br /> <span>3</span>
+              Pending Services <br /> <span id='pending_services'></span>
           </td>
 
           <td class="btn-warning">
-            Active Tokens <br /> <span>7</span>
+            Active Tokens <br /> <span id='active_tokens'></span>
           </td>
 
-          <td class="btn-primary">
-            Services Done <br /> <span>23</span>
+          <td class="btn-primary" >
+            Services Done <br /> <span id='services_done'></span>
           </td>
 
           <td>
-            Recorded Fridges <br /> <span>100</span>
+            Recorded Fridges <br /> <span id='recorded_fridges'></span>
           </td>
         </tr>
       </table>
@@ -104,41 +114,41 @@
             </tr>
           </thead>
           <tbody>
-          <tr>
-          <th scope="row">Today</th>
-          <td>3</td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-        </tr>
+            <tr>
+              <th scope="row">Today</th>
+              <td class='today pending_services' ></td>
+              <td class='today active_tokens'></td>
+              <td class='today services_done' ></td>
+              <td class='today recorded_fridges' ></td>
+            </tr>
             <tr>
               <th scope="row">This Week</th>
-              <td>3</td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
+              <td class='week pending_services' ></td>
+              <td class='week active_tokens' ></td>
+              <td class='week services_done' ></td>
+              <td class='week recorded_fridges' ></td>
             </tr>
             <tr>
               <th>This Month</th>
-              <td>3</td>
-              <td>7</td>
-              <td>0</td>
-              <td>0</td>
+              <td class='month pending_services'></td>
+              <td class='month active_tokens'></td>
+              <td class='month services_done'></td>
+              <td class='month recorded_fridges'></td>
             </tr>
             <tr>
               <th scope="row">This Year</th>
-              <td>3</td>
-              <td>7</td>
-              <td>23</td>
-              <td>100</td>
+              <td class='year pending_services'></td>
+              <td class='year active_tokens'></td>
+              <td class='year services_done'></td>
+              <td class='year recorded_fridges'></td>
             </tr>
 
              <tr>
               <th scope="row">Ever Since</th>
-              <td>3</td>
-              <td>7</td>
-              <td>23</td>
-              <td>100</td>
+              <td class='eversince pending_services'></td>
+              <td class='eversince active_tokens'></td>
+              <td class='eversince services_done'></td>
+              <td class='eversince recorded_fridges'></td>
             </tr>          
 
           </tbody>
@@ -153,3 +163,51 @@
   </tr>
 </table>
 </div>
+
+<script>
+  $(document).ready(function(){
+    loadDashboardData();
+  })
+
+  function loadAggregates(){
+    district = __$('district_id').value
+    jQuery.ajax({
+      url: 'home/aggregates?district_id=' + district,
+      success: function(result){
+        data = JSON.parse(result);
+        for(k in data){
+          __$(k).innerHTML = data[k];
+          __$(k).parentNode.setAttribute('category', k)
+          __$(k).parentNode.onclick = function(){
+              var category = this.getAttribute('category')
+              window.location = 'fridge/selected_' + category
+          }
+        }
+      }
+    });
+  }
+
+  function loadAggregatesByPeriod(){
+    district = __$('district_id').value
+    jQuery.ajax({
+      url: 'home/aggregates_by_period?district_id=' + district,
+      success: function(result){
+        data = JSON.parse(result);
+        for(period in data){
+            for (k in data[period]){
+              $("." + period.trim()).filter("." + k.trim()).html(data[period.trim()][k.trim()]);
+              $("." + period.trim()).filter("." + k.trim()).click(function(){
+                loadDataByClassName(this.className);
+              })
+            }
+        }
+      }
+    });
+  }
+
+  function loadDashboardData(){
+    loadAggregates();
+    loadAggregatesByPeriod();
+  }
+  
+</script>

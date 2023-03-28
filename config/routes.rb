@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   get "user/roles"
   get "user/permissions"
 
+  get "home/aggregates"
+  get "home/aggregates_by_period"
+
   get "user/new_role"
   get "user/edit_role"
   get "user/edit_role"
@@ -96,6 +99,11 @@ Rails.application.routes.draw do
 
   get "fridge/helpdesk_token"
   post "fridge/helpdesk_token"
+
+  get "fridge/selected_pending_services"
+  get "fridge/selected_active_tokens"
+  get "fridge/selected_recorded_fridges"
+  get "fridge/selected_services_done"
 
   get "fridge/service"
   post "fridge/service"
