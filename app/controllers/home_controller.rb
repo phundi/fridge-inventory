@@ -11,7 +11,13 @@ class HomeController < ApplicationController
     district_filter = ' '
     district_filter = " AND f.current_location = #{params[:district_id]} " if params[:district_id].present?
 
-    data['pending_services'] = Service.count 
+    data['pending_services'] = HelpdeskToken.find_by_sql("
+    SELECT * FROM helpdesk_token t 
+      INNER JOIN fridge f ON f.fridge_id = t.fridge_id
+      WHERE true #{district_filter} AND t.token_date BETWEEN '#{start_date}' AND '#{end_date}'
+     AND t.status IN ('New', 'In Progress') AND t.token_type = 'Service Request' "
+  ).count 
+
 
     data['active_tokens'] = HelpdeskToken.find_by_sql("
         SELECT * FROM helpdesk_token t 

@@ -27,6 +27,7 @@ class ClientController < ApplicationController
       @client.phone_number = params[:phone_number]
       @client.email = params[:email]
       @client.address = params[:address] rescue nil
+      @client.creator = @cur_user.id
       @client.occupation = params[:occupation]
       @client.save
       redirect_to "/client/view?client_id=#{@client.id}"

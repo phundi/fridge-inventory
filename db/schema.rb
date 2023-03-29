@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string   "phone_number"
     t.string   "email",          limit: 100,             null: false
     t.datetime "created_at",                             null: false
+    t.integer  "creator",  null: false, default: 1
     t.datetime "updated_at",                             null: false
   end
 
@@ -153,6 +154,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer  "current_location",  null: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.integer  "creator",  null: false, default: 1
+
   end
 
   create_table "helpdesk_token", primary_key: "helpdesk_token_id", force: :cascade do |t|

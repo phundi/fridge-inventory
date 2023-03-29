@@ -180,7 +180,7 @@
           __$(k).parentNode.setAttribute('category', k)
           __$(k).parentNode.onclick = function(){
               var category = this.getAttribute('category')
-              window.location = 'fridge/selected_' + category
+              window.location = 'fridge/selected_' + category + "?district_id=" + __$("district_id").value
           }
         }
       }
@@ -195,9 +195,13 @@
         data = JSON.parse(result);
         for(period in data){
             for (k in data[period]){
+              $("." + period.trim()).filter("." + k.trim()).attr("period", period.trim())
+              $("." + period.trim()).filter("." + k.trim()).attr("category", k.trim())
+
               $("." + period.trim()).filter("." + k.trim()).html(data[period.trim()][k.trim()]);
               $("." + period.trim()).filter("." + k.trim()).click(function(){
-                loadDataByClassName(this.className);
+
+                window.location = 'fridge/selected_' + $(this).attr("category") + '?period=' + $(this).attr("period") + "&district_id=" + __$("district_id").value ;
               })
             }
         }

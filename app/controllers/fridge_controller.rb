@@ -25,6 +25,7 @@ class FridgeController < ApplicationController
       @fridge.description = params[:description]
       @fridge.current_location = params[:district]
       @fridge.client_id = params[:owner]
+      @fridge.creator = @cur_user.id
       @fridge.save
 
       redirect_to "/fridge/view?fridge_id=#{@fridge.id}"
@@ -127,7 +128,6 @@ class FridgeController < ApplicationController
     @modules = []
     @modules <<  ['Helpdesk Tokens', @tokens.count]
     @modules <<  ['Services', @services.count ]
-    @modules <<  ['Relocations', '0'] 
 
 
     @common_encounters = []
@@ -238,7 +238,7 @@ class FridgeController < ApplicationController
     @title = "Listing of Active Helpdesk Tokens"
     @data = []
     @data << ["Client Name", "Location", "Fridge Barcode", "Model", "Date Reported", 
-    "Reported By", "Status", "Type", ""]
+    "Reported By", "Status", "Type", "Details"]
 
     HelpdeskToken.find_by_sql("
       SELECT 
@@ -258,15 +258,75 @@ class FridgeController < ApplicationController
     render template: "fridge/generic_table"
   end
 
+  def selected_pending_services
+    start_date, end_date = date_ranges
+    @title = "Listing of Pending Fridge Services"
+    @data = []
+    @data << ["Client Name", "Location", "Fridge Barcode", "Model", "Date Reported", 
+    "Reported By", "Status", "Type", "Details"]
+
+    HelpdeskToken.find_by_sql("
+      SELECT 
+        c.first_name, c.last_name, f.model, f.fridge_id, f.current_location, t.status, t.token_type,
+        t.reported_by, t.token_date, t.helpdesk_token_id, t.description, f.barcode_number 
+      FROM helpdesk_token t 
+        INNER JOIN fridge f ON f.fridge_id = t.fridge_id 
+        INNER JOIN client c ON c.client_id = t.client_id
+      WHERE t.status IN ('New', 'In Progress') 
+      AND t.token_type = 'Service Request' AND t.token_date BETWEEN '#{start_date}' AND '#{end_date}' #{district_filter}
+    ").each do |d|
+      name = d.first_name + " " + d.last_name
+      location = Location.find(d.current_location).name 
+      @data << [name, location, d.barcode_number, d.model, d.token_date, d.reported_by,
+      d.status, d.token_type, d.description, d.helpdesk_token_id]
+    end 
+
+    render template: "fridge/generic_table"
+  end
+
+
   def selected_recorded_fridges
     start_date, end_date = date_ranges
-  end 
+    @title = "Listing of Recorded Fridges"
+    @data = []
+    @data << ["Client Name", "Location", "Fridge Barcode", "Model",  "Condition",
+               "Date Recorded", "Recorded By"]
+
+    Fridge.find_by_sql("
+          SELECT 
+            c.first_name, c.last_name, f.model, f.fridge_id, f.current_location,
+            f.barcode_number, f.fridge_id, f.condition_id, f.created_at, f.creator
+          FROM fridge f
+            INNER JOIN client c ON c.client_id = f.client_id
+          WHERE true #{district_filter}    
+            AND DATE(f.created_at) BETWEEN '#{start_date}' AND '#{end_date}'
+      ").each do |d|
+        name = d.first_name + " " + d.last_name
+        location = Location.find(d.current_location).name 
+        condition = Condition.find(d.condition_id).name
+        u = User.find(d.creator)
+        recorder = "#{u.first_name} #{u.last_name}"
+        @data << [name, location, d.barcode_number, d.model, condition, d.created_at.to_date.to_s,
+        recorder, d.fridge_id]
+      end 
+
+    render template: "fridge/generic_table"  end 
 
   private 
   def date_ranges 
     start_date, end_date = ["1900-01-01".to_date.to_s, Date.today.to_s]
     start_date = params[:start_date].to_date.to_s if params[:start_date].present?
     end_date = params[:end_date].to_date.to_s if params[:end_date].present?
+
+    if params['period'].present?
+      start_date, end_date = {
+        "today" => [Date.today, Date.today],
+        "week"  => [Time.now.beginning_of_week.to_date, Time.now.end_of_week.to_date],
+        "month"  => [Time.now.beginning_of_month.to_date, Time.now.end_of_month.to_date],
+        "year"  => [Time.now.beginning_of_year.to_date, Time.now.end_of_year.to_date],
+        "eversince"  => ["1900-01-01".to_date.to_s, Date.today.to_s]
+      }[params['period']]
+    end 
 
     [start_date, end_date]
   end 
