@@ -218,6 +218,12 @@
               })
             }
         }
+
+        var el = document.getElementById('district_id');
+        var district = el.options[el.selectedIndex].innerHTML;
+        __$("district_label").innerHTML = district;
+        $("#spinner-div").hide();
+
       }
     });
   }
@@ -227,11 +233,6 @@
 
     loadAggregates();
     loadAggregatesByPeriod();
-
-    var el = document.getElementById('district_id');
-    var district = el.options[el.selectedIndex].innerHTML;
-    __$("district_label").innerHTML = district;
-    $("#spinner-div").hide();
 
   }
   
