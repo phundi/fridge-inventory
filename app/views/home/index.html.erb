@@ -76,8 +76,11 @@
 <table  style="width: 98%;height: 100%; margin: auto;">
   <tr>
     <td style="width: 100%;height: 6.5%;">
+      <div class="pull-left" style="font-size: 1.2em; padding: 7px; margin-top: 13px; margin-bottom: 15px; background: white;"> 
+        Showing Data for <span style="font-weight: bold;" id='district_label'> All Districts</span>
+      </div>
       <select class="pull-right" id="district_id" label="District Filter" onchange="loadDashboardData()"
-       style="width: 25% !important; padding: 7px; margin-top: 13px; margin-bottom: 15px; background: white;;">
+       style="width: 25% !important; padding: 7px; margin-top: 13px; margin-bottom: 15px; background: white;">
             <option value="">All  Districts</option>
             <% @districts.each do |t|%>
               <option value="<%=t.id%>"><%= t.name%></option>
@@ -225,6 +228,9 @@
     loadAggregates();
     loadAggregatesByPeriod();
 
+    var el = document.getElementById('district_id');
+    var district = el.options[el.selectedIndex].innerHTML;
+    __$("district_label").innerHTML = district;
     $("#spinner-div").hide();
 
   }
