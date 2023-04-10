@@ -422,27 +422,33 @@ class FridgeController < ApplicationController
   def selected_verifications_done
     start_date, end_date = date_ranges
     @title = "Listing of Verifications"
+
+    client_filter = " "
+    if params[:client_id].present?
+      client_filter = " AND c.client_id = #{params[:client_id]}"
+    end 
+
+
     @data = []
-    @data << ["Client Name", "Location", "Fridge Barcode", "Model",  "Condition",
-               "Date Recorded", "Recorded By"]
+    @data << ["Client Name", "Outlet Barcode", "Fridge Barcode",
+               "Date Verified", "Verified By", "Verification Outcome",
+               "Details"]
 
     Fridge.find_by_sql("
           SELECT 
-            c.first_name, c.last_name, f.model, f.fridge_id, f.current_location,
-            f.barcode_number, f.fridge_id, f.condition_id, f.created_at, f.creator
-          FROM fridge f
-            INNER JOIN client c ON c.client_id = f.client_id
-
-          WHERE true #{district_filter}    
-            AND DATE(f.created_at) BETWEEN '#{start_date}' AND '#{end_date}'
+            c.first_name, c.last_name, v.verification_id, v.status, v.description,
+            v.outlet_barcode_number, v.fridge_barcode_number, v.created_at, v.creator
+          FROM verification v
+            INNER JOIN client c ON c.client_id = v.client_id
+            LEFT JOIN fridge f ON f.barcode_number = v.fridge_barcode_number
+          WHERE true #{district_filter}   #{client_filter}  
+            AND DATE(v.created_at) BETWEEN '#{start_date}' AND '#{end_date}'
       ").each do |d|
         name = d.first_name + " " + d.last_name
-        location = Location.find(d.current_location).name 
-        condition = Condition.find(d.condition_id).name
         u = User.find(d.creator)
         recorder = "#{u.first_name} #{u.last_name}"
-        @data << [name, location, d.barcode_number, d.model, condition, d.created_at.to_date.to_s,
-        recorder, d.fridge_id]
+        @data << [name, d.outlet_barcode_number, d.fridge_barcode_number, d.created_at.to_date.to_s,
+        recorder, d.status, d.description , d.verification_id]
       end 
 
     render template: "fridge/generic_table"  
