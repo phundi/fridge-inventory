@@ -1,3 +1,12 @@
+<script src="/js/dataTables.buttons.min.js"></script>
+<script src="/js/buttons.html5.min.js"></script>
+<script src="/js/buttons.print.min.js"></script>
+<script src="/js/pdfmake.min.js"></script>
+<script src="/js/jszip.min.js"></script>
+<script src="/js/vfs_fonts.js"></script>
+
+<link href="/css/buttons.dataTables.min.css" rel="stylesheet">
+
 <style>
   .status{
       color: #008000;
@@ -21,6 +30,22 @@
 
   #example_filter label{
       float: right;
+  }
+
+  .details-label, .details-value{
+    border: 1px solid lightgray;
+    padding: 5px;
+    font-size: 1.1em;
+  }
+  .details-label{
+    font-weight: bold;
+  }
+
+  .details-value{
+    padding-left: 15px;
+  }
+  #details_table{
+    margin-left: 10%;
   }
 </style>
 
@@ -47,15 +72,24 @@
             </thead>
         <tbody>
         <tr role="row">
-             <% @data.each do |data_row |%>
+             <% @data.each_with_index do |data_row, j |%>
               
-              <tr>
+              <tr id="show<%= j%>">
                 <% data_row.each_with_index do |dt, i|
-                  next if i == data_row.length - 1
+                  if i == data_row.length - 1 
                   %>
-                  <td>
-                    <%=dt%>
+
+                  <td >
+                    <a class="btn btn-sm btn-info" onclick="showDetails('show<%=j%>')"> 
+                    <span class="glyphicon glyphicon-eye-open"></span> View </a>
                   </td>
+                  <% else  %>
+                    <td>
+                      <%=dt%>
+                    </td>
+
+                  <% end  %>
+
                 <% end %>
               </tr>
              <% end %>
@@ -64,24 +98,25 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="printerModalLabel" style="text-align: left;">
-            Are you sure you want to proceed?
+        <h4 class="modal-title" id="details" style="text-align: left;">
+            Details 
         </h4>
       </div>
-      <div class="modal-body">
-        <span style="text-align:center;">
 
-        </span>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
-          <button type="button" class="btn btn-primary" onclick="doDelete()">Yes</button>
-        </div>
+      <div class="modal-body">
+        <table id='details_table'>
+                    
+        </table>
       </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">cancel</button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -94,6 +129,10 @@
 
         table = $('.data-table').DataTable(
                   {
+        dom: 'Bfrtip',
+        buttons: [
+            'excel', 'csv', 'pdf', 'print'
+        ],
           columnDefs: [{
             "defaultContent": "-",
             "targets": "_all"
@@ -103,6 +142,34 @@
         //$("#example_filter input").first().focus()
 
     })
+
+    function showDetails(id){
+      jQuery("#details_table").empty();
+
+      var tds = __$(id).getElementsByTagName('td')
+      <% headers.each_with_index do |h, i|
+        next if i == headers.length - 1 
+        %>
+       
+        var row = document.createElement("tr");
+
+        var td1 = document.createElement("td")
+        td1.className = "details-label"
+        
+        var td2 = document.createElement("td")
+        td2.className = "details-value"
+
+        row.appendChild(td1);
+        row.appendChild(td2);
+
+        td1.innerHTML = '<%=h%>'
+        td2.innerHTML = tds[<%=i%>].innerHTML;
+        
+        __$('details_table').appendChild(row);
+      <% end %>
+
+      jQuery("#detailsModal").modal('show')
+    }
 
     function __$(id){
         return document.getElementById(id);

@@ -31,11 +31,20 @@ class HomeController < ApplicationController
         INNER JOIN fridge f ON s.fridge_id = f.fridge_id
         WHERE true #{district_filter} AND s.service_date BETWEEN '#{start_date}' AND '#{end_date}'
     ").count
-
+    
+=begin
     data['recorded_fridges'] = Fridge.find_by_sql("
           SELECT * FROM fridge f WHERE true #{district_filter} 
             AND DATE(f.created_at) BETWEEN '#{start_date}' AND '#{end_date}'
         ").count
+=end
+
+    data['verifications_done'] = Fridge.find_by_sql("
+        SELECT * FROM verification v 
+          INNER JOIN fridge f ON v.fridge_barcode_number = f.barcode_number
+         WHERE true #{district_filter} 
+          AND DATE(v.created_at) BETWEEN '#{start_date}' AND '#{end_date}'
+      ").count
 
     data
   end 

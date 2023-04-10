@@ -19,7 +19,7 @@ class FridgeController < ApplicationController
 
       @fridge = Fridge.new
       @fridge.barcode_number = params[:barcode_number]
-      @fridge.serial_number = params[:serial_number]
+      @fridge.outlet_barcode_number = params[:outlet_barcode_number]
       @fridge.model = params[:model]
       @fridge.condition_id = params[:condition]
       @fridge.description = params[:description]
@@ -46,7 +46,7 @@ class FridgeController < ApplicationController
 
     if request.post?
       @fridge.barcode_number = params[:barcode_number]
-      @fridge.serial_number = params[:serial_number]
+      @fridge.outlet_barcode_number = params[:outlet_barcode_number]
       @fridge.model = params[:model]
       @fridge.condition_id = params[:condition]
       @fridge.description = params[:description]
@@ -126,14 +126,13 @@ class FridgeController < ApplicationController
     @services = Service.where(fridge_id: @fridge.id).pluck :service_id 
 
     @modules = []
-    @modules <<  ['Helpdesk Tokens', @tokens.count]
-    @modules <<  ['Services', @services.count ]
+    @modules <<  ['Tokens', @tokens.count, "/fridge/all_tokens?fridge_id=#{@fridge.id}"]
+    @modules <<  ['Services', @services.count, "/fridge/selected_services_done?fridge_id=#{@fridge.id}" ]
 
 
     @common_encounters = []
     @common_encounters << ['New Helpdesk Token', '/fridge/helpdesk_token']
     @common_encounters << ['Add Service Details', '/fridge/service']
-    @common_encounters << ['Change Owner', '/fridge/relocate']
 
     encounters = []
 
@@ -157,12 +156,17 @@ class FridgeController < ApplicationController
     tag_filter = ''
     code_filter = ''
     conditions = Condition.all.inject({}){|h, c| h[c.id] = c.name; h}
-
+    client_filter = " "
+    if params[:client_id].present?
+      client_filter = " AND cl.client_id = #{params[:client_id]}"
+    end 
 
     data = Fridge.joins(" LEFT JOIN location l ON l.location_id = fridge.current_location ")
             .joins(" LEFT JOIN client cl ON cl.client_id = fridge.client_id ")
             .order(' fridge.created_at DESC ')
-    data = data.where(" (CONCAT_WS(l.name, cl.first_name, cl.last_name, serial_number, model, fridge.description, '_') REGEXP '#{search_val}') ")
+    data = data.where(" (CONCAT_WS(l.name, cl.first_name, cl.last_name, outlet_barcode_number, model, fridge.description, '_') REGEXP '#{search_val}') 
+      #{client_filter}
+    ")
     total = data.select(" count(*) c ")[0]['c'] rescue 0
     page = (params[:start].to_i / params[:length].to_i) + 1
 
@@ -174,7 +178,7 @@ class FridgeController < ApplicationController
       cond = conditions[f.condition_id]
       location = Location.find(f.current_location).name
       owner = Client.find(f.client_id).name 
-      row = [f.barcode_number, f.serial_number, f.model, cond,  location, owner, f.id]
+      row = [f.barcode_number, f.outlet_barcode_number, f.model, cond,  location, owner, f.id]
       @records << row
     end
 
@@ -188,8 +192,8 @@ class FridgeController < ApplicationController
   def fridge_suggestions
 
     results = []
-    if params['search_params']['serial_number'].present?
-      results = Fridge.where(" serial_number = '#{params['search_params']['serial_number']}' AND created_at IS NOT NULL");
+    if params['search_params']['outlet_barcode_number'].present?
+      results = Fridge.where(" outlet_barcode_number = '#{params['search_params']['outlet_barcode_number']}' AND created_at IS NOT NULL");
     elsif params['search_params']['barcode_number'].present?
       results = Fridge.where(" barcode_number = '#{params['search_params']['barcode_number']}' AND created_at IS NOT NULL");
     end
@@ -198,7 +202,7 @@ class FridgeController < ApplicationController
     (results || []).each do |result|
       response << {
           'barcode_number' => result.barcode_number,
-          'serial_number' => result.serial_number,
+          'outlet_barcode_number' => result.outlet_barcode_number,
           'model' => result.model,
           'location' => Location.find(result.current_location).name,
           'owner' => Client.find(result.client_id).name,
@@ -216,6 +220,16 @@ class FridgeController < ApplicationController
     @data << ["Client Name", "Location", "Fridge Barcode", "Model", "Service Date", 
     "Technician", "Service Activities", "Details", ""]
 
+    client_filter = " "
+    if params[:client_id].present?
+      client_filter = " AND c.client_id = #{params[:client_id]}"
+    end 
+
+    fridge_filter = " "
+    if params[:fridge_id].present?
+      client_filter = " AND s.fridge_id = #{params[:fridge_id]}"
+    end 
+
     Service.find_by_sql("
       SELECT 
         c.first_name, c.last_name, f.model, f.fridge_id, f.current_location, 
@@ -224,6 +238,7 @@ class FridgeController < ApplicationController
         INNER JOIN fridge f ON f.fridge_id = s.fridge_id 
         INNER JOIN client c ON c.client_id = s.client_id
       WHERE s.service_date BETWEEN '#{start_date}' AND '#{end_date}' #{district_filter}
+       #{client_filter} #{fridge_filter}
     ").each do |d|
       name = d.first_name + " " + d.last_name
       location = Location.find(d.current_location).name 
@@ -248,6 +263,42 @@ class FridgeController < ApplicationController
         INNER JOIN fridge f ON f.fridge_id = t.fridge_id 
         INNER JOIN client c ON c.client_id = t.client_id
       WHERE t.status IN ('New', 'In Progress') AND t.token_date BETWEEN '#{start_date}' AND '#{end_date}' #{district_filter}
+    ").each do |d|
+      name = d.first_name + " " + d.last_name
+      location = Location.find(d.current_location).name 
+      @data << [name, location, d.barcode_number, d.model, d.token_date, d.reported_by,
+      d.status, d.token_type, d.description, d.helpdesk_token_id]
+    end 
+
+    render template: "fridge/generic_table"
+  end
+
+  def all_tokens
+    start_date, end_date = date_ranges
+    @title = "Listing of Helpdesk Tokens"
+    @data = []
+    @data << ["Client Name", "Location", "Fridge Barcode", "Model", "Date Reported", 
+    "Reported By", "Status", "Type", "Details"]
+
+    client_filter = " "
+    if params[:client_id].present?
+      client_filter = " AND c.client_id = #{params[:client_id]}"
+    end 
+
+    fridge_filter = " "
+    if params[:fridge_id].present?
+      client_filter = " AND t.fridge_id = #{params[:fridge_id]}"
+    end 
+
+    HelpdeskToken.find_by_sql("
+      SELECT 
+        c.first_name, c.last_name, f.model, f.fridge_id, f.current_location, t.status, t.token_type,
+        t.reported_by, t.token_date, t.helpdesk_token_id, t.description, f.barcode_number 
+      FROM helpdesk_token t 
+        INNER JOIN fridge f ON f.fridge_id = t.fridge_id 
+        INNER JOIN client c ON c.client_id = t.client_id
+      WHERE t.token_date BETWEEN '#{start_date}' AND '#{end_date}' #{district_filter} 
+      #{client_filter}  #{fridge_filter}
     ").each do |d|
       name = d.first_name + " " + d.last_name
       location = Location.find(d.current_location).name 
@@ -310,7 +361,37 @@ class FridgeController < ApplicationController
         recorder, d.fridge_id]
       end 
 
-    render template: "fridge/generic_table"  end 
+    render template: "fridge/generic_table"  
+  end 
+
+  def selected_verifications_done
+    start_date, end_date = date_ranges
+    @title = "Listing of Verifications"
+    @data = []
+    @data << ["Client Name", "Location", "Fridge Barcode", "Model",  "Condition",
+               "Date Recorded", "Recorded By"]
+
+    Fridge.find_by_sql("
+          SELECT 
+            c.first_name, c.last_name, f.model, f.fridge_id, f.current_location,
+            f.barcode_number, f.fridge_id, f.condition_id, f.created_at, f.creator
+          FROM fridge f
+            INNER JOIN client c ON c.client_id = f.client_id
+
+          WHERE true #{district_filter}    
+            AND DATE(f.created_at) BETWEEN '#{start_date}' AND '#{end_date}'
+      ").each do |d|
+        name = d.first_name + " " + d.last_name
+        location = Location.find(d.current_location).name 
+        condition = Condition.find(d.condition_id).name
+        u = User.find(d.creator)
+        recorder = "#{u.first_name} #{u.last_name}"
+        @data << [name, location, d.barcode_number, d.model, condition, d.created_at.to_date.to_s,
+        recorder, d.fridge_id]
+      end 
+
+    render template: "fridge/generic_table"  
+  end 
 
   private 
   def date_ranges 

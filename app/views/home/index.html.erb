@@ -7,10 +7,10 @@
   }
 
   .top-table td {
-    width: 25%;
+    width: 20%;
     height: 100%;
     text-align: center;
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-weight: bold;
     border: 1px solid lightgray;
     cursor: pointer;
@@ -26,7 +26,7 @@
   .middle-table td {
     height: 100%;
     text-align: center;
-    font-size: 1.1em;
+    padding: 5px;
     border: 1px solid lightgray;
     cursor: pointer;
   }
@@ -36,7 +36,6 @@
   }
   .middle-table th{
     height: 100%;
-    padding: 15px;
     font-weight: bold;
     border: 1px solid lightgray;
     color: darkslategrey;
@@ -45,7 +44,7 @@
     width: 92%;
     margin-left: 4%;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: bold;
     color: black;
   }
@@ -93,6 +92,7 @@
    <td>
       <table class="top-table">
         <tr>
+
           <td class="btn-danger" >
               Pending Services <br /> <span id='pending_services'></span>
           </td>
@@ -106,7 +106,7 @@
           </td>
 
           <td>
-            Recorded Fridges <br /> <span id='recorded_fridges'></span>
+              Verifications Done <br /> <span id='verifications_done'></span>
           </td>
         </tr>
       </table>
@@ -123,7 +123,7 @@
               <th scope="col">Pending Services</th>
               <th scope="col">Active Tokens</th>
               <th scope="col">Services Done</th>
-              <th scope="col">Recorded Fridges</th>
+              <th scope="col">Verifications Done</th>
             </tr>
           </thead>
           <tbody>
@@ -132,28 +132,32 @@
               <td class='today pending_services' ></td>
               <td class='today active_tokens'></td>
               <td class='today services_done' ></td>
-              <td class='today recorded_fridges' ></td>
+              <!-- td class='today recorded_fridges' --></td>
+              <td class='today verifications_done' ></td>
             </tr>
             <tr>
               <th scope="row">This Week</th>
               <td class='week pending_services' ></td>
               <td class='week active_tokens' ></td>
               <td class='week services_done' ></td>
-              <td class='week recorded_fridges' ></td>
+              <!-- td class='week recorded_fridges' --></td>
+              <td class='week verifications_done' ></td>
             </tr>
             <tr>
               <th>This Month</th>
               <td class='month pending_services'></td>
               <td class='month active_tokens'></td>
               <td class='month services_done'></td>
-              <td class='month recorded_fridges'></td>
+              <!-- td class='month recorded_fridges' --></td>
+              <td class='month verifications_done'></td>
             </tr>
             <tr>
               <th scope="row">This Year</th>
               <td class='year pending_services'></td>
               <td class='year active_tokens'></td>
               <td class='year services_done'></td>
-              <td class='year recorded_fridges'></td>
+              <!-- td class='year recorded_fridges' --></td>
+              <td class='year verifications_done'></td>
             </tr>
 
              <tr>
@@ -161,7 +165,8 @@
               <td class='eversince pending_services'></td>
               <td class='eversince active_tokens'></td>
               <td class='eversince services_done'></td>
-              <td class='eversince recorded_fridges'></td>
+              <!-- td class='eversince recorded_fridges' --></td>
+              <td class='eversince verifications_done'></td>
             </tr>          
 
           </tbody>
@@ -170,7 +175,7 @@
   </tr>
 
   <tr>
-    <td style="width: 100%;height: 14.5%;">
+    <td style="width: 100%;height: 15.5%;">
 
     </td>
   </tr>
@@ -188,7 +193,9 @@
       url: 'home/aggregates?district_id=' + district,
       success: function(result){
         data = JSON.parse(result);
+        console.log(data);
         for(k in data){
+          console.log(k)
           __$(k).innerHTML = data[k];
           __$(k).parentNode.setAttribute('category', k)
           __$(k).parentNode.onclick = function(){

@@ -22,11 +22,11 @@
                   <%= hidden_field_tag "fridge_id", @fridge.id%>
 
                     <div class="form-group col-md-12">
-                        <label class="control-label col-md-4">Fridge Serial Number </label>
+                        <label class="control-label col-md-4">Outlet Barcode </label>
 
                         <div class="col-md-8">
                         <input id="serial_number" disabled="disabled"
-                          class="form-control" name="serial_number" value="<%=@fridge.serial_number%>"/>
+                          class="form-control" name="serial_number" value="<%=@fridge.outlet_barcode_number%>"/>
                         </div>
                         
                     </div>

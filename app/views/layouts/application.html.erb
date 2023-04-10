@@ -108,12 +108,6 @@
               <li>
                 <a href="/user/view?user_id=<%= @cur_user.id%>"><i class="fa fa-fw fa-user"></i> My Account</a>
               </li>
-              <li>
-                <a href="/"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-              </li>
-              <li>
-                <a href="/"><i class="fa fa-fw fa-gear"></i> Settings</a>
-              </li>
               <li class="divider"></li>
               <li>
                 <a href="/logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
@@ -130,13 +124,38 @@
             <li id="clients">
               <a href="/client/index?active_tab=clients"><i class="fa fa-fw fa-list"></i> Clients</a>
             </li>
-            <li id="fridges">
-              <a href="/fridge/index?active_tab=fridges"><i class="fa fa-fw fa-list"></i> Fridges </a>
+            
+            <li id="fridge">
+              <a  href="javascript:" data-toggle='collapse' data-target='#fridges' > 
+              <i class="fa fa-fw fa-list"></i> Fridges </a>
+              <ul id="fridges" class="collapse">
+                <li>
+                  <a href="/fridge/index?active_tab=fridges">All fridges</a>
+                </li>
+                <li>
+                  <a href="/fridge/new?active_tab=fridges">New fridge</a>
+                </li>
+                
+                <li>
+                  <a href="/fridge/verification?active_tab=fridges">New verification</a>
+                </li>
+
+                <li>
+                  <a href="/fridge/all_tokens?active_tab=fridges">Helpdesk tokens</a>
+                </li>
+                <li>
+                  <a href="/fridge/selected_services_done?active_tab=fridges">Services</a>
+                </li>
+                <li>
+                  <a href="/client/client_types?active_tab=fridges">Verifications</a>
+                </li>
+
+              </ul>
             </li>
 
             <li id="config">
-              <a href="javascript:" data-toggle="collapse" data-target="#configs"><i class="fa fa-cog">
-              </i> General Configs <i class="fa fa-fw fa-caret-down"></i>
+              <a href="javascript:" data-toggle="collapse" data-target="#configs">
+              <i class="fa fa-cog"></i> General Configs <i class="fa fa-fw fa-caret-down"></i>
               </a>
               <ul id="configs" class="collapse">
                 <li>

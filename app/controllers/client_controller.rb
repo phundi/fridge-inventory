@@ -65,16 +65,20 @@ class ClientController < ApplicationController
     @client_type = ClientType.find(@client.client_type_id).name
     @trail_label = "Client History"
 
+    services_count = Service.where(client_id: @client.id).count
+    active_tokens_count = HelpdeskToken.where(client_id: @client.id).count
+    fridges_count = Fridge.where(client_id: @client.id).count
+
     @modules = []
-    @modules <<  ['Fridges', '4 Assigned']
-    @modules <<  ['Service Orders', 'None']
-    @modules <<  ['Total Services', '3 Done'] 
+    @modules <<  ['Fridges', fridges_count, "/fridge/index?client_id=#{@client.id}"]
+    @modules <<  ['Tokens', active_tokens_count, "/fridge/all_tokens?client_id=#{@client.id}"]
+    @modules <<  ['Services', services_count, "/fridge/selected_services_done?client_id=#{@client.id}"] 
 
 
     @common_encounters = []
-    @common_encounters << ['Assign Fridge']
-    @common_encounters << ['Remove Fridge']
-    @common_encounters << ['Blacklist']
+    #@common_encounters << ['Assign Fridge']
+    #@common_encounters << ['Remove Fridge']
+    #@common_encounters << ['Blacklist']
 
 
     encounters = [] #Encounter.where(client_id: params[:client_id]).order(" encounter_datetime DESC")

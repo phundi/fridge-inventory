@@ -46,8 +46,8 @@
         <table id="example" style="width: 100%;" class="data-table table table-condensed table-striped">
             <thead>
             <tr role="row">
-              <th  style="min-width: 14%;">Barcode Number</th>
-              <th  style="min-width: 14%;">Serial Number</th>
+              <th  style="min-width: 14%;">Barcode No.</th>
+              <th  style="min-width: 14%;">Outlet Barcode No.</th>
               <th  style="min-width: 14%;">Model</th>
               <th>Condition</th>
               <th>Current Location</th>
@@ -127,7 +127,7 @@
             'pageLength': 10,
             "ordering": false,
             "ajax": {
-                "url": '/fridge/ajax_fridges',
+                "url": '/fridge/ajax_fridges?client_id=<%= params[:client_id]%>',
                 data: function(d){
                 },
                 dataFilter: function (data) {

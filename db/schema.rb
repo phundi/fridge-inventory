@@ -146,12 +146,24 @@ ActiveRecord::Schema.define(version: 0) do
 
   create_table "fridge", primary_key: "fridge_id", force: :cascade do |t|
     t.string   "barcode_number",  null: false
-    t.string   "serial_number",  null: false
+    t.string   "outlet_barcode_number",  null: false
     t.string   "model",  null: false
     t.string   "description"        
     t.integer  "condition_id",  null: false        
     t.integer  "client_id",  null: false
     t.integer  "current_location",  null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "creator",  null: false, default: 1
+
+  end
+
+  create_table "verification", primary_key: "verification_id", force: :cascade do |t|
+    t.string   "outlet_barcode_number",  null: false
+    t.string   "fridge_barcode_number",  null: false
+    t.string   "status",  null: false
+    t.string   "description"               
+    t.integer  "client_id",  null: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.integer  "creator",  null: false, default: 1
@@ -227,38 +239,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                  null: false
   end
 
-  create_table "concept", primary_key: "concept_id", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "concept_set", primary_key: "concept_set_id", force: :cascade do |t|
-    t.integer  "concept_id"
-    t.integer  "concept_set"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "encounter_type", primary_key: "encounter_type_id", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
   create_table "workflow", primary_key: "workflow_id", force: :cascade do |t|
     t.string   "name"
     t.string   "description",                    limit: 255
@@ -283,73 +263,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
-  create_table "obs", primary_key: "obs_id", force: :cascade do |t|
-    t.integer  "concept_id",                  null: false
-    t.integer  "workflow_id",                 null: false
-    t.integer  "encounter_id",                null: false
-    t.integer  "value_numeric"
-    t.integer  "value_coded"
-    t.integer  "client_id",                   null: false
-    t.datetime "value_datetime"
-    t.string   "value_text"
-    t.datetime "obs_datetime",                null: false
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
-  create_table "workflow_encounter_type", primary_key: "workflow_encounter_type_id", force: :cascade do |t|
-    t.integer  "workflow_id"
-    t.integer  "encounter_type_id"
-    t.integer  "sort_order"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  ############################### LAB TABLES ###########################################################################
-
-  create_table "department", primary_key: "department_id", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-    end
-
-  create_table "specimen_type", primary_key: "specimen_type_id", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.string   "lifespan"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "test_type", primary_key: "test_type_id", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "department_id"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
   create_table "status", primary_key: "status_id", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -361,150 +274,8 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                             null: false
   end
 
-  create_table "panel_type", primary_key: "panel_type_id", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "panel", primary_key: "panel_id", force: :cascade do |t|
-    t.integer   "panel_type_id"
-    t.integer   "test_type_id"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "test_panel", primary_key: "panel_id", force: :cascade do |t|
-    t.integer   "panel_type_id"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "specimen_test_type", primary_key: "specimen_test_type_id", force: :cascade do |t|
-    t.integer  "specimen_type_id"
-    t.integer  "test_type_id"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "specimen", primary_key: "specimen_id", force: :cascade do |t|
-    t.integer  "client_id"
-    t.integer  "specimen_type_id"
-    t.string   "priority"
-    t.integer  "ordering_location"
-    t.integer  "drawn_by"
-    t.string   "drawn_by_name"
-    t.integer  "status_id"
-    t.integer  "accepted_by"
-    t.integer  "rejected_by"
-    t.integer  "rejection_reason_id"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "test", primary_key: "test_id", force: :cascade do |t|
-    t.integer  "specimen_id"
-    t.integer  "test_type_id"
-    t.integer  "tested_by"
-    t.integer  "verified_by"
-    t.integer  "requested_by"
-    t.string   "status_id"
-    t.integer  "creator"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "rejection_reason", primary_key: "rejection_reason_id", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "test_parameter", primary_key: "test_parameter_id", force: :cascade do |t|
-    t.integer  "test_type_id"
-    t.string   "name"
-    t.string   "description"
-    t.string   "type" #numeric, alphanumeric, list
-    t.text     "list"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  create_table "test_result", primary_key: "test_result_id", force: :cascade do |t|
-    t.integer  "test_id"
-    t.integer  "test_parameter_id"
-    t.text     "result"
-    t.text     "interpretation"
-    t.boolean  "voided",                      default: false, null: false
-    t.integer  "voided_by"
-    t.string   "void_reason"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
-  end
-
-  add_foreign_key "specimen", "client", column: "client_id", primary_key: 'client_id', name: "fk_specimen_1"
-  add_foreign_key "specimen", "specimen_type", column: "specimen_type_id", primary_key: 'specimen_type_id', name: "fk_specimen_2"
-  add_foreign_key "specimen", "location", column: "ordering_location", primary_key: 'location_id', name: "fk_specimen_4"
-  add_foreign_key "specimen", "user", column: "drawn_by", primary_key: 'user_id', name: "fk_specimen_3"
-  add_foreign_key "specimen", "user", column: "accepted_by", primary_key: 'user_id', name: "fk_specimen_6"
-  add_foreign_key "specimen", "user", column: "rejected_by", primary_key: 'user_id', name: "fk_specimen_7"
-  add_foreign_key "specimen", "status", column: "status_id", primary_key: 'status_id', name: "fk_specimen_8"
-
-  ############################### END OF LAB TABLES ####################################################################
-
-
-  add_foreign_key "obs", "concept", column: "concept_id", primary_key: 'concept_id', name: "fk_obs_4"
-  add_foreign_key "obs", "encounter", column: "encounter_id", primary_key: 'encounter_id', name: "fk_obs_5"
-  add_foreign_key "obs", "concept", column: "value_coded", primary_key: 'concept_id', name: "fk_obs_6"
-  add_foreign_key "obs", "client", column: "client_id", primary_key: 'client_id', name: "fk_obs_7"
-
-  add_foreign_key "encounter", "encounter_type", primary_key: "encounter_type_id", column: "encounter_type_id", name: "fk_encounter_1"
-  add_foreign_key "encounter", "user", primary_key: "user_id", column: "creator", name: "fk_encounter_2"
-  add_foreign_key "encounter", "user", primary_key: "user_id", column: "voided_by", name: "fk_encounter_3"
-  add_foreign_key "encounter", "client", column: "client_id", primary_key: 'client_id', name: "fk_oencounter_4"
-
-  add_foreign_key "workflow", "user", column: "voided_by", primary_key: "user_id", name: "fk_workflow_1"
-  add_foreign_key "workflow", "user", column: "creator", primary_key: "user_id", name: "fk_workflow_2"
-
-  add_foreign_key "encounter_type", "user", column: "voided_by", primary_key: "user_id", name: "fk_encounter_type_1"
-  add_foreign_key "encounter_type", "user", column: "creator", primary_key: "user_id", name: "fk_encounter_type_2"
-
+ 
   add_foreign_key "client", "client_type", primary_key: "client_type_id", name: "fk_client_1"
-
-  add_foreign_key "workflow_encounter_type", "user", column: "voided_by", primary_key: "user_id", name: "fk_workflow_encounter_type_1"
-  add_foreign_key "workflow_encounter_type", "user", column: "creator", primary_key: "user_id", name: "fk_workflow_encounter_type_2"
-  add_foreign_key "workflow_encounter_type", "workflow", column: 'workflow_id', primary_key: "workflow_id", name: "fk_workflow_encounter_type_3"
-  add_foreign_key "workflow_encounter_type", "encounter_type", column: "encounter_type_id", primary_key: "encounter_type_id", name: "fk_workflow_encounter_type_4"
 
   add_foreign_key "location_tag_map", "location", primary_key: "location_id", name: "fk_location_tag_map_1"
   add_foreign_key "location_tag_map", "location_tag", primary_key: "location_tag_id", name: "fk_location_tag_map_2"

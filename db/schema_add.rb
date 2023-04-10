@@ -5,7 +5,7 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   change_table(:client) do |t|
-    t.column :creator, :integer
+    t.column :creator, :integer, default: 1
   end
 end
 

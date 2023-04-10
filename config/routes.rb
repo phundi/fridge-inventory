@@ -100,10 +100,15 @@ Rails.application.routes.draw do
   get "fridge/helpdesk_token"
   post "fridge/helpdesk_token"
 
+  get "fridge/all_tokens"
+  get "fridge/all_services"
+
   get "fridge/selected_pending_services"
   get "fridge/selected_active_tokens"
   get "fridge/selected_recorded_fridges"
   get "fridge/selected_services_done"
+  get "fridge/selected_verifications_done"
+
 
   get "fridge/service"
   post "fridge/service"
