@@ -86,6 +86,61 @@ class FridgeController < ApplicationController
     render :layout => "form"
   end 
 
+  def verify
+
+    outlet_barcode = params[:outlet_barcode]
+    fridge_barcode = params[:fridge_barcode]
+
+    by_outlet_barcode = Fridge.where(outlet_barcode_number: outlet_barcode).first 
+    by_both = Fridge.where(outlet_barcode_number: outlet_barcode, 
+                                    barcode_number: fridge_barcode).first
+    by_fridge_barcode = Fridge.where(barcode_number: fridge_barcode).first 
+
+    message = []
+    if by_fridge_barcode.blank?
+      message = [0, "Fridge Not Found"]
+    else 
+        v = Verification.new 
+        v.outlet_barcode_number = outlet_barcode
+        v.fridge_barcode_number = fridge_barcode
+        v.client_id = by_outlet_barcode.client_id 
+        v.creator = @cur_user.id 
+
+        if by_both.present? 
+          v.status = "Verified"
+          message = [by_fridge_barcode.id, "Verified"]
+        else 
+          v.status = "Outlet Barcode Mismatch"
+          wrong_client  = Client.find(by_fridge_barcode.client_id)
+          v.description = "Fridge belongs to: #{wrong_client.name}"
+          message = [by_fridge_barcode.id, v.description]
+        end 
+
+        v.save!
+    end 
+
+    render :text => message.to_json
+  end 
+
+  def new_verification
+
+    @fridges = []
+    if params[:outlet_barcode].present?
+      @fridges = Fridge.where(outlet_barcode_number: params[:outlet_barcode])
+    end
+
+    if request.post?
+
+      verification = Verification.new
+      verification.client_id = @fridge.client_id 
+      verification.fridge_id = @fridge.id 
+      verification.save!
+
+
+      redirect_to "/" and return
+    end 
+  end 
+
   def service
 
     @fridge = Fridge.find(params[:fridge_id])

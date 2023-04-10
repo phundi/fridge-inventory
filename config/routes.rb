@@ -103,12 +103,16 @@ Rails.application.routes.draw do
   get "fridge/all_tokens"
   get "fridge/all_services"
 
+  get "fridge/verify"
+
   get "fridge/selected_pending_services"
   get "fridge/selected_active_tokens"
   get "fridge/selected_recorded_fridges"
   get "fridge/selected_services_done"
   get "fridge/selected_verifications_done"
 
+  get "fridge/new_verification"
+  post "fridge/new_verification"
 
   get "fridge/service"
   post "fridge/service"

@@ -15,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="Kenneth Kapundi" content="Homepage for HMIS">
+    <meta name="Inventory" content="Homepage for Inventory">
     <link href="/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
 
   <%= csrf_meta_tags %>
@@ -127,7 +127,7 @@
             
             <li id="fridge">
               <a  href="javascript:" data-toggle='collapse' data-target='#fridges' > 
-              <i class="fa fa-fw fa-list"></i> Fridges </a>
+              <i class="fa fa-fw fa-list"></i> Fridges  <i class="fa fa-fw fa-caret-down"></i></a>
               <ul id="fridges" class="collapse">
                 <li>
                   <a href="/fridge/index?active_tab=fridges">All fridges</a>
@@ -137,7 +137,7 @@
                 </li>
                 
                 <li>
-                  <a href="/fridge/verification?active_tab=fridges">New verification</a>
+                  <a href="/fridge/new_verification?active_tab=fridges">New verification</a>
                 </li>
 
                 <li>

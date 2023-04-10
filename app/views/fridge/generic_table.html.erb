@@ -72,17 +72,18 @@
             </thead>
         <tbody>
         <tr role="row">
-             <% @data.each_with_index do |data_row, j |%>
+             <% @data.each_with_index do |data_row, j |
+              %>
               
               <tr id="show<%= j%>">
                 <% data_row.each_with_index do |dt, i|
                   if i == data_row.length - 1 
                   %>
 
-                  <td >
-                    <a class="btn btn-sm btn-info" onclick="showDetails('show<%=j%>')"> 
-                    <span class="glyphicon glyphicon-eye-open"></span> View </a>
-                  </td>
+                    <td >
+                      <a class="btn btn-sm btn-info" onclick="showDetails('show<%=j%>')"> 
+                      <span class="glyphicon glyphicon-eye-open"></span> View </a>
+                    </td>
                   <% else  %>
                     <td>
                       <%=dt%>
@@ -138,9 +139,7 @@
             "targets": "_all"
           }]
         })
-       
-        //$("#example_filter input").first().focus()
-
+    
     })
 
     function showDetails(id){
